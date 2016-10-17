@@ -1,0 +1,74 @@
+Amenity_code,Amenity_Desc,Amenity_Icon,Amenity_Type,Amenity_SubType,Amenity_Classification,Wordnet_Type,Amenity_Desc,Ammenities_Keyword,Ammenities_Related,Amenity_Category
+2,Swimming Pool,17986new haven.JPG,PROJECT,,Common Amenities,swimming,Swimming Pool,swimming swim float   pool pond ,158 133 116 130 129,SPORTS & FITNESS
+3,Gym,,PROJECT,0,Common Amenities,gym,Gym,gymnasium gym,117 87 128 104 5,SPORTS & FITNESS
+4,Club house,,PROJECT,0,Common Amenities,club,Club house, club clubhouse  cabaret  ,86 108 137 136 144,ENTERTAINMENT & SOCIALIZING
+5,Park,,PROJECT,0,Common Amenities,park,Park,park lawn garden ,104 3 117 87 128,SPORTS & FITNESS
+6,Restaurant,,PROJECT,0,Common Amenities,Restaurant,Restaurant,restaurant hotel restaurants,160 135 142 161 147,SERVICES
+21,Basket Ball Court,,PROJECT,0,Common Amenities,basketball,Basket Ball Court,basket basketball,130 23 22 158 129,SPORTS & FITNESS
+22,Badminton Court,,PROJECT,0,Common Amenities,badminton,Badminton Court,badminton ,130 23 21 158 129,SPORTS & FITNESS
+23,Tennis Court,,PROJECT,0,Common Amenities,tennis,Tennis Court,tennis ,130 22 21 158 129,SPORTS & FITNESS
+24,24 Hours Security,,PROJECT,0,Common Amenities,security,24 Hours Security, security  ,85 127 97 95 84,BASIC
+26,Lifts,,PROJECT,0,Common Amenities,lift,Lifts,lift  elevator ,85 127 97 95 84,BASIC
+27,Sauna,,PROJECT,0,Common Amenities,sauna,Sauna,sauna ,136 144 138 153 108,ENTERTAINMENT & SOCIALIZING
+28,Gas Line,,PROJECT,0,Common Amenities,gas,Gas Line,gas  cable  pipeline  lineage line  channel  ,131 150 155 157 107,CONVENIENCE & SECURITY
+31,Modular Kitchen,,CONFIGURATION,APARTMENT,Common Amenities,kitchen,Modular Kitchen,modular kitchen ,157 107 152 140 150,CONVENIENCE & SECURITY
+159,Clinic and Pharmacy,,PROJECT,0,Common Amenities,clinic,Clinic and Pharmacy,clinic pharmacy drugstore ,148 132 146 141 6,SERVICES
+160,Creche,,PROJECT,0,Common Amenities,creche,Creche,creche playschool,6 135 142 161 147,SERVICES
+161,Departmental Store,,PROJECT,,Common Amenities,store,Departmental Store,departmental shop store grocery vegetable vegetables storehouse ,6 135 142 160 147,SERVICES
+154,24 Hours Water Supply,,PROJECT,0,Common Amenities,water,24 Hours Water Supply,water  ,127 95 85 97 113,BASIC
+155,Guest Accomodation,,PROJECT,0,Common Amenities,guest,Guest Accomodation,guest ,150 157 107 152 31,CONVENIENCE & SECURITY
+156,Gated Community,,PROJECT,0,Common Amenities,community,Gated Community,gate ,112 111 150 131 155,CONVENIENCE & SECURITY
+157,Grand Entrance,,PROJECT,0,Common Amenities,entrance,Grand Entrance,entrance,107 152 31 140 150,CONVENIENCE & SECURITY
+158,Sports Arena,,PROJECT,0,Common Amenities,sports,Sports Arena,sport sports  arena ,133 116 2 130 129,SPORTS & FITNESS
+60,Terrace,,CONFIGURATION,APARTMENT,Additional Rooms,terrace,Terrace,patio terrace roof,92 91 75 0 0,VILLA
+153,Multipurpose Hall,,PROJECT,0,Common Amenities,hall,Multipurpose Hall,multipurpose hallway anteroom hall dormitory manor hall mansion ,136 144 138 27 108,ENTERTAINMENT & SOCIALIZING
+152,Video Door Intercom,,PROJECT,0,Common Amenities,intercom,Video Door Intercom,video  television,140 107 157 31 150,CONVENIENCE & SECURITY
+75,pooja room,,CONFIGURATION,VILLA,Additional Rooms,pooja,pooja room,puja pooja ,60 92 91 0 0,VILLA
+83,Jogging Track,,PROJECT,0,Common Amenities,jogging,Jogging Track,jogging jog  joggers walk walking ,158 133 130 129 116,SPORTS & FITNESS
+84,Children's Play Area,,PROJECT,0,Common Amenities,play,Children's Play Area,play,133 116 2 130 129,SPORTS & FITNESS
+85,24 Hours Power Backup,,PROJECT,0,Common Amenities,power,24 Hours Power Backup,power  backup backing generator ,24 127 97 95 84,BASIC
+86,Party Hall,,PROJECT,0,Common Amenities,party,Party Hall,party hall  ,4 108 137 136 144,ENTERTAINMENT & SOCIALIZING
+87,Squash Court,,PROJECT,0,Common Amenities,squash,Squash Court,squash ,128 3 117 104 5,SPORTS & FITNESS
+91,Duplex House,,CONFIGURATION,VILLA,Interiors,duplex,Duplex House,duplex,92 60 75 0 0,VILLA
+92,Pent House,,CONFIGURATION,VILLA,Interiors,penthouse,Pent House,pent ,91 60 75 0 0,VILLA
+95,Parking,,PROJECT,0,Common Amenities,parking,Parking,parking  park garage ,127 154 85 97 84,BASIC
+96,Rain Water Harvesting,,PROJECT,0,Common Amenities,harvesting,Rain Water Harvesting,rain ,118 143 145 125 124,ECO FRIENDLY
+97,Fire Fighting Arrangements,,PROJECT,0,Common Amenities,fire_brigade,Fire Fighting Arrangements,fire ,85 127 95 84 24,BASIC
+103,Indoor Games,,PROJECT,0,Common Amenities,indoor,Indoor Games,indoor  ,117 3 134 22 2,SPORTS & FITNESS
+104,Outdoor Games,,PROJECT,0,Common Amenities,outdoor,Outdoor Games,outdoor ,5 3 117 87 128,SPORTS & FITNESS
+107,Solar Water Heating,,PROJECT,0,Common Amenities,solar_heater,Solar Water Heating,solar heating,152 140 157 31 150,CONVENIENCE & SECURITY
+108,Senior Citizens Corner,,PROJECT,0,Common Amenities,senior_citizen,Senior Citizens Corner,senior elder old aged  ,136 144 138 153 27,ENTERTAINMENT & SOCIALIZING
+111,Security Cabin,,PROJECT,0,Common Amenities,security,Security Cabin,security cabin,112 156 150 131 155,CONVENIENCE & SECURITY
+112,Security System,,PROJECT,0,Common Amenities,security,Security System,security  system ,111 156 150 131 155,CONVENIENCE & SECURITY
+113,Intercom,,PROJECT,0,Common Amenities,intercom,Intercom,intercommunication intercom,154 85 127 97 95,BASIC
+116,Foot Ball,,PROJECT,0,Common Amenities,football,Foot Ball,foot football,158 129 133 2 130,SPORTS & FITNESS
+117,Pool Table,,PROJECT,0,Common Amenities,pool_table,Pool Table,pooltable,3 87 128 104 5,SPORTS & FITNESS
+118,Sewage System,,PROJECT,0,Common Amenities,sewage_disposal,Sewage System,sewage ,96 143 145 125 124,ECO FRIENDLY
+119,Sewerage Treatment Plant,,PROJECT,0,Common Amenities,sewage_disposal_plant,Sewerage Treatment Plant,sewage ,143 120 145 125 124,ECO FRIENDLY
+120,Garbage Disposable System,,PROJECT,0,Common Amenities,garbage_disposal,Garbage Disposable System,garbage,143 119 145 125 124,ECO FRIENDLY
+124,Landscape Garden,,PROJECT,0,Common Amenities,garden,Landscape Garden,landscape ,145 125 143 119 120,ECO FRIENDLY
+125,Lush Green Lawns,,PROJECT,0,Common Amenities,lawn,Lush Green Lawns, lush green,145 124 143 119 120,ECO FRIENDLY
+127,Podium Car Parking,,PROJECT,0,Common Amenities,parking,Podium Car Parking,podium,95 154 85 97 84,BASIC
+128,Cricketnet,,PROJECT,0,Common Amenities,cricket,Cricketnet,cricket,87 3 117 104 5,SPORTS & FITNESS
+129,Golf,,PROJECT,0,Common Amenities,golf,Golf,golf ,116 158 130 23 22,SPORTS & FITNESS
+130,Volleyball,,PROJECT,0,Common Amenities,volleyball,Volleyball,volleyball ,23 22 21 158 129,SPORTS & FITNESS
+131,Earthquake Resistant,,PROJECT,0,Common Amenities,earthquake,Earthquake Resistant,earthquake ,28 150 155 157 107,CONVENIENCE & SECURITY
+132,Atm,,PROJECT,0,Common Amenities,atm,Atm,atm cashmachine ,148 159 146 141 6,SERVICES
+133,Skating Rink,,PROJECT,0,Common Amenities,skating,Skating Rink,skating skate rink ,158 116 2 130 129,SPORTS & FITNESS
+134,Yoga,,PROJECT,0,Common Amenities,yoga,Yoga,yoga ,158 133 130 129 116,SPORTS & FITNESS
+135,Library,,PROJECT,0,Common Amenities,library,Library,library ,142 6 161 160 147,SERVICES
+136,Amphitheatre,,PROJECT,0,Common Amenities,theatre,Amphitheatre,amphitheater,144 27 138 153 108,ENTERTAINMENT & SOCIALIZING
+137,Barbeque Pit,,PROJECT,0,Common Amenities,barbeque,Barbeque Pit,barbecue,108 136 144 138 153,ENTERTAINMENT & SOCIALIZING
+138,Jacuzzi,,PROJECT,0,Common Amenities,tub,Jacuzzi,jacuuzi jacuzi,136 144 153 27 108,ENTERTAINMENT & SOCIALIZING
+139,Vastu Compliant,,PROJECT,0,Common Amenities,compliant,Vastu Compliant,vaastu vastu,0 0 0 0 0,CONVENIENCE & SECURITY
+140,Wifi Coverage,,PROJECT,0,Common Amenities,wifi,Wifi Coverage,wireless wifi,152 107 157 31 150,CONVENIENCE & SECURITY
+141,Spa,,PROJECT,0,Common Amenities,spa,Spa,spa ,6 147 135 142 161,SERVICES
+142,Salon,,PROJECT,0,Common Amenities,salon,Salon,salon saloon parlor parlour,135 6 161 160 147,SERVICES
+143,Musical Fountain,,PROJECT,0,Common Amenities,fountain,Musical Fountain,fountain,119 120 145 125 124,ECO FRIENDLY
+144,Temple,,PROJECT,0,Common Amenities,temple,Temple,mandir temple shrine church dargah mosque gurudwara ,136 27 138 153 108,ENTERTAINMENT & SOCIALIZING
+145,Garden,,PROJECT,0,Common Amenities,garden,Garden,garden lawn park,124 125 143 119 120,ECO FRIENDLY
+146,Health Facilities,,PROJECT,0,Common Amenities,health,Health Facilities,health ,132 148 159 141 6,SERVICES
+147,Malls,,PROJECT,0,Common Amenities,mall,Malls,promenade plaza mall,6 135 142 161 160,SERVICES
+148,School,,PROJECT,0,Common Amenities,school,School,school ,159 132 146 141 6,SERVICES
+149,Bicycle Track,,PROJECT,0,Common Amenities,cycle,Bicycle Track,bicycle ,158 134 133 130 129,SPORTS & FITNESS
+150,Servants Quarter,,PROJECT,0,Common Amenities,servant,Servants Quarter,servant handmaid worker ,155 157 107 152 31,CONVENIENCE & SECURITY
