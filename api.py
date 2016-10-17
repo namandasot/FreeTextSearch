@@ -12,7 +12,6 @@ class TodoSimple(Resource):
     def get(self, todo_id):
         #Location,Possession
         [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date]=start(todo_id)
-        [geoLatitude,geoLongitude,address]=location_std(item)
         total_budget=0
         if budget_desc:
             for item in budget_desc:
@@ -64,6 +63,30 @@ class TodoSimple(Resource):
                             poss=2
         
         string="https://hdfcred.com/mobile_v3/project_listing_new_revised/?"
+        lat=[]
+        log=[]
+        if location:
+            for item in location:
+                [geoLatitude,geoLongitude,address]=location_std(item)
+                lat.append(geoLatitude)
+                log.append(geoLongitude)
+            if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
+                string=string+"&"
+            string=string+"lat="
+            for item in lat:
+                string=string+item+","
+            string=string[:-1]+"&long="
+            for item in log:
+                string=string+item+","
+            string=string[:-1]+"&areas="
+            for item in location:
+                string=string+item+"$$"
+            string=string[:-2]
+
+
+
+
+
         if apt_type:
             string=string+"propertytype="+apt_type[0]
         
