@@ -20,19 +20,19 @@ import json
 from oauth2client.client import GoogleCredentials
 import time
 import MySQLdb
-
+os.environ.get('CLASSPATH')
 
 start = time.time()
-os.environ['STANFORD_PARSER'] = '/home/kiran/nltk_data/models/stanford-parser-full-2015-04-20/stanford-parser.jar'
-os.environ['STANFORD_MODELS'] = '/home/kiran/nltk_data/models/stanford-parser-full-2015-04-20/stanford-parser-3.5.2-models.jar'
-#parser = stanford.StanfordParser("/home/kiran/nltk_data/stanford-parser-python-r22186/3rdParty/stanford-parser/englishPCFG.July-2010.ser", java_options='-mx1000m')
+os.environ['STANFORD_PARSER'] = '/home/ubuntu/nltk_data/models/stanford-parser-full-2015-04-20/stanford-parser.jar'
+os.environ['STANFORD_MODELS'] = '/home/ubuntu/nltk_data/models/stanford-parser-full-2015-04-20/stanford-parser-3.5.2-models.jar'
+#parser = stanford.StanfordParser("/home/ubuntu/nltk_data/stanford-parser-python-r22186/3rdParty/stanford-parser/englishPCFG.July-2010.ser", java_options='-mx1000m')
 parser=stanford.StanfordParser()
 #stanford_dir = parser._classpath[0].rpartition('/')[0]
 #parser._classpath = tuple(find_jars_within_path(stanford_dir))
 DISCOVERY_URL = ('https://{api}.googleapis.com/'
                  '$discovery/rest?version={apiVersion}')
 
-GOOGLE_APPLICATION_CREDENTIALS='/home/kiran/Desktop/test_api.json'
+GOOGLE_APPLICATION_CREDENTIALS='test_api.json'
 
 
 def Cleaning(words):
@@ -526,7 +526,7 @@ def AptType(word):
     return(result)                
 
 def Amenities(word):
-    amenities=pd.read_csv('/home/kiran/Desktop/programs/amenities.csv',index_col=None, header=0)
+    amenities=pd.read_csv('amenities.csv',index_col=None, header=0)
     result=[]    
     for pos,rows in enumerate(amenities['Ammenities_Keyword']):
                 items=rows.split()

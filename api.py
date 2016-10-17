@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Resource, Api
 from NLP import *
-#from GooglePlaceDetailAPI import *
+from GooglePlaceDetailAPI import *
 
 
 app = Flask(__name__)
@@ -12,7 +12,7 @@ class TodoSimple(Resource):
     def get(self, todo_id):
         #Location,Possession
         [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date]=start(todo_id)
-        #[geoLatitude,geoLongitude,address]=location_std(location)
+        [geoLatitude,geoLongitude,address]=location_std(item)
         total_budget=0
         if budget_desc:
             for item in budget_desc:
@@ -105,4 +105,4 @@ class TodoSimple(Resource):
 api.add_resource(TodoSimple, '/<todo_id>')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0')
