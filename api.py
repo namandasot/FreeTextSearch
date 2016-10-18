@@ -2,7 +2,8 @@ from flask import Flask
 from flask_restful import Resource, Api
 from NLP import *
 from GooglePlaceDetailAPI import *
-
+from urllib import urlopen
+import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -127,7 +128,19 @@ class TodoSimple(Resource):
         if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
                 string=string+"&"
         string=string+"possession="+str(poss)+"&position=Budget,Amenities,Location,Size,Possession&limit=0,20"
- 
+        print string
+        try :
+            url = urlopen(string).read()
+            result = json.loads(url)
+            return result
+        except:
+            return {
+    "data": [], 
+    "msg": "zero projects", 
+    "status": 0, 
+    "total": 0
+}
+        return url 
         return {"text":todo_id,"string":string,"apt_type":apt_type,"BHK":bhk,"Budget":total_budget,"Amenities":amenities,"Location":location,"Possession":possession}
         #return {"text":todo_id,"apt_type":apt_type,"BHK":bhk,"Budget":total_budget,"Amenities":amenities,"Location":location,"latitude":geoLatitude,"longitude":geoLongitude}
 
