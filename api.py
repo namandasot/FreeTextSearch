@@ -23,8 +23,12 @@ class TodoSimple(Resource):
                 if item in ["delux","posh","costly"]:
                     total_budget=10000000
         
-        if budget and not type(max(budget))==type(str()): 
-            total_budget=float(max(budget))
+        if budget :
+            try: 
+                total_budget=float(max(budget))
+            except: 
+                total_budget=0
+
         if budget_item:
             for item in budget_item:
                 if item in ['cr','crore','crores' ]:
@@ -107,7 +111,7 @@ class TodoSimple(Resource):
         if bhk:
             if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
                 string=string+"&"
-            string=string+"bhk="+str(min(bhk)
+            string=string+"bhk="+str(min(bhk))
 
 
         if total_budget:
