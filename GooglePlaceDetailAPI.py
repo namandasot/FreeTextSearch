@@ -5,7 +5,6 @@ import os
 import time
 from collections import Counter
 
-
 i = 5
 key = ['AIzaSyDagLQyFaxkonqlXrYs6ATE52OTFqR8tl8', 
 		'AIzaSyAzM507T0fwWT53MrlODoVzHErC7NLJ5LA',
@@ -25,6 +24,7 @@ key = ['AIzaSyDagLQyFaxkonqlXrYs6ATE52OTFqR8tl8',
 		'AIzaSyDIlZodoajMC4jHr26JJEtLqH3YCTbVZIU',
 		'AIzaSyCLJeI5HZMgW1GhZEC7vNgLQpKVumvlNsE']
 
+key = 'AIzaSyDLxzRNUbGTMWcHQWkoWKzy-Ll1tzr8x-0'
 
 
 def check_valid_response(ref_request):
@@ -36,7 +36,7 @@ def check_valid_response(ref_request):
 
 
 def get_reference_id(formatted_places):
-	url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query={0}&key={1}".format(formatted_places, key[i])
+	url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query={0}&key={1}".format(formatted_places, key)
 	
 	ref_request = requests.get(url).text
 
@@ -63,9 +63,15 @@ def location_std(formatted_places):
 		return (get_location_details(place_details))
 
 
-def start(location):
-	[geoLatitude,geoLongitude,address]=location_std(location)
+def start123(location):
+	geoLatitude=''
+        geoLongitude=''
+        address=''
+        try:
+             [geoLatitude,geoLongitude,address]=location_std(location)
+        except:
+             print "error"
 	print geoLatitude,geoLongitude,address
 	return geoLatitude,geoLongitude,address
 
-start("BANDRA")
+start123("malad")

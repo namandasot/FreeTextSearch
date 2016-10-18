@@ -13,6 +13,8 @@ class TodoSimple(Resource):
         #Location,Possession
         [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date]=start(todo_id)
         total_budget=0
+        print "++++++++++++++++++++++++++++++++++++"
+        print location
         if budget_desc:
             for item in budget_desc:
                 if item in ["cheap","low"]:
@@ -65,29 +67,34 @@ class TodoSimple(Resource):
         string="https://hdfcred.com/mobile_v3/project_listing_new_revised/?"
         lat=[]
         log=[]
+        print location
         if location:
+            if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
+                string=string+"&"
             for item in location:
-                [geoLatitude,geoLongitude,address]=location_std(item)
+                [geoLatitude,geoLongitude,address]=start123(item)
                 lat.append(geoLatitude)
                 log.append(geoLongitude)
             if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
                 string=string+"&"
             string=string+"lat="
             for item in lat:
-                string=string+item+","
+                string=string+str(item)+","
             string=string[:-1]+"&long="
             for item in log:
-                string=string+item+","
+                string=string+str(item)+","
             string=string[:-1]+"&areas="
             for item in location:
                 string=string+item+"$$"
             string=string[:-2]
-
+        
 
 
 
 
         if apt_type:
+            if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
+                string=string+"&"
             string=string+"propertytype="+apt_type[0]
         
         if bhk_desc:
