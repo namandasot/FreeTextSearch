@@ -107,10 +107,7 @@ class TodoSimple(Resource):
         if bhk:
             if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
                 string=string+"&"
-            string=string+"bhk="
-            for item in bhk:
-                string=string+str(item)+","
-            string=string[:-1]
+            string=string+"bhk="+str(min(bhk)
 
 
         if total_budget:
