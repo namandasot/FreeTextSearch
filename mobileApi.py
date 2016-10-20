@@ -119,6 +119,11 @@ def get():
             string=string+"&"
         string=string+"propertytype="+apt_type[0]
         preference_dict['propertytype']=apt_type[0]
+    else:
+        if not string==str1:
+            string=string+"&"
+        string=string+"propertytype="+"APARTMENT"
+        preference_dict['propertytype']="APARTMENT"
     
     if bhk_desc:
         for item in bhk_desc:
@@ -174,6 +179,8 @@ def get():
     print  "stringForm  " , stringformationtime - nlptime
     print "jtime  " ,  jtime - stringformationtime
     print "total Time " , jtime - starttime
+    result['preference'] = preference
+    result['url'] = string
     return jsonify(result)
     # return {"text":todo_id,"string":string,"apt_type":apt_type,"BHK":bhk,"Budget":total_budget,"Amenities":amenities,"Location":location,"Possession":possession}
 
