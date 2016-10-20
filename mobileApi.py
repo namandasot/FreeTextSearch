@@ -2,6 +2,7 @@ from flask import Flask,request,jsonify
 from NLP import *
 from GooglePlaceDetailAPI import *
 import requests
+from gevent.wsgi import WSGIServer
 app = Flask(__name__)
 # api = Api(app)
 import pdb
@@ -167,7 +168,6 @@ def get():
 "msg": "zero projects", 
 "status": 0, 
 "total": 0,
-"Faalt" :0
 }    
     jtime = time.time()
     print "NLP time " , nlptime-starttime
@@ -181,6 +181,7 @@ def get():
 # api.add_resource(TodoSimple, '/searchstring=<todo_id>')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=6020)
-
+#    app.run(host='0.0.0.0',port=6020)
+    http_server = WSGIServer(('0.0.0.0', 6020), app)
+    http_server.serve_forever()
 
