@@ -523,13 +523,13 @@ def AptType(word):
 
     for apt in apartment:
             if apt in word:
-                result.append("apartment")
+                result.append("APARTMENT")
     for apt in villa:
             if apt in word:
-                result.append("villa")
+                result.append("VILLA")
     for apt in plot:
             if apt in word:
-                result.append("plot")
+                result.append("PLOT")
 
 
     return(result)                
