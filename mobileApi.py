@@ -77,19 +77,19 @@ def get():
                     if int(max(possession)) >=6:
                         poss=2
     
-    string="https://hdfcred.com/mobile_v3/project_listing_new_revised/?"
     string = "http://api.hdfcred.net/mobile_v3/project_listing_v3/?"
+    str1=string
     lat=[]
     log=[]
     print location
     if location:
-        if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
+        if not string==str1:
             string=string+"&"
         for item in location:
             [geoLatitude,geoLongitude,address]=start123(item)
             lat.append(geoLatitude)
             log.append(geoLongitude)
-        if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
+        if not string==str1:
             string=string+"&"
         string=string+"lat="
         for item in lat:
@@ -103,7 +103,7 @@ def get():
         string=string[:-2]
 
     if apt_type:
-        if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
+        if not string==str1:
             string=string+"&"
         string=string+"propertytype="+apt_type[0]
     
@@ -114,24 +114,24 @@ def get():
             if item in ["big","huge","large"]:
                 bhk.append(4)
     if bhk:
-        if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
+        if not string==str1:
             string=string+"&"
         string=string+"bhk="+str(min(bhk))
 
 
     if total_budget:
-        if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
+        if not string==str1:
             string=string+"&"
         string=string+"budget="+str(total_budget)
         
     if amenities:
-        if not string=="http://api.hdfcred.net/mobile_v3/project_listing_v3/?":
+        if not string==str1:
             string=string+"&"
         string=string+"amenityid="
         for item in amenities:
             string=string+str(item)+","
         string=string[:-1]
-    if not string=="http://api.hdfcred.net/mobile_v3/project_listing_v3/?":
+    if not string==str1:
             string=string+"&"
     string=string+"possession="+str(poss)+"&position=Budget,Amenities,Location,Size,Possession&limit=0,20"
     string+="&order=P_Min_Price&order_type=DESC"
