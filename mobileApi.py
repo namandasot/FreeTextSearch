@@ -1,10 +1,7 @@
 from flask import Flask,request,jsonify
 from NLP import *
 from GooglePlaceDetailAPI import *
-import urllib2
-import json
-import urllib
-
+import requests
 app = Flask(__name__)
 # api = Api(app)
 
@@ -16,8 +13,11 @@ def get():
     todo_id=request.args['searchstring']
     try:
         token_id = request.headers.get('token_id')
+        if(token_id == None):
+            token_id= '12345'
     except:
         token_id = '12345'
+   
     print "token_id",token_id
     print "todo_id ",todo_id
     [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date]=start(todo_id)
@@ -136,16 +136,9 @@ def get():
     string=string+"possession="+str(poss)+"&position=Budget,Amenities,Location,Size,Possession&limit=0,20"
     string+="&order=P_Min_Price&order_type=DESC"
     print string
-    if 1:
-#        string = urllib.quote(string)
-       # headers = jsonify({"token_id":token_id})
-        req = urllib2.Request(string,headers={"token_id": token_id})
-#        req.add_header("token_id",token_id)
-        url = urllib2.urlopen(req).read()
-        result = json.loads(url)
-        return jsonify(result)
-
-#    except:
+    
+    results = requests.get(string, params = {},headers={"token_id":token_id})
+    return jsonify(results.json())
     return jsonify({
 "data": [], 
 "msg": "zero projects", 
