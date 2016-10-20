@@ -12,6 +12,7 @@ api = Api(app)
 class TodoSimple(Resource):
     def get(self, todo_id):
         #Location,Possession
+        print "todo_id ",todo_id
         [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date]=start(todo_id)
         total_budget=0
         print "++++++++++++++++++++++++++++++++++++"
@@ -128,25 +129,34 @@ class TodoSimple(Resource):
             string=string[:-1]
         if not string=="https://hdfcred.com/mobile_v3/project_listing_new_revised/?":
                 string=string+"&"
-        string=string+"possession="+str(poss)+"&position=Budget,Amenities,Location,Size,Possession&limit=0,20"
+        string=string+"possession="+str(poss)+"&position=Budget,Amenities,Location,Size,Possession&limit=0,20000"
         print string
         try :
             url = urlopen(string).read()
             result = json.loads(url)
+            return {
+    "result": result,
+    "param": string,
+}
+
             return result
         except:
-            return {
+            result =  {
     "data": [], 
     "msg": "zero projects", 
     "status": 0, 
     "total": 0
+}
+            return {
+    "result": result,
+    "param": string,
 }
         return url 
         return {"text":todo_id,"string":string,"apt_type":apt_type,"BHK":bhk,"Budget":total_budget,"Amenities":amenities,"Location":location,"Possession":possession}
         #return {"text":todo_id,"apt_type":apt_type,"BHK":bhk,"Budget":total_budget,"Amenities":amenities,"Location":location,"latitude":geoLatitude,"longitude":geoLongitude}
 
 
-api.add_resource(TodoSimple, '/<todo_id>')
+api.add_resource(TodoSimple, '/searchstring=<todo_id>')
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')
