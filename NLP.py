@@ -584,11 +584,11 @@ def start(query):
     words=word_tokenize(query)
 
 
-
-    [bhk,bhk_desc,bhk_item]=BHK(words)      
-    [budget,budget_adj,budget_item]=Budget(words)
-    [possession,possession_desc,date]=Possession(words)
-    [area,area_type,dim]=Area(words)
+    tagged_words=pos_tag(words)
+    [bhk,bhk_desc,bhk_item]=BHK(words,tagged_words)      
+    [budget,budget_adj,budget_item]=Budget(words,tagged_words)
+    [possession,possession_desc,date]=Possession(words,tagged_words)
+    [area,area_type,dim]=Area(words,tagged_words)
 
     st=PorterStemmer()
     stemmed_words=[words for words in query.split()] 
