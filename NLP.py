@@ -1,9 +1,9 @@
-import sys
+# import sys
 import pandas as pd
-import nltk
-from nltk.parse import stanford
-from nltk.parse import RecursiveDescentParser as rd
-from nltk.parse import malt
+# import nltk
+# from nltk.parse import stanford
+# from nltk.parse import RecursiveDescentParser as rd
+# from nltk.parse import malt
 from nltk.internals import find_jar, config_java, java, _java_options, find_jars_within_path
 import os
 from nltk.parse.stanford import StanfordDependencyParser
@@ -13,13 +13,13 @@ from nltk.tag import pos_tag
 import re
 from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import word_tokenize
-import argparse
+# import argparse
 from googleapiclient import discovery
 import httplib2
 import json
 from oauth2client.client import GoogleCredentials
 import time
-import MySQLdb
+# import MySQLdb
 
 os.environ.get('CLASSPATH')
 
@@ -33,75 +33,73 @@ parser=stanford.StanfordParser()
 DISCOVERY_URL = ('https://{api}.googleapis.com/'
                  '$discovery/rest?version={apiVersion}')
 
-OOGLE_APPLICATION_CREDENTIALS='test_api.json'
 
 def Cleaning(words):
     words.append([word.lower() for word in phrases])
 
 
 
-def BHK(word):
+def BHK(word,tagged_words):
     BHK=['bedroom','rk','kitchen','bathroom','bhk','room','rooms','hall','bedrooms','house',"flat"]
     leafs=[]
     adj=[]
     item1=[]      
 
     for item in BHK:
-                     if item in word:
-                         tagged_words=pos_tag(word)
-                         length=len(tagged_words)-1
-                         pos=word.index(item)
-                         item1.append(item)
-                         if tagged_words[pos][0] == '<':
-                                         adj.append('less')
-                         if tagged_words[pos][0] == '>':
-                                         adj.append('more')
-                         if tagged_words[pos][1] == 'CD':
-                                         leafs.append(tagged_words[pos][0])
-                                         
-                                     
-                         if (tagged_words[pos][1]=="JJ") or (tagged_words[pos][1]=="JJR") or (tagged_words[pos][1]=="JJS"):
-                                     adj.append(tagged_words[pos][0])
+         if item in word:
+             length=len(tagged_words)-1
+             pos=word.index(item)
+             item1.append(item)
+             # if tagged_words[pos][0] == '<':
+             #                 adj.append('less')
+             # if tagged_words[pos][0] == '>':
+             #                 adj.append('more')
+             # if tagged_words[pos][1] == 'CD':
+             #                 leafs.append(tagged_words[pos][0])
+                             
                          
-                         if not pos-1<0:
-                             if tagged_words[pos-1][0] == '<':
-                                         adj.append('less')
-                             if tagged_words[pos-1][0] == '>':
-                                         adj.append('more')
-                             if tagged_words[pos-1][1] == 'CD':
-                                         leafs.append(tagged_words[pos-1][0])
-                                     
-                             if (tagged_words[pos-1][1]=="JJ") or (tagged_words[pos-1][1]=="JJR") or (tagged_words[pos-1][1]=="JJS"):
-                                     adj.append(tagged_words[pos-1][0])
+             # if (tagged_words[pos][1]=="JJ") or (tagged_words[pos][1]=="JJR") or (tagged_words[pos][1]=="JJS"):
+             #             adj.append(tagged_words[pos][0])
+             
+             if not pos-1<0:
+                 if tagged_words[pos-1][0] == '<':
+                             adj.append('less')
+                 elif tagged_words[pos-1][0] == '>':
+                             adj.append('more')
+                 elif tagged_words[pos-1][1] == 'CD':
+                             leafs.append(tagged_words[pos-1][0])
                          
-                         # if not pos+1>length:
-                         #     if tagged_words[pos+1][1] == 'CD':
-                         #                 leafs.append(tagged_words[pos+1][0])
-                                     
-                         #     if (tagged_words[pos+1][1]=="JJ") or (tagged_words[pos+1][1]=="JJR") or (tagged_words[pos+1][1]=="JJS"):
-                         #             adj.append(tagged_words[pos+1][0])
-                                     
-                         if not pos-2<0:
-                             if tagged_words[pos-2][0] == '<':
-                                         adj.append('less')
-                             if tagged_words[pos-2][0] == '>':
-                                         adj.append('more')
-                             if tagged_words[pos-2][1] == 'CD':
-                                         leafs.append(tagged_words[pos-2][0])
-                                     
-                             if (tagged_words[pos-2][1]=="JJ") or (tagged_words[pos-2][1]=="JJR") or (tagged_words[pos-2][1]=="JJS"):
-                                     adj.append(tagged_words[pos-2][0])
-                                     
-                         if not pos-3<0:
-                             if tagged_words[pos-3][0] == '<':
-                                         adj.append('less')
-                             if tagged_words[pos-3][0] == '>':
-                                         adj.append('more')
-                             if tagged_words[pos-3][1] == 'CD':
-                                         leafs.append(tagged_words[pos-3][0])
-                                     
-                             if (tagged_words[pos-3][1]=="JJ") or (tagged_words[pos-3][1]=="JJR") or (tagged_words[pos-3][1]=="JJS"):
-                                     adj.append(tagged_words[pos-3][0])
+                 elif (tagged_words[pos-1][1]=="JJ") or (tagged_words[pos-1][1]=="JJR") or (tagged_words[pos-1][1]=="JJS"):
+                         adj.append(tagged_words[pos-1][0])
+             
+             # if not pos+1>length:
+             #     if tagged_words[pos+1][1] == 'CD':
+             #                 leafs.append(tagged_words[pos+1][0])
+                         
+             #     if (tagged_words[pos+1][1]=="JJ") or (tagged_words[pos+1][1]=="JJR") or (tagged_words[pos+1][1]=="JJS"):
+             #             adj.append(tagged_words[pos+1][0])
+                         
+             if not pos-2<0:
+                 if tagged_words[pos-2][0] == '<':
+                             adj.append('less')
+                 elif tagged_words[pos-2][0] == '>':
+                             adj.append('more')
+                 elif tagged_words[pos-2][1] == 'CD':
+                             leafs.append(tagged_words[pos-2][0])
+                         
+                 elif (tagged_words[pos-2][1]=="JJ") or (tagged_words[pos-2][1]=="JJR") or (tagged_words[pos-2][1]=="JJS"):
+                         adj.append(tagged_words[pos-2][0])
+                         
+             if not pos-3<0:
+                 if tagged_words[pos-3][0] == '<':
+                             adj.append('less')
+                 elif tagged_words[pos-3][0] == '>':
+                             adj.append('more')
+                 elif tagged_words[pos-3][1] == 'CD':
+                             leafs.append(tagged_words[pos-3][0])
+                         
+                 elif (tagged_words[pos-3][1]=="JJ") or (tagged_words[pos-3][1]=="JJR") or (tagged_words[pos-3][1]=="JJS"):
+                         adj.append(tagged_words[pos-3][0])
     if not leafs:
         leafs+=''
     if not adj:
@@ -112,7 +110,7 @@ def BHK(word):
     return ([leafs,adj,item1])
 
 
-def Budget(word):
+def Budget(word,tagged_words):
     budget=['lac','l','lakh','cr','crore','lacs','lakhs','crores','million' ]
     BHK=['bedroom','rk','kitchen','bathroom','bhk','room','rooms','hall','bedrooms','house',"flat"]
     leafs=[]
@@ -121,7 +119,7 @@ def Budget(word):
     item1=[]
 
 
-    word1=pos_tag(word)
+    word1=tagged_words
     for w in word1:            
         if w[1]=="CD":               
             try:
@@ -129,63 +127,62 @@ def Budget(word):
                      
                      pos=word1.index(w)
                      leafs.append(w[0])
-                     tagged_words=pos_tag(word)
                      length=len(tagged_words)-1
 
                                  
                      if not pos-1<0:
                          if tagged_words[pos-1][0] == '<':
                                          adj.append('less')
-                         if tagged_words[pos-1][0] == '>':
+                         elif tagged_words[pos-1][0] == '>':
                                          adj.append('more')                                           
-                         if (tagged_words[pos-1][1]=="RB") or (tagged_words[pos-1][1]=="RBR") or (tagged_words[pos-1][1]=="RBS") or (tagged_words[pos-1][1]=="IN"):
+                         elif (tagged_words[pos-1][1]=="RB") or (tagged_words[pos-1][1]=="RBR") or (tagged_words[pos-1][1]=="RBS") or (tagged_words[pos-1][1]=="IN"):
                                  adj.append(tagged_words[pos-1][0])
-                         if (tagged_words[pos-1][1]=="JJ") or (tagged_words[pos-1][1]=="JJR") or (tagged_words[pos-1][1]=="JJS"):
+                         elif (tagged_words[pos-1][1]=="JJ") or (tagged_words[pos-1][1]=="JJR") or (tagged_words[pos-1][1]=="JJS"):
                                 adj.append(tagged_words[pos-1][0])
 
                      
                      if not pos+1>length:
                          if tagged_words[pos+1][0] == '<':
                                          adj.append('less')
-                         if tagged_words[pos+1][0] == '>':
+                         elif tagged_words[pos+1][0] == '>':
                                          adj.append('more')
-                         if (tagged_words[pos+1][1]=="RB") or (tagged_words[pos+1][1]=="RBR") or (tagged_words[pos+1][1]=="RBS") or (tagged_words[pos+1][1]=="IN"):
+                         elif (tagged_words[pos+1][1]=="RB") or (tagged_words[pos+1][1]=="RBR") or (tagged_words[pos+1][1]=="RBS") or (tagged_words[pos+1][1]=="IN"):
                                  adj.append(tagged_words[pos+1][0])
-                         if (tagged_words[pos+1][1]=="JJ") or (tagged_words[pos+1][1]=="JJR") or (tagged_words[pos+1][1]=="JJS"):
+                         elif (tagged_words[pos+1][1]=="JJ") or (tagged_words[pos+1][1]=="JJR") or (tagged_words[pos+1][1]=="JJS"):
                                 adj.append(tagged_words[pos+1][0])
 
                                  
                      if not pos-2<0:                                             
                          if tagged_words[pos-2][0] == '<':
                                          adj.append('less')
-                         if tagged_words[pos-2][0] == '>':
+                         elif tagged_words[pos-2][0] == '>':
                                          adj.append('more')
-                         if (tagged_words[pos-2][1]=="RB") or (tagged_words[pos-2][1]=="RBR") or (tagged_words[pos-2][1]=="RBS") or (tagged_words[pos-2][1]=="IN"):
+                         elif (tagged_words[pos-2][1]=="RB") or (tagged_words[pos-2][1]=="RBR") or (tagged_words[pos-2][1]=="RBS") or (tagged_words[pos-2][1]=="IN"):
                                  adj.append(tagged_words[pos-2][0])
-                         if (tagged_words[pos-2][1]=="JJ") or (tagged_words[pos-2][1]=="JJR") or (tagged_words[pos-2][1]=="JJS"):
+                         elif (tagged_words[pos-2][1]=="JJ") or (tagged_words[pos-2][1]=="JJR") or (tagged_words[pos-2][1]=="JJS"):
                                 adj.append(tagged_words[pos-2][0])
                                  
                      if not pos+2>length:                                           
                          if tagged_words[pos+2][0] == '<':
                                          adj.append('less')
-                         if tagged_words[pos+2][0] == '>':
+                         elif tagged_words[pos+2][0] == '>':
                                          adj.append('more')
-                         if (tagged_words[pos+2][1]=="RB") or (tagged_words[pos+2][1]=="RBR") or (tagged_words[pos+2][1]=="RBS") or (tagged_words[pos+2][1]=="IN"):
+                         elif (tagged_words[pos+2][1]=="RB") or (tagged_words[pos+2][1]=="RBR") or (tagged_words[pos+2][1]=="RBS") or (tagged_words[pos+2][1]=="IN"):
                                  adj.append(tagged_words[pos+2][0])
-                         if (tagged_words[pos+2][1]=="JJ") or (tagged_words[pos+2][1]=="JJR") or (tagged_words[pos+2][1]=="JJS"):
+                         elif (tagged_words[pos+2][1]=="JJ") or (tagged_words[pos+2][1]=="JJR") or (tagged_words[pos+2][1]=="JJS"):
                                 adj.append(tagged_words[pos+2][0])
 
                      if not pos-3<0:                                           
                          if tagged_words[pos-3][0] == '<':
                                          adj.append('less')
-                         if tagged_words[pos-3][0] == '>':
+                         elif tagged_words[pos-3][0] == '>':
                                          adj.append('more')
-                         if (tagged_words[pos-3][1]=="RB") or (tagged_words[pos-3][1]=="RBR") or (tagged_words[pos-3][1]=="RBS") or (tagged_words[pos-3][1]=="IN"):
+                         elif (tagged_words[pos-3][1]=="RB") or (tagged_words[pos-3][1]=="RBR") or (tagged_words[pos-3][1]=="RBS") or (tagged_words[pos-3][1]=="IN"):
                                  adj.append(tagged_words[pos-3][0])
-                         if (tagged_words[pos-3][1]=="JJ") or (tagged_words[pos-3][1]=="JJR") or (tagged_words[pos-3][1]=="JJS"):
+                         elif (tagged_words[pos-3][1]=="JJ") or (tagged_words[pos-3][1]=="JJR") or (tagged_words[pos-3][1]=="JJS"):
                                 adj.append(tagged_words[pos-3][0])
           
-                     break
+                     #break
                     
             except:
                 print"error"
@@ -197,91 +194,89 @@ def Budget(word):
     
     for pos,item in enumerate(word) :
          if item in budget:
-             tagged_words=pos_tag(word)
              length=len(tagged_words)-1
-             # pos=word.index(item)
              item1.append(item)
                          
              if not pos-1<0:
                  if tagged_words[pos-1][0] in BHK:
                     continue
-                 if tagged_words[pos-1][0] == '<':
+                 elif tagged_words[pos-1][0] == '<':
                                          adj.append('less')
-                 if tagged_words[pos-1][0] == '>':
+                 elif tagged_words[pos-1][0] == '>':
                                          adj.append('more')
-                 if tagged_words[pos-1][1] == 'CD':
+                 elif tagged_words[pos-1][1] == 'CD':
                              leafs.append(tagged_words[pos-1][0])
 
                          
-                 if (tagged_words[pos-1][1]=="JJ") or (tagged_words[pos-1][1]=="JJR") or (tagged_words[pos-1][1]=="JJS"):
+                 elif (tagged_words[pos-1][1]=="JJ") or (tagged_words[pos-1][1]=="JJR") or (tagged_words[pos-1][1]=="JJS"):
                          adj.append(tagged_words[pos-1][0])
                          
-                 if (tagged_words[pos-1][1]=="RB") or (tagged_words[pos-1][1]=="RBR") or (tagged_words[pos-1][1]=="RBS") or (tagged_words[pos-1][1]=="IN"):
+                 elif (tagged_words[pos-1][1]=="RB") or (tagged_words[pos-1][1]=="RBR") or (tagged_words[pos-1][1]=="RBS") or (tagged_words[pos-1][1]=="IN"):
                          adj.append(tagged_words[pos-1][0])
              
              if not pos+1>length:
                  if tagged_words[pos+1][0] in BHK:
                     continue
-                 if tagged_words[pos+1][0] == '<':
+                 elif tagged_words[pos+1][0] == '<':
                                          adj.append('less')
-                 if tagged_words[pos+1][0] == '>':
+                 elif tagged_words[pos+1][0] == '>':
                                          adj.append('more')
-                 if tagged_words[pos+1][1] == 'CD':
+                 elif tagged_words[pos+1][1] == 'CD':
                              leafs.append(tagged_words[pos+1][0])
                          
-                 if (tagged_words[pos+1][1]=="JJ") or (tagged_words[pos+1][1]=="JJR") or (tagged_words[pos+1][1]=="JJS"):
+                 elif (tagged_words[pos+1][1]=="JJ") or (tagged_words[pos+1][1]=="JJR") or (tagged_words[pos+1][1]=="JJS"):
                          adj.append(tagged_words[pos+1][0])
                          
-                 if (tagged_words[pos+1][1]=="RB") or (tagged_words[pos+1][1]=="RBR") or (tagged_words[pos+1][1]=="RBS") or (tagged_words[pos+1][1]=="IN"):
+                 elif (tagged_words[pos+1][1]=="RB") or (tagged_words[pos+1][1]=="RBR") or (tagged_words[pos+1][1]=="RBS") or (tagged_words[pos+1][1]=="IN"):
                          adj.append(tagged_words[pos+1][0])
                          
              if not pos-2<0:
                  if tagged_words[pos-2][0] in BHK:
                     continue
-                 if tagged_words[pos-2][0] == '<':
+                 elif tagged_words[pos-2][0] == '<':
                                          adj.append('less')
-                 if tagged_words[pos-2][0] == '>':
+                 elif tagged_words[pos-2][0] == '>':
                                          adj.append('more')
-                 if tagged_words[pos-2][1] == 'CD':
+                 elif tagged_words[pos-2][1] == 'CD':
                              leafs.append(tagged_words[pos-2][0])
                          
-                 if (tagged_words[pos-2][1]=="JJ") or (tagged_words[pos-2][1]=="JJR") or (tagged_words[pos-2][1]=="JJS"):
+                 elif (tagged_words[pos-2][1]=="JJ") or (tagged_words[pos-2][1]=="JJR") or (tagged_words[pos-2][1]=="JJS"):
                          adj.append(tagged_words[pos-2][0])
                          
-                 if (tagged_words[pos-2][1]=="RB") or (tagged_words[pos-2][1]=="RBR") or (tagged_words[pos-2][1]=="RBS") or (tagged_words[pos-2][1]=="IN"):
+                 elif (tagged_words[pos-2][1]=="RB") or (tagged_words[pos-2][1]=="RBR") or (tagged_words[pos-2][1]=="RBS") or (tagged_words[pos-2][1]=="IN"):
                          adj.append(tagged_words[pos-2][0])
 
              if not pos-3<0:
                  if tagged_words[pos-3][0] in BHK:
                     continue
-                 if tagged_words[pos-3][1] == 'CD':
+                 elif tagged_words[pos-3][1] == 'CD':
                              leafs.append(tagged_words[pos-3][0])
                          
-                 if tagged_words[pos-3][0] == '<':
+                 elif tagged_words[pos-3][0] == '<':
                                          adj.append('less')
-                 if tagged_words[pos-3][0] == '>':
+                 elif tagged_words[pos-3][0] == '>':
                                          adj.append('more')
-                 if (tagged_words[pos-3][1]=="JJ") or (tagged_words[pos-3][1]=="JJR") or (tagged_words[pos-3][1]=="JJS"):
+                 elif (tagged_words[pos-3][1]=="JJ") or (tagged_words[pos-3][1]=="JJR") or (tagged_words[pos-3][1]=="JJS"):
                          adj.append(tagged_words[pos-3][0])
                          
-                 if (tagged_words[pos-3][1]=="RB") or (tagged_words[pos-3][1]=="RBR") or (tagged_words[pos-3][1]=="RBS") or (tagged_words[pos-3][1]=="IN"):
+                 elif (tagged_words[pos-3][1]=="RB") or (tagged_words[pos-3][1]=="RBR") or (tagged_words[pos-3][1]=="RBS") or (tagged_words[pos-3][1]=="IN"):
                          adj.append(tagged_words[pos-3][0])
 
              if not pos+2>length:
                  if tagged_words[pos+2][0] in BHK:
                     continue
-                 if tagged_words[pos+2][0] == '<':
+                 elif tagged_words[pos+2][0] == '<':
                                          adj.append('less')
-                 if tagged_words[pos+2][0] == '>':
+                 elif tagged_words[pos+2][0] == '>':
                                          adj.append('more')
-                 if tagged_words[pos+2][1] == 'CD':
+                 elif tagged_words[pos+2][1] == 'CD':
                              leafs.append(tagged_words[pos+2][0])
 
                          
-                 if (tagged_words[pos+2][1]=="JJ") or (tagged_words[pos+2][1]=="JJR") or (tagged_words[pos+2][1]=="JJS"):
+                 elif (tagged_words[pos+2][1]=="JJ") or (tagged_words[pos+2][1]=="JJR") or (tagged_words[pos+2][1]=="JJS"):
                          adj.append(tagged_words[pos+2][0])
                          
-                 if (tagged_words[pos+2][1]=="RB") or (tagged_words[pos+2][1]=="RBR") or (tagged_words[pos+2][1]=="RBS") or (tagged_words[pos+2][1]=="IN"):
+                 elif (tagged_words[pos+2][1]=="RB") or (tagged_words[pos+2][1]=="RBR") or (tagged_words[pos+2][1]=="RBS") or (tagged_words[pos+2][1]=="IN"):
                          adj.append(tagged_words[pos+2][0])
 
     
@@ -293,13 +288,12 @@ def Budget(word):
         item1+=''                     
     return ([leafs,adj,item1])
     
-def Location(words): ##
+def Location(words,tagged_words): ##
   adv=[]
   item1=[]
   http = httplib2.Http()
   credentials = GoogleCredentials.get_application_default().create_scoped(
                 ['https://www.googleapis.com/auth/cloud-platform'])
-  http=httplib2.Http()
   credentials.authorize(http)
 
 
@@ -318,7 +312,6 @@ def Location(words): ##
 
   try:
     words=words.lower().split()
-    tagged_words=pos_tag(words)
     length=len(tagged_words)-1
     for i in range (0,len(response['entities'])):
       if response['entities'][i]['type']=='LOCATION':
@@ -355,7 +348,7 @@ def Location(words): ##
 
 
 
-def Possession(word):
+def Possession(word,tagged_words):
     pos_type=['year','yr','yrs','years','month','months','mnth','mnths','available','ready','possession']
     budget=['lac','l','lakh','cr','crore','lacs','lakhs','crores','million' ]
     BHK=['bedroom','rk','kitchen','bathroom','bhk','room','rooms','hall','bedrooms','house',"flat"]
@@ -366,7 +359,6 @@ def Possession(word):
     
     for item in pos_type:
         if item in word:
-             tagged_words=pos_tag(word)
              length=len(tagged_words)-1
              pos=word.index(item)
              item1.append(item)
@@ -374,19 +366,19 @@ def Possession(word):
              if not pos-1<0:
                  if tagged_words[pos-1][0] in BHK or tagged_words[pos-1][0] in budget:
                     continue
-                 if tagged_words[pos-1][0] in ["a","an"] and not leafs:
+                 elif tagged_words[pos-1][0] in ["a","an"] and not leafs:
                     leafs.append("1")
 
-                 if tagged_words[pos-1][0] == '<':
+                 elif tagged_words[pos-1][0] == '<':
                                          adj.append('less')
-                 if tagged_words[pos-1][0] == '>':
+                 elif tagged_words[pos-1][0] == '>':
                                          adj.append('more')
 
                  
-                 if tagged_words[pos-1][1] == 'CD':
+                 elif tagged_words[pos-1][1] == 'CD':
                              leafs.append(tagged_words[pos-1][0])
                          
-                 if (tagged_words[pos-1][1]=="RB") or (tagged_words[pos-1][1]=="RBR") or (tagged_words[pos-1][1]=="RBS") or (tagged_words[pos-1][1]=="IN") or (tagged_words[pos-1][1]=="JJR"):
+                 elif (tagged_words[pos-1][1]=="RB") or (tagged_words[pos-1][1]=="RBR") or (tagged_words[pos-1][1]=="RBS") or (tagged_words[pos-1][1]=="IN") or (tagged_words[pos-1][1]=="JJR"):
                          adj.append(tagged_words[pos-1][0])
              
              # if not pos+1>length:
@@ -399,33 +391,33 @@ def Possession(word):
              if not pos-2<0:
                  if tagged_words[pos-2][0] in BHK or  tagged_words[pos-2][0] in budget:
                     continue
-                 if tagged_words[pos-2][0] in ["a","an"] and not leafs:
+                 elif tagged_words[pos-2][0] in ["a","an"] and not leafs:
                     leafs.append("1")
-                 if tagged_words[pos-2][0] == '<':
+                 elif tagged_words[pos-2][0] == '<':
                                          adj.append('less')
-                 if tagged_words[pos-2][0] == '>':
+                 elif tagged_words[pos-2][0] == '>':
                                          adj.append('more')
-                 if tagged_words[pos-2][1] == 'CD':
+                 elif tagged_words[pos-2][1] == 'CD':
                              leafs.append(tagged_words[pos-2][0])
                          
-                 if (tagged_words[pos-2][1]=="RB") or (tagged_words[pos-2][1]=="RBR") or (tagged_words[pos-2][1]=="RBS") or (tagged_words[pos-2][1]=="IN") or (tagged_words[pos-2][1]=="JJR"):
+                 elif (tagged_words[pos-2][1]=="RB") or (tagged_words[pos-2][1]=="RBR") or (tagged_words[pos-2][1]=="RBS") or (tagged_words[pos-2][1]=="IN") or (tagged_words[pos-2][1]=="JJR"):
                          adj.append(tagged_words[pos-2][0])
                          
              if not pos-3<0:
                  if tagged_words[pos-3][0] in BHK or tagged_words[pos-3][0] in budget:
                     continue
 
-                 if tagged_words[pos-3][0] in ["a","an"] and not leafs:
+                 elif tagged_words[pos-3][0] in ["a","an"] and not leafs:
                     leafs.append("1")
 
-                 if tagged_words[pos-3][0] == '<':
+                 elif tagged_words[pos-3][0] == '<':
                                          adj.append('less')
-                 if tagged_words[pos-3][0] == '>':
+                 elif tagged_words[pos-3][0] == '>':
                                          adj.append('more')
-                 if tagged_words[pos-3][1] == 'CD':
+                 elif tagged_words[pos-3][1] == 'CD':
                              leafs.append(tagged_words[pos-3][0])
                          
-                 if (tagged_words[pos-3][1]=="RB") or (tagged_words[pos-3][1]=="RBR") or (tagged_words[pos-3][1]=="RBS") or (tagged_words[pos-3][1]=="IN" or (tagged_words[pos-3][1]=="JJR")):
+                 elif (tagged_words[pos-3][1]=="RB") or (tagged_words[pos-3][1]=="RBR") or (tagged_words[pos-3][1]=="RBS") or (tagged_words[pos-3][1]=="IN" or (tagged_words[pos-3][1]=="JJR")):
                          adj.append(tagged_words[pos-3][0])
 
     #print tagged_words                        
@@ -438,7 +430,7 @@ def Possession(word):
     return ([leafs,adj,item1])
 
 
-def Area(word):
+def Area(word,tagged_words):
     pos_type=['year','years','yr','yrs','month','months','mnth','mnths']
     budget=['lac','l','lakh','cr','crore','lacs','lakhs','crores','million' ]
     BHK=['bedroom','rk','kitchen','bathroom','bhk','room','rooms','hall','bedrooms','house',"flat"]
@@ -450,25 +442,23 @@ def Area(word):
     
     for item in area:
         if item in word:
-             tagged_words=pos_tag(word)
              length=len(tagged_words)-1
              pos=word.index(item)
              item1.append(item)
-             # print tagged_words
              if not pos-1<0:
                  if tagged_words[pos-1][0] in BHK or tagged_words[pos-1][0] in budget or tagged_words[pos-1][0] in pos_type:
                     continue
 
-                 if tagged_words[pos-1][0] == '<':
+                 elif tagged_words[pos-1][0] == '<':
                                          adj.append('less')
-                 if tagged_words[pos-1][0] == '>':
+                 elif tagged_words[pos-1][0] == '>':
                                          adj.append('more')
 
                  
-                 if tagged_words[pos-1][1] == 'CD':
+                 elif tagged_words[pos-1][1] == 'CD':
                              leafs.append(tagged_words[pos-1][0])
                          
-                 if (tagged_words[pos-1][1]=="RB") or (tagged_words[pos-1][1]=="RBR") or (tagged_words[pos-1][1]=="RBS") or (tagged_words[pos-1][1]=="IN") or (tagged_words[pos-1][1]=="JJR"):
+                 elif (tagged_words[pos-1][1]=="RB") or (tagged_words[pos-1][1]=="RBR") or (tagged_words[pos-1][1]=="RBS") or (tagged_words[pos-1][1]=="IN") or (tagged_words[pos-1][1]=="JJR"):
                          adj.append(tagged_words[pos-1][0])
              
              # if not pos+1>length:
@@ -481,28 +471,28 @@ def Area(word):
              if not pos-2<0:
                  if tagged_words[pos-2][0] in BHK or  tagged_words[pos-2][0] in budget or tagged_words[pos-2][0] in pos_type:
                     continue
-                 if tagged_words[pos-2][0] == '<':
+                 elif tagged_words[pos-2][0] == '<':
                                          adj.append('less')
-                 if tagged_words[pos-2][0] == '>':
+                 elif tagged_words[pos-2][0] == '>':
                                          adj.append('more')
-                 if tagged_words[pos-2][1] == 'CD':
+                 elif tagged_words[pos-2][1] == 'CD':
                              leafs.append(tagged_words[pos-2][0])
                          
-                 if (tagged_words[pos-2][1]=="RB") or (tagged_words[pos-2][1]=="RBR") or (tagged_words[pos-2][1]=="RBS") or (tagged_words[pos-2][1]=="IN") or (tagged_words[pos-2][1]=="JJR"):
+                 elif (tagged_words[pos-2][1]=="RB") or (tagged_words[pos-2][1]=="RBR") or (tagged_words[pos-2][1]=="RBS") or (tagged_words[pos-2][1]=="IN") or (tagged_words[pos-2][1]=="JJR"):
                          adj.append(tagged_words[pos-2][0])
                          
              if not pos-3<0:
                  if tagged_words[pos-3][0] in BHK or tagged_words[pos-3][0] in budget or tagged_words[pos-3][0] in pos_type:
                     continue
 
-                 if tagged_words[pos-3][0] == '<':
+                 elif tagged_words[pos-3][0] == '<':
                                          adj.append('less')
-                 if tagged_words[pos-3][0] == '>':
+                 elif tagged_words[pos-3][0] == '>':
                                          adj.append('more')
-                 if tagged_words[pos-3][1] == 'CD':
+                 elif tagged_words[pos-3][1] == 'CD':
                              leafs.append(tagged_words[pos-3][0])
                          
-                 if (tagged_words[pos-3][1]=="RB") or (tagged_words[pos-3][1]=="RBR") or (tagged_words[pos-3][1]=="RBS") or (tagged_words[pos-3][1]=="IN" or (tagged_words[pos-3][1]=="JJR")):
+                 elif (tagged_words[pos-3][1]=="RB") or (tagged_words[pos-3][1]=="RBR") or (tagged_words[pos-3][1]=="RBS") or (tagged_words[pos-3][1]=="IN" or (tagged_words[pos-3][1]=="JJR")):
                          adj.append(tagged_words[pos-3][0])
 
     #print tagged_words                        
@@ -513,6 +503,7 @@ def Area(word):
     if not item1:
         item1+=''                     
     return ([leafs,adj,item1])
+
 
 
 def AptType(word):

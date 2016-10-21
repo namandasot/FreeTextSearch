@@ -94,7 +94,7 @@ def get():
             log.append(geoLongitude)
         if not string==str1:
             string=string+"&"
-        string=string+"lat="
+        string=string+"latitude="
         preference_dict['latitude']=''
         preference_dict['longitude']=''
         preference_dict['suggestionareaname']=''
@@ -102,11 +102,11 @@ def get():
             string=string+str(item)+","
             preference_dict['latitude']=preference_dict['latitude']+str(item)+","
         preference_dict['latitude']=preference_dict['latitude'][:-1]
-        string=string[:-1]+"&long="
+        string=string[:-1]+"&longitude="
         for item in log:
             string=string+str(item)+","
             preference_dict['longitude']=preference_dict['longitude']+str(item)+","
-        string=string[:-1]+"&areas="
+        string=string[:-1]+"&suggestionareaname="
         preference_dict['longitude']=preference_dict['longitude'][:-1]
         for item in location:
             string=string+str(item)+"$$"
