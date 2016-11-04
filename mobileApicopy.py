@@ -54,31 +54,35 @@ def get():
     if possession:
         if date:
             if date[0] in ['year','yr','yrs','years']:
-                if possession_desc[0] in ["more"]:
-                    if int(max(possession)) <=1:
-                        poss=4
-                    if  int(max(possession)) >1 and int(max(possession)) <=2:
-                        poss=5
-                    if  int(max(possession)) >2:
-                        poss=6
+                possession=int(max(possession))*12
+            else:
+                possession=int(max(possession))
 
-                else:
-                    if int(max(possession)) <=1:
-                        poss=3
-                    if  int(max(possession)) >1 and int(max(possession)) <=2:
-                        poss=4
-                    if  int(max(possession)) >2 and int(max(possession)) <=3:
-                        poss=5
-                    if  int(max(possession)) >3 :
-                        poss=6
-            if date[0] in ['month','months','mnth','mnths']:
-                if possession_desc[0] in ["more"]:
+            if possession_desc[0] in ["more"]:
+                if possession <6:
+                    poss=1
+                if  possession >=6 and possession <12:
                     poss=2
-                else:
-                    if int(max(possession)) <6:
-                        poss=0
-                    if int(max(possession)) >=6:
-                        poss=2
+                if  possession >=12 and possession <24:
+                    poss=3
+                if  possession >=24 and possession <36:
+                    poss=4
+                if  possession >=36:
+                    poss=5
+
+            else:
+                if possession <6:
+                    poss=1
+                if  possession >=6 and possession <12:
+                    poss=2
+                if  possession >=12 and possession<24:
+                    poss=3
+                if  possession >=24 and possession<36:
+                    poss=4
+                if  possession >=36:
+                    poss=5
+
+
             preference_dict['possession']=poss
 
 
@@ -90,7 +94,7 @@ def get():
     if location:
         for item in location:
             try:
-                locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[0]+"&wt=json&indent=true"
+                locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+item+"&wt=json&indent=true"
                 req = urllib2.Request(locationstring)
                 url = urllib2.urlopen(req).read()
                 result_location = json.loads(url)
@@ -146,17 +150,26 @@ def get():
         string=string+"propertytype="+"APARTMENT"
         preference_dict['propertytype']="APARTMENT"
     
-    if bhk_desc:
-        for item in bhk_desc:
-            if item in ["small","tiny"]:
-                bhk.append(2)
-            if item in ["big","huge","large"]:
-                bhk.append(4)
+
     if bhk:
         if not string==str1:
             string=string+"&"
         string=string+"bhk="+str(min(bhk))
         preference_dict['bhk']=str(min(bhk))
+    elif bhk_desc:
+        for item in bhk_desc:
+            if item in ["small","tiny"]:
+                if not string==str1:
+                    string=string+"&"
+                string=string+"bhk=2"
+                preference_dict['bhk']="2"
+                break
+            if item in ["big","huge","large"]:
+                if not string==str1:
+                    string=string+"&"
+                string=string+"bhk=4"
+                preference_dict['bhk']="4"
+                break
 
     if total_budget:
         if not string==str1:
