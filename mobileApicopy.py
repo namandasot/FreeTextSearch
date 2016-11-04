@@ -54,9 +54,9 @@ def get():
     if possession:
         if date:
             if date[0] in ['year','yr','yrs','years']:
-                possession=int(max(possession))*12
+                possession=int(possession[0])*12
             else:
-                possession=int(max(possession))
+                possession=int(possession[0])
 
             if possession_desc[0] in ["more"]:
                 if possession <6:
