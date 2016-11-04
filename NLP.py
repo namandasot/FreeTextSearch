@@ -597,7 +597,7 @@ def start(query):
     amenities=Amenities(stemmed_words)
 
     query = str(query.upper())
-    [location,adv_location]=Location(query)
+    [location,adv_location]=Location(query,tagged_words)
 
     print "BHK ", bhk,bhk_desc,bhk_item
     print "BUDGET " ,budget,budget_adj,budget_item

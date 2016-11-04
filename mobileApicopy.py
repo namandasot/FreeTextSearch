@@ -196,9 +196,9 @@ def get():
 "total": 0,
 }    
     jtime = time.time()
-    print "NLP time " , nlptime-starttime
-    print  "stringForm  " , stringformationtime - nlptime
-    print "jtime  " ,  jtime - stringformationtime
+#    print "NLP time " , nlptime-starttime
+#    print  "stringForm  " , stringformationtime - nlptime
+#    print "jtime  " ,  jtime - stringformationtime
     print "total Time " , jtime - starttime
     result['preference'] = preference
     result['url'] = string
@@ -208,6 +208,6 @@ def get():
 
 if __name__ == '__main__':
 #    app.run(host='0.0.0.0',port=6020)
-    http_server = WSGIServer(('0.0.0.0', 6020), app)
+    http_server = WSGIServer(('0.0.0.0', 6030), app)
     http_server.serve_forever()
 
