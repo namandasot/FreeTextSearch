@@ -541,31 +541,39 @@ def Amenities(word):
 
 
 def start(query):
-    #query = "I need a greater than 2 BHK in Andheri less than 5 Cr and more than 2 Cr"
-    #query="A small 2 or 3 BHK within 1 Cr and less than 1 year"
+    num_dict={"zero":0,"one":1,"two":2,"three":3,"four":4,"five":5,"six":6,"seven":7,"eight":8,"nine":9,"ten":10,"eleven":11,"twelve":12,"thirteen":13,"fourteen":14,"fifteen":15,"sixteen":16,"seventeen":17,"eighteen":18,"nineteen":19,"twenty":20,"thirty":30,"fourty":40,"fifty":50,"sixty":60,"seventy":70,"eighty":80,"ninety":90,"hundred":100}
 
-    #query="Any flat available within a year"
-    #query="a 4BHK property between andheri and goregaon less than 200000"
-    #query="a small bhk under 5CR"
-    #query="a 4 BHK property with  BUDGET BETWEEN 2 and 3 Cr"
-    #query="a one BHK under 2Cr "
-    #query="I need a 4-bedroom flat"
-    #query=" a 476-bhk property"
-    #query="<2 bhk Apartment in the range of 1-2 cr having a swimming pool,lift,tennis,security nearby Bandra after 30 months"
-    #query="need a 3 bhk house inbetween 50 and 70 lakhs with club house"
-    #query ="need a 1.3 BHK of 2+ CR"
-    #query="1BHK,2.56Cr"
-    #query=" home with 2 rooms"
-    #query="2 BHk,2000000"
-    #query="need a 1 BHK in 1 Cr to 10 Cr"
-    # query="I need a 2 BHk near Andheri"
-    #query="2 BHk flat in Mumbai Central <20000000"
-    #query="2bhk in mumbai below 30 lacs with park"
-    #query="cheap 2 bhk in Khargar"
-    # query = raw_input()
-    #query = sys.argv[1]
-    #removing Punctuations
-    #query = re.sub(r'[^\w\s]',' ',query)
+    m_s=[]
+    for word in query.split():
+        if word in num_dict.keys():m_s.append(num_dict[word]) 
+        else: m_s.append(word)
+
+    modified=[]
+    for i,item in enumerate(m_s):
+            if type(item)is int:
+                try:
+                    if type(m_s[i+1]) is int:
+                        item+=m_s[i+1]
+                        del m_s[i+1]
+                except:
+                    print "error"
+            modified.append(item)
+
+    string1=""
+    for i,item in enumerate(modified):
+            if item==100 :
+                try:
+                    if modified[i+1]=="and" and type(modified[i+2]) is int:
+                        item+=modified[i+2]
+                        del modified[i+1]
+                        del modified[i+1]
+                except:
+                    print "error"
+            string1+=" "+str(item)
+
+    query=string1
+    
+    print query
     ls = []
     for x in query:
 
