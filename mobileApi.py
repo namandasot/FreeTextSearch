@@ -5,9 +5,11 @@ import requests
 from gevent.wsgi import WSGIServer
 app = Flask(__name__)
 # api = Api(app)
+from flask_cors import CORS,cross_origin
 import pdb
 import time
 # class TodoSimple(Resource):
+CORS(app)
 @app.route('/')
 def get():
     starttime = time.time()

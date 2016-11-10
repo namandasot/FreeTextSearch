@@ -8,10 +8,12 @@ import urllib2
 from gevent.wsgi import WSGIServer
 app = Flask(__name__)
 # api = Api(app)
+from flask_cors import CORS,cross_origin
+
 import pdb
 import time
 
-
+CORS(app)
 @app.route('/')
 def get():
     starttime = time.time()
@@ -170,11 +172,14 @@ def get():
     print "total Time " , endtime - starttime
     try :
         url = urlopen(string).read()
+        print "Hello "
         result = json.loads(url)
-        return {
+        
+        print "Hello 2"
+        return jsonify({
 		"result": result,
 		"url": string,
-		}
+		})
 
     except:
         result =  {
@@ -183,10 +188,10 @@ def get():
 		"status": 0, 
 		"total": 0
 		}
-        return {
+        return jsonify({
 		"result": result,
 		"url": string,
-		}
+		})
     #return url 
     #return {"text":todo_id,"string":string,"apt_type":apt_type,"BHK":bhk,"Budget":total_budget,"Amenities":amenities,"Location":location,"Possession":possession}
     #return {"text":todo_id,"apt_type":apt_type,"BHK":bhk,"Budget":total_budget,"Amenities":amenities,"Location":location,"latitude":geoLatitude,"longitude":geoLongitude}
@@ -194,5 +199,5 @@ def get():
 
 if __name__ == '__main__':
 #    app.run(host='0.0.0.0',port=6020)
-    http_server = WSGIServer(('0.0.0.0', 5010), app)
+    http_server = WSGIServer(('0.0.0.0', 5000), app)
     http_server.serve_forever()

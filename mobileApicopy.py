@@ -8,8 +8,8 @@ app = Flask(__name__)
 # api = Api(app)
 import pdb
 import time
-
-
+from flask_cors import CORS,cross_origin
+CORS(app)
 @app.route('/')
 def get():
     starttime = time.time()
