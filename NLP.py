@@ -569,6 +569,14 @@ def start(query):
                         del modified[i+1]
                 except:
                     print "error"
+            if type(item) is int:
+            try:
+                if modified[i+1]=="point" and type(modified[i+2]) is int:
+                    item=str(item)+"."+str(modified[i+2])
+                    del modified[i+1]
+                    del modified[i+1]
+            except:
+                print "error"
             string1+=" "+str(item)
 
     query=string1
