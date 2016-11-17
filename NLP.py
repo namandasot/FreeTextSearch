@@ -612,7 +612,14 @@ def start(query):
 
     amenities=Amenities(stemmed_words)
 
-    query = str(query.upper())
+    #query = str(query.upper())
+    qr_mod=[]
+    for word in tagged_words:
+        if word[1] in ["NN","NNP","NNS"]:
+            qr_mod.append(word[0].title())
+        else:
+            qr_mod.append(word[0].lower())
+    query=' '.join(qr_mod) 
     [location,adv_location]=Location(query,tagged_words)
 
     print "BHK ", bhk,bhk_desc,bhk_item
