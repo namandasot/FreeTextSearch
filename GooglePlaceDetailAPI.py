@@ -66,13 +66,13 @@ def location_std(formatted_places):
 
 
 def start123(location):
-	geoLatitude=''
-        geoLongitude=''
-        address=''
-        try:
-             [geoLatitude,geoLongitude,address]=location_std(location)
-        except:
-             print "error"
+	geoLatitude=0
+    geoLongitude=0
+    address=''
+    try:
+         [geoLatitude,geoLongitude,address]=location_std(location)
+    except:
+         print "error"
 	print geoLatitude,geoLongitude,address
 	return geoLatitude,geoLongitude,address
 
