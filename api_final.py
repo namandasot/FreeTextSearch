@@ -85,6 +85,7 @@ def get():
     lat=[]
     log=[]
     cityid=[]
+    places_found=[]
     if location:
         for item in location:
             try:
@@ -95,10 +96,13 @@ def get():
                 lat.append(result_location['response']['docs'][0]['latitude'])
                 log.append(result_location['response']['docs'][0]['longitude'])
                 cityid.append(result_location['response']['docs'][0]['cityid'])
+                places_found.append(item)
             except:
                 [geoLatitude,geoLongitude,address]=start123(item)
-                lat.append(geoLatitude)
-                log.append(geoLongitude)
+                if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                    lat.append(geoLatitude)
+                    log.append(geoLongitude)
+                    places_found.append(item)
 
         if lat:
             if not string==str1:
@@ -113,7 +117,7 @@ def get():
                 string=string+str(item)+","
             string=string[:-1]+"&areas="
 
-            for item in location:
+            for item in places_found:
                 string=string+str(item.title())+"$$"
             string=string[:-2]
 

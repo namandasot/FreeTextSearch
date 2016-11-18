@@ -61,6 +61,8 @@ def location_std(formatted_places):
 	if reference['status']:
 		place_details = get_reference_id(formatted_places)
 		return (get_location_details(place_details))
+	else:
+		return(0,0,"notfound")
 
 
 def start123(location):
@@ -74,4 +76,4 @@ def start123(location):
 	print geoLatitude,geoLongitude,address
 	return geoLatitude,geoLongitude,address
 
-start123("malad")
+
