@@ -12,6 +12,9 @@ from flask_cors import CORS,cross_origin
 
 import pdb
 import time
+import datetime
+fileName = "mobileAPI"  + str(datetime.date.today().month ) + str(datetime.date.today().year)
+
 
 CORS(app)
 @app.route('/')
@@ -172,6 +175,13 @@ def get():
     string=string+"possession="+str(poss)+"&position=Location,Budget,Size,Possession,Amenities&limit=0,30"
 
     print string
+    logString= ""
+    for a in [starttime,query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date,geoLongitude,geoLatitude,address]:
+        logString =  logString + str(a) + ";"
+
+    with open(fileName,"a") as myFile:
+        myFile.write(logString)
+
     endtime = time.time()
     print "total Time " , endtime - starttime
     try :

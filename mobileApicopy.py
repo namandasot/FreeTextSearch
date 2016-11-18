@@ -208,7 +208,7 @@ def get():
     print preference
     stringformationtime = time.time()
     logString= ""
-    for a in [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date,geoLongitude,geoLatitude,address]
+    for a in [starttime,query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date,geoLongitude,geoLatitude,address]:
         logString =  logString + str(a) + ";"
 
     with open(fileName,"a") as myFile:
