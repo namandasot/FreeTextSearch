@@ -175,7 +175,7 @@ def get():
     string=string+"possession="+str(poss)+"&position=Location,Budget,Size,Possession,Amenities&limit=0,30"
 
     print string
-    logString = ""
+    logString = "\n"
     try:
         for a in [starttime,query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date,lat,log]:
             logString =  logString + str(a) + ";"

@@ -207,7 +207,7 @@ def get():
     preference.append(preference_dict)
     print preference
     stringformationtime = time.time()
-    logString= ""
+    logString= "\n"
     try:
         for a in [starttime,query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date,lat,log]:
             logString =  logString + str(a) + ";"
