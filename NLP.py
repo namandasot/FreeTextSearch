@@ -615,7 +615,7 @@ def start(query):
     #query = str(query.upper())
     qr_mod=[]
     for word in tagged_words:
-        if word[1] in ["NN","NNP","NNS"]:
+        if word[1] in ["NN","NNP","NNS","RB","RBR","RBS","JJ","JJR","JJS"]:
             qr_mod.append(word[0].title())
         else:
             qr_mod.append(word[0].lower())
