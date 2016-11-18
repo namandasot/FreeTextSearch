@@ -114,7 +114,7 @@ def get():
             string=string[:-1]+"&areas="
 
             for item in location:
-                string=string+str(item)+"$$"
+                string=string+str(item.title())+"$$"
             string=string[:-2]
 
         if cityid:

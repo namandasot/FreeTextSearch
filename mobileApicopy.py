@@ -128,8 +128,8 @@ def get():
             
             preference_dict['longitude']=preference_dict['longitude'][:-1]
             for item in location:
-                string=string+str(item)+"$$"
-                preference_dict['suggestionareaname']=preference_dict['suggestionareaname']+str(item)+"$$"
+                string=string+str(item.title())+"$$"
+                preference_dict['suggestionareaname']=preference_dict['suggestionareaname']+str(item.title())+"$$"
             string=string[:-2]
             preference_dict['suggestionareaname']=preference_dict['suggestionareaname'][:-2]
 
