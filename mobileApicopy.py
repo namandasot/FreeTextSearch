@@ -208,11 +208,14 @@ def get():
     print preference
     stringformationtime = time.time()
     logString= ""
-    for a in [starttime,query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date,geoLongitude,geoLatitude,address]:
-        logString =  logString + str(a) + ";"
+    try:
+        for a in [starttime,query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date,lat,log]:
+            logString =  logString + str(a) + ";"
 
-    with open(fileName,"a") as myFile:
-        myFile.write(logString)
+        with open(fileName,"a") as myFile:
+            myFile.write(logString)
+    except:
+        pass
     results = requests.get(string, params = {},headers={"token_id":token_id})
     try :
         result =  results.json()
