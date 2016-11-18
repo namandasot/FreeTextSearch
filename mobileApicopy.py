@@ -9,6 +9,12 @@ app = Flask(__name__)
 import pdb
 import time
 from flask_cors import CORS,cross_origin
+import datetime
+
+fileName = "mobileAPI"  + str(datetime.date.today().month ) + str(datetime.date.today().year)
+
+
+
 CORS(app)
 @app.route('/')
 def get():
@@ -25,6 +31,7 @@ def get():
     print "token_id",token_id
     print "todo_id ",todo_id
     [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date]=start(todo_id)
+
     total_budget=0
     if budget_desc:
         for item in budget_desc:
@@ -200,7 +207,12 @@ def get():
     preference.append(preference_dict)
     print preference
     stringformationtime = time.time()
-    
+    logString= ""
+    for a in [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date,geoLongitude,geoLatitude,address]
+        logString =  logString + str(a) + ";"
+
+    with open(fileName,"a") as myFile:
+        myFile.write(logString)
     results = requests.get(string, params = {},headers={"token_id":token_id})
     try :
         result =  results.json()
