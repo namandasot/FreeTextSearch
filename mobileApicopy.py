@@ -22,6 +22,7 @@ def get():
     preference=[]
     preference_dict={}
     todo_id=request.args['searchstring']
+    amenity_exclusion=["park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja"]
     try:
         token_id = request.headers.get('token_id')
         if(token_id == None):
@@ -101,21 +102,22 @@ def get():
     places_found=[]
     if location:
         for item in location:
-            try:
-                locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+item+"&wt=json&indent=true"
-                req = urllib2.Request(locationstring)
-                url = urllib2.urlopen(req).read()
-                result_location = json.loads(url)
-                lat.append(result_location['response']['docs'][0]['latitude'])
-                log.append(result_location['response']['docs'][0]['longitude'])
-                cityid.append(result_location['response']['docs'][0]['cityid'])
-                places_found.append(item)
-            except:
-                [geoLatitude,geoLongitude,address]=start123(item)
-                if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                    lat.append(geoLatitude)
-                    log.append(geoLongitude)
+            if not item in amenity_exclusion:
+                try:
+                    locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+item+"&wt=json&indent=true"
+                    req = urllib2.Request(locationstring)
+                    url = urllib2.urlopen(req).read()
+                    result_location = json.loads(url)
+                    lat.append(result_location['response']['docs'][0]['latitude'])
+                    log.append(result_location['response']['docs'][0]['longitude'])
+                    cityid.append(result_location['response']['docs'][0]['cityid'])
                     places_found.append(item)
+                except:
+                    [geoLatitude,geoLongitude,address]=start123(item)
+                    if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                        lat.append(geoLatitude)
+                        log.append(geoLongitude)
+                        places_found.append(item)
 
         if lat:
             preference_dict['latitude']=''
