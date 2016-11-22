@@ -36,7 +36,7 @@ def get():
     
     if budget :
         try: 
-            total_budget=float(max(budget))
+            total_budget=float(budget[0])
         except: 
             total_budget=0
 
