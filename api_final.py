@@ -145,7 +145,7 @@ def get():
             string=string+"&"
         string+="projectid="
         for item in project_id: 
-            string+=item+","
+            string+=str(item)+","
         string=string[:-1]
     
     if bhk:
