@@ -52,6 +52,7 @@ def get_location_details(place_details):
 			geoLatitude 	= place_details['results'][0]['geometry']['location']['lat']
 			geoLongitude	= place_details['results'][0]['geometry']['location']['lng']
 			address=place_details['results'][0]['formatted_address']
+                        address = address.encode('ascii','ignore')
 			return(geoLatitude,geoLongitude,address)
 
 
