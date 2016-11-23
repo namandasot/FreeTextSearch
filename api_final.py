@@ -13,7 +13,7 @@ from flask_cors import CORS,cross_origin
 import pdb
 import time
 import datetime
-fileName = "mobileAPI"  + str(datetime.date.today().month ) + str(datetime.date.today().year)
+fileName = "desktopAPI"  + str(datetime.date.today().month ) + str(datetime.date.today().year)
 
 
 CORS(app)
