@@ -23,7 +23,7 @@ def get():
     amenity_exclusion=["park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja"]
     todo_id=request.args['searchstring']
     #print "todo_id ",todo_id
-    [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date]=start(todo_id)
+    [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date,project_id]=start(todo_id)
     total_budget=0
     print "++++++++++++++++++++++++++++++++++++"
     total_budget=0
@@ -140,7 +140,14 @@ def get():
             string=string+"&"
         string=string+"propertytype="+"APARTMENT"
     
-
+    if project_id:
+        if not string==str1:
+            string=string+"&"
+        string+="projectid="
+        for item in project_id: 
+            string+=item+","
+        string=string[:-1]
+    
     if bhk:
         if not string==str1:
             string=string+"&"

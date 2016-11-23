@@ -19,6 +19,7 @@ import httplib2
 import json
 from oauth2client.client import GoogleCredentials
 import time
+import urllib2
 # import MySQLdb
 
 os.environ.get('CLASSPATH')
@@ -38,6 +39,20 @@ def Cleaning(words):
     words.append([word.lower() for word in phrases])
 
 
+def Developer(words):
+    project_id=[]
+    try:
+        string="%20".join( words.split() )
+        locationstring="http://approvals.hdfcred.net/POC/free_text/developer_project_search.php?input="+string
+        req = urllib2.Request(locationstring)
+        url = urllib2.urlopen(req).read()
+        result_location = json.loads(url)
+
+        for item in result_location: 
+            project_id.append(item)
+    except:
+        pass
+    return (project_id)
 
 def BHK(word,tagged_words):
     BHK=['bedroom','rk','kitchen','bathroom','bhk','room','rooms','hall','bedrooms','house',"flat"]
@@ -597,10 +612,11 @@ def start(query):
 
     #Converting to Lower Case
     query = str(query.lower())
+    project_id=Developer(query)
+    
     words=word_tokenize(query)
-
-
     tagged_words=pos_tag(words)
+    
     [bhk,bhk_desc,bhk_item]=BHK(words,tagged_words)      
     [budget,budget_adj,budget_item]=Budget(words,tagged_words)
     [possession,possession_desc,date]=Possession(words,tagged_words)
@@ -629,7 +645,8 @@ def start(query):
     print "TYPE",apt_type   
     print "AMENITIES",amenities     
     print "AREA",area,area_type,dim
+    print "PROJECT ID",project_id
 
     end = time.time()
     #print "TIME",end - start
-    return query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,possession,possession_desc,date
+    return query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,possession,possession_desc,date,project_id

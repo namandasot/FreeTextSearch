@@ -31,7 +31,7 @@ def get():
         token_id = '12345'
     print "token_id",token_id
     print "todo_id ",todo_id
-    [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date]=start(todo_id)
+    [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_desc,amenities,location,possession,possession_desc,date,project_id]=start(todo_id)
 
     total_budget=0
     if budget_desc:
@@ -163,7 +163,14 @@ def get():
         string=string+"propertytype="+"APARTMENT"
         preference_dict['propertytype']="APARTMENT"
     
-
+    if project_id:
+        if not string==str1:
+            string=string+"&"
+        string+="projectid="
+        for item in project_id: 
+            string+=item+","
+        string=string[:-1]
+    
     if bhk:
         if not string==str1:
             string=string+"&"

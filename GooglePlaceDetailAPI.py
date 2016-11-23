@@ -24,7 +24,7 @@ key = ['AIzaSyDagLQyFaxkonqlXrYs6ATE52OTFqR8tl8',
 		'AIzaSyDIlZodoajMC4jHr26JJEtLqH3YCTbVZIU',
 		'AIzaSyCLJeI5HZMgW1GhZEC7vNgLQpKVumvlNsE']
 
-key = 'AIzaSyDLxzRNUbGTMWcHQWkoWKzy-Ll1tzr8x-0'
+key = 'AIzaSyB-aOVFpohnFJP_IPdNznth-3B7Mvih3b4'
 
 
 def check_valid_response(ref_request):
@@ -58,6 +58,7 @@ def get_location_details(place_details):
 def location_std(formatted_places):
 	formatted_places = formatted_places
 	reference = get_reference_id(formatted_places)
+	print reference
 	if reference['status']:
 		place_details = get_reference_id(formatted_places)
 		return (get_location_details(place_details))
@@ -66,14 +67,18 @@ def location_std(formatted_places):
 
 
 def start123(location):
-	geoLatitude=0
+    geoLatitude=0
     geoLongitude=0
     address=''
     try:
          [geoLatitude,geoLongitude,address]=location_std(location)
     except:
          print "error"
-	print geoLatitude,geoLongitude,address
-	return geoLatitude,geoLongitude,address
+    # print type(address)
+    address = address.encode('ascii','ignore')
+    print type(address)
+    print geoLatitude,geoLongitude,address
+    return geoLatitude,geoLongitude,address
 
 
+#start123("Churchgate")
