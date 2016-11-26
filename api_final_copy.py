@@ -1,5 +1,5 @@
 from flask import Flask,request,jsonify
-from NLP import *
+from NLP_copy import *
 from GooglePlaceDetailAPI import *
 from urllib import urlopen
 import json
