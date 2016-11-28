@@ -92,7 +92,7 @@ def get():
     places_found=[]
     if location:
         for item in location:
-            if not item in amenity_exclusion and not project_name in item:
+            if not item in amenity_exclusion and not item in project_name:
                 try:
                     locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+item+"&wt=json&indent=true"
                     req = urllib2.Request(locationstring)
