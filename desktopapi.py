@@ -1,7 +1,7 @@
 
 from flask import Flask,request,jsonify
 from NLP5 import *
-#from GooglePlaceDetailAPI import *
+from GooglePlaceDetailAPI import *
 from urllib import urlopen
 import json
 import requests
@@ -12,6 +12,7 @@ app = Flask(__name__)
 import pdb
 import time
 import datetime
+from flask_cors import CORS,cross_origin
 
 fileName = "newApiTest"  + str(datetime.date.today().month ) + str(datetime.date.today().year)
 
@@ -200,17 +201,17 @@ def get():
                     string=string+"&"
                 string+="inLocation="
                 for item in place["in"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&inLat="    
 
                 for item in lat["in"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&inLong=" 
 
                 for item in log["in"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
 
         if lat["notin"]:
@@ -218,17 +219,17 @@ def get():
                     string=string+"&"
                 string+="notInLocation="
                 for item in place["notin"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&notInLat="    
 
                 for item in lat["notin"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&notInLong=" 
 
                 for item in log["notin"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
 
         if lat["dist"]:
@@ -236,21 +237,21 @@ def get():
                     string=string+"&"
                 string+="distLocation="
                 for item in place["dist"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&distLat="    
 
                 for item in lat["dist"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&distLong=" 
 
                 for item in log["dist"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 
                 if radius:
-                    string=string+"&locationDist="+radius[0]
+                    string=string+"&locationDist="+str(radius[0])
                 else:
                     string=string+"&locationDist="+"4"
 
@@ -259,17 +260,17 @@ def get():
                     string=string+"&"
                 string+="nearByLocation="
                 for item in place["nearby"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&nearByLat="    
 
                 for item in lat["nearby"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&nearByLong=" 
 
                 for item in log["nearby"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
 
         if lat["around"]:
@@ -277,17 +278,17 @@ def get():
                     string=string+"&"
                 string+="aroundLocation="
                 for item in place["around"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&aroundLat="    
 
                 for item in lat["around"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&aroundLong=" 
 
                 for item in log["around"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
 
         if lat["direction"]:
@@ -295,22 +296,22 @@ def get():
                     string=string+"&"
                 string+="directionLocation="
                 for item in place["direction"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&directionLat="    
 
                 for item in lat["direction"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&directionLong=" 
 
                 for item in log["direction"]:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
                 string+="&locationDirection="
 
                 for item in dirs:
-                    string=string+item+","
+                    string=string+str(item)+","
                 string=string[:-1]
         
 
