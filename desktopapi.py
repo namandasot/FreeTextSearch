@@ -11,6 +11,9 @@ app = Flask(__name__)
 # api = Api(app)
 import pdb
 import time
+import datetime
+
+fileName = "newApiTest"  + str(datetime.date.today().month ) + str(datetime.date.today().year)
 
 CORS(app)
 @app.route('/')
@@ -413,6 +416,17 @@ def get():
     print string
 
     stringformationtime=time.time()
+    
+    logString= "\n"
+    try:
+        for a in [starttime,query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name]:
+            logString =  logString + str(a) + ";"
+
+        with open(fileName,"a") as myFile:
+            myFile.write(logString)
+    except:
+        pass
+
     try :
         url = urlopen(string).read()
         result = json.loads(url)
@@ -438,6 +452,6 @@ def get():
 
 if __name__ == '__main__':
 #    app.run(host='0.0.0.0',port=6020)
-    http_server = WSGIServer(('0.0.0.0', 5005), app)
+    http_server = WSGIServer(('0.0.0.0', 5006), app)
     http_server.serve_forever()
 
