@@ -59,7 +59,7 @@ def get():
 
 
 
-    string = "http://35.154.46.79/apimaster/mobile_v3/nlp_listing_v1?"
+    string = "http://52.66.44.154/apimaster/mobile_v3?"
     str1=string
     
     lat={"in":[],"notin":[],"dist":[],"nearby":[],"around":[],"direction":[]}
@@ -127,7 +127,7 @@ def get():
                         lat['dist'].append(geoLatitude)
                         log['dist'].append(geoLongitude)
 
-            if adv in ['nearby']:
+            if adv in ['nearby','near']:
                 adverbs.append(adv)
                 if not location[i] in amenity_exclusion and not location[i] in project_name:
                     try:
@@ -378,6 +378,10 @@ def get():
                         minimumprice=min(budget_modified) 
                     if item in ["less","below","under"]:
                         maximumprice=max(budget_modified)
+            else:
+                minimumprice=min(budget_modified)*0.7
+                maximumprice=max(budget_modified)*1.3
+
 
         else:
             budget_modified.sort()
