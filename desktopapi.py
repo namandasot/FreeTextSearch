@@ -315,11 +315,11 @@ def get():
                 string=string[:-1]
         
 
-        # if cityid:
-        #     if not string==str1:
-        #         string=string+"&"
-        #     string=string+"cityid="+max(cityid)
-        #     preference_dict['cityid']=max(cityid)
+        if cityid:
+            if not string==str1:
+                string=string+"&"
+            string=string+"cityid="+list(set(cityid))[0]
+
 
     
     if apt_type:
@@ -371,8 +371,8 @@ def get():
             if budget_adj:
                 for item in budget_adj:
                     if item in ["around","near","within","nearby"]:
-                        minimumprice=min(budget_modified)
-                        maximumprice=max(budget_modified)
+                        minimumprice=min(budget_modified)*0.7
+                        maximumprice=max(budget_modified)*1.3
                         break
                     if item in ["in","of","at","more","above"]:
                         minimumprice=min(budget_modified) 
@@ -411,9 +411,10 @@ def get():
             string=string+str(item)+","
         string=string[:-1]
 
-    if not string==str1:
-            string=string+"&"
-    string=string+"possession="+str(poss)
+    if poss:
+        if not string==str1:
+                string=string+"&"
+        string=string+"possession="+str(poss)
     print string
 
     stringformationtime=time.time()
