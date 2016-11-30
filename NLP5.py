@@ -601,7 +601,7 @@ def Area(word,tagged_words):
 
 def AptType(word):
     apartment=["apartment","flat","bhk"]
-    villa=["bunglow","villa"."row house"]
+    villa=["bunglow","villa","row house"]
     plot=["land","plot"]
     result=[]    
 
