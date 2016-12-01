@@ -212,25 +212,26 @@ def get():
                                 adverbs.append(adv)
                                 dirs.append(adv)
         else:
-            if not location[i] in amenity_exclusion and not location[i] in project_name:
-                try:
-                    locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                    req = urllib2.Request(locationstring)
-                    url = urllib2.urlopen(req).read()
-                    result_location = json.loads(url)
-                    place['in'].append(location[i])
-                    lat['in'].append(result_location['response']['docs'][0]['latitude'])
-                    log['in'].append(result_location['response']['docs'][0]['longitude'])
-                    cityid.append(result_location['response']['docs'][0]['cityid'])
-                    adverbs.append("in")
-
-                except:
-                    [geoLatitude,geoLongitude,address]=start123(location[i])
-                    if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+            for i,item in enumerate(location):
+                if not location[i] in amenity_exclusion and not location[i] in project_name:
+                    try:
+                        locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
+                        req = urllib2.Request(locationstring)
+                        url = urllib2.urlopen(req).read()
+                        result_location = json.loads(url)
                         place['in'].append(location[i])
-                        lat['in'].append(geoLatitude)
-                        log['in'].append(geoLongitude)
+                        lat['in'].append(result_location['response']['docs'][0]['latitude'])
+                        log['in'].append(result_location['response']['docs'][0]['longitude'])
+                        cityid.append(result_location['response']['docs'][0]['cityid'])
                         adverbs.append("in")
+
+                    except:
+                        [geoLatitude,geoLongitude,address]=start123(location[i])
+                        if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                            place['in'].append(location[i])
+                            lat['in'].append(geoLatitude)
+                            log['in'].append(geoLongitude)
+                            adverbs.append("in")
 
         if adverbs:
             if not string==str1:
