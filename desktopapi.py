@@ -69,123 +69,156 @@ def get():
     adverbs=[]
     dirs=[]
     if location:
-        for i,adv in enumerate(adv_location):
-            if adv in ['in','at']:
-                adverbs.append(adv)
-                if not location[i] in amenity_exclusion and not location[i] in project_name:
-                    try:
-                        locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                        req = urllib2.Request(locationstring)
-                        url = urllib2.urlopen(req).read()
-                        result_location = json.loads(url)
-                        place['in'].append(location[i])
-                        lat['in'].append(result_location['response']['docs'][0]['latitude'])
-                        log['in'].append(result_location['response']['docs'][0]['longitude'])
-                        cityid.append(result_location['response']['docs'][0]['cityid'])
+        if adv_location:
+            for i,adv in enumerate(adv_location):
+                if adv in ['in','at']:
+                    if not location[i] in amenity_exclusion and not location[i] in project_name:
+                        try:
+                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
+                            req = urllib2.Request(locationstring)
+                            url = urllib2.urlopen(req).read()
+                            result_location = json.loads(url)
+                            place['in'].append(location[i])
+                            lat['in'].append(result_location['response']['docs'][0]['latitude'])
+                            log['in'].append(result_location['response']['docs'][0]['longitude'])
+                            cityid.append(result_location['response']['docs'][0]['cityid'])
+                            adverbs.append(adv)
 
-                    except:
-                        [geoLatitude,geoLongitude,address]=start123(location[i])
+                        except:
+                            [geoLatitude,geoLongitude,address]=start123(location[i])
+                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                place['in'].append(location[i])
+                                lat['in'].append(geoLatitude)
+                                log['in'].append(geoLongitude)
+                                adverbs.append(adv)
+
+                if adv in ['not']:
+                    if not location[i] in amenity_exclusion and not location[i] in project_name:
+                        try:
+                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
+                            req = urllib2.Request(locationstring)
+                            url = urllib2.urlopen(req).read()
+                            result_location = json.loads(url)
+                            place['notin'].append(location[i])
+                            lat['notin'].append(result_location['response']['docs'][0]['latitude'])
+                            log['notin'].append(result_location['response']['docs'][0]['longitude'])
+                            cityid.append(result_location['response']['docs'][0]['cityid'])
+                            adverbs.append(adv)
+
+                        except:
+                            [geoLatitude,geoLongitude,address]=start123(location[i])
+                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                place['notin'].append(location[i])
+                                lat['notin'].append(geoLatitude)
+                                log['notin'].append(geoLongitude)
+                                adverbs.append(adv)
+
+                if adv in ['dist']:
+                    if not location[i] in amenity_exclusion and not location[i] in project_name:
+                        try:
+                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
+                            req = urllib2.Request(locationstring)
+                            url = urllib2.urlopen(req).read()
+                            result_location = json.loads(url)
+                            lat['dist'].append(result_location['response']['docs'][0]['latitude'])
+                            log['dist'].append(result_location['response']['docs'][0]['longitude'])
+                            place['dist'].append(location[i])
+                            cityid.append(result_location['response']['docs'][0]['cityid'])
+                            adverbs.append(adv)
+
+                        except:
+                            [geoLatitude,geoLongitude,address]=start123(location[i])
+                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                place['dist'].append(location[i])
+                                lat['dist'].append(geoLatitude)
+                                log['dist'].append(geoLongitude)
+                                adverbs.append(adv)
+
+                if adv in ['nearby','near']:
+                    if not location[i] in amenity_exclusion and not location[i] in project_name:
+                        try:
+                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
+                            req = urllib2.Request(locationstring)
+                            url = urllib2.urlopen(req).read()
+                            result_location = json.loads(url)
+                            lat['nearby'].append(result_location['response']['docs'][0]['latitude'])
+                            log['nearby'].append(result_location['response']['docs'][0]['longitude'])
+                            place['nearby'].append(location[i])
+                            cityid.append(result_location['response']['docs'][0]['cityid'])
+                            adverbs.append(adv)
+
+                        except:
+                            [geoLatitude,geoLongitude,address]=start123(location[i])
+                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                place['nearby'].append(location[i])
+                                lat['nearby'].append(geoLatitude)
+                                log['nearby'].append(geoLongitude)
+                                adverbs.append(adv)
+
+                if adv in ['around']:
+                    if not location[i] in amenity_exclusion and not location[i] in project_name:
+                        try:
+                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
+                            req = urllib2.Request(locationstring)
+                            url = urllib2.urlopen(req).read()
+                            result_location = json.loads(url)
+                            lat['around'].append(result_location['response']['docs'][0]['latitude'])
+                            log['around'].append(result_location['response']['docs'][0]['longitude'])
+                            place['around'].append(location[i])
+                            cityid.append(result_location['response']['docs'][0]['cityid'])
+                            adverbs.append(adv)
+
+                        except:
+                            [geoLatitude,geoLongitude,address]=start123(location[i])
+                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                place['around'].append(location[i])
+                                lat['around'].append(geoLatitude)
+                                log['around'].append(geoLongitude)
+                                adverbs.append(adv)
+
+                if adv in ['north','east','west','south']:
+                    if not location[i] in amenity_exclusion and not location[i] in project_name:
+                        try:
+                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
+                            req = urllib2.Request(locationstring)
+                            url = urllib2.urlopen(req).read()
+                            result_location = json.loads(url)
+                            lat['direction'].append(result_location['response']['docs'][0]['latitude'])
+                            log['direction'].append(result_location['response']['docs'][0]['longitude'])
+                            place['direction'].append(location[i])
+                            cityid.append(result_location['response']['docs'][0]['cityid'])
+                            adverbs.append(adv)
+                            dirs.append(adv)
+
+
+                        except:
+                            [geoLatitude,geoLongitude,address]=start123(location[i])
+                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                place['direction'].append(location[i])
+                                lat['direction'].append(geoLatitude)
+                                log['direction'].append(geoLongitude)
+                                adverbs.append(adv)
+                                dirs.append(adv)
+        else:
+            if not location[i] in amenity_exclusion and not location[i] in project_name:
+                try:
+                    locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
+                    req = urllib2.Request(locationstring)
+                    url = urllib2.urlopen(req).read()
+                    result_location = json.loads(url)
+                    place['in'].append(location[i])
+                    lat['in'].append(result_location['response']['docs'][0]['latitude'])
+                    log['in'].append(result_location['response']['docs'][0]['longitude'])
+                    cityid.append(result_location['response']['docs'][0]['cityid'])
+                    adverbs.append("in")
+
+                except:
+                    [geoLatitude,geoLongitude,address]=start123(location[i])
+                    if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
                         place['in'].append(location[i])
                         lat['in'].append(geoLatitude)
                         log['in'].append(geoLongitude)
-
-            if adv in ['not']:
-                adverbs.append(adv)
-                if not location[i] in amenity_exclusion and not location[i] in project_name:
-                    try:
-                        locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                        req = urllib2.Request(locationstring)
-                        url = urllib2.urlopen(req).read()
-                        result_location = json.loads(url)
-                        place['notin'].append(location[i])
-                        lat['notin'].append(result_location['response']['docs'][0]['latitude'])
-                        log['notin'].append(result_location['response']['docs'][0]['longitude'])
-                        cityid.append(result_location['response']['docs'][0]['cityid'])
-
-                    except:
-                        [geoLatitude,geoLongitude,address]=start123(location[i])
-                        place['notin'].append(location[i])
-                        lat['notin'].append(geoLatitude)
-                        log['notin'].append(geoLongitude)
-
-            if adv in ['dist']:
-                adverbs.append(adv)
-                if not location[i] in amenity_exclusion and not location[i] in project_name:
-                    try:
-                        locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                        req = urllib2.Request(locationstring)
-                        url = urllib2.urlopen(req).read()
-                        result_location = json.loads(url)
-                        lat['dist'].append(result_location['response']['docs'][0]['latitude'])
-                        log['dist'].append(result_location['response']['docs'][0]['longitude'])
-                        place['dist'].append(location[i])
-                        cityid.append(result_location['response']['docs'][0]['cityid'])
-
-                    except:
-                        [geoLatitude,geoLongitude,address]=start123(location[i])
-                        place['dist'].append(location[i])
-                        lat['dist'].append(geoLatitude)
-                        log['dist'].append(geoLongitude)
-
-            if adv in ['nearby','near']:
-                adverbs.append(adv)
-                if not location[i] in amenity_exclusion and not location[i] in project_name:
-                    try:
-                        locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                        req = urllib2.Request(locationstring)
-                        url = urllib2.urlopen(req).read()
-                        result_location = json.loads(url)
-                        lat['nearby'].append(result_location['response']['docs'][0]['latitude'])
-                        log['nearby'].append(result_location['response']['docs'][0]['longitude'])
-                        place['nearby'].append(location[i])
-                        cityid.append(result_location['response']['docs'][0]['cityid'])
-
-                    except:
-                        [geoLatitude,geoLongitude,address]=start123(location[i])
-                        place['nearby'].append(location[i])
-                        lat['nearby'].append(geoLatitude)
-                        log['nearby'].append(geoLongitude)
-
-            if adv in ['around']:
-                adverbs.append(adv)
-                if not location[i] in amenity_exclusion and not location[i] in project_name:
-                    try:
-                        locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                        req = urllib2.Request(locationstring)
-                        url = urllib2.urlopen(req).read()
-                        result_location = json.loads(url)
-                        lat['around'].append(result_location['response']['docs'][0]['latitude'])
-                        log['around'].append(result_location['response']['docs'][0]['longitude'])
-                        place['around'].append(location[i])
-                        cityid.append(result_location['response']['docs'][0]['cityid'])
-
-                    except:
-                        [geoLatitude,geoLongitude,address]=start123(location[i])
-                        place['around'].append(location[i])
-                        lat['around'].append(geoLatitude)
-                        log['around'].append(geoLongitude)
-
-            if adv in ['direction']:
-                adverbs.append(adv)
-                if not location[i] in amenity_exclusion and not location[i] in project_name:
-                    try:
-                        locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                        req = urllib2.Request(locationstring)
-                        url = urllib2.urlopen(req).read()
-                        result_location = json.loads(url)
-                        lat['direction'].append(result_location['response']['docs'][0]['latitude'])
-                        log['direction'].append(result_location['response']['docs'][0]['longitude'])
-                        place['direction'].append(location[i])
-                        cityid.append(result_location['response']['docs'][0]['cityid'])
-                        adverbs.append(adv)
-
-                    except:
-                        [geoLatitude,geoLongitude,address]=start123(location[i])
-                        place['direction'].append(location[i])
-                        lat['direction'].append(geoLatitude)
-                        log['direction'].append(geoLongitude)
-                        dirs.append(adv)
-        
+                        adverbs.append("in")
 
         if adverbs:
             if not string==str1:
