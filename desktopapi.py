@@ -59,7 +59,7 @@ def get():
 
 
 
-    string = "http://52.66.44.154/apimaster/mobile_v3?"
+    string = "http://52.66.44.154/apimaster/mobile_v3/nlp_listing_v1?"
     str1=string
     
     lat={"in":[],"notin":[],"dist":[],"nearby":[],"around":[],"direction":[]}
