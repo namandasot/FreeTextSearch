@@ -90,10 +90,10 @@ def get():
                             req = urllib2.Request(locationstring)
                             url = urllib2.urlopen(req).read()
                             result_location = json.loads(url)
-                            place['in'].append(location[i])
                             lat['in'].append(result_location['response']['docs'][0]['latitude'])
                             log['in'].append(result_location['response']['docs'][0]['longitude'])
                             cityid.append(result_location['response']['docs'][0]['cityid'])
+                            place['in'].append(location[i])
                             adverbs.append(adv)
 
                         except:
@@ -111,10 +111,10 @@ def get():
                             req = urllib2.Request(locationstring)
                             url = urllib2.urlopen(req).read()
                             result_location = json.loads(url)
-                            place['notin'].append(location[i])
                             lat['notin'].append(result_location['response']['docs'][0]['latitude'])
                             log['notin'].append(result_location['response']['docs'][0]['longitude'])
                             cityid.append(result_location['response']['docs'][0]['cityid'])
+                            place['notin'].append(location[i])
                             adverbs.append(adv)
 
                         except:
@@ -219,10 +219,10 @@ def get():
                         req = urllib2.Request(locationstring)
                         url = urllib2.urlopen(req).read()
                         result_location = json.loads(url)
-                        place['in'].append(location[i])
                         lat['in'].append(result_location['response']['docs'][0]['latitude'])
                         log['in'].append(result_location['response']['docs'][0]['longitude'])
                         cityid.append(result_location['response']['docs'][0]['cityid'])
+                        place['in'].append(location[i])
                         adverbs.append("in")
 
                     except:
