@@ -528,7 +528,7 @@ def Area(word,tagged_words):
     pos_type=['year','years','yr','yrs','month','months','mnth','mnths']
     budget=['lac','l','lakh','cr','crore','lacs','lakhs','crores','million' ]
     BHK=['bedroom','rk','kitchen','bathroom','bhk','room','rooms','hall','bedrooms','house',"flat"]
-    area=['sqft','sft','area','ft','meter','mtrsqr','metersquare']
+    area=['sqft','sft','ft','meter','mtrsqr','metersquare']
     item1=[]
     leafs=[]
     adj=[]
@@ -728,7 +728,7 @@ def start(query):
 
     #end1 = time.time()
     #print "TIME",end1 - start1
-    return query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name
+    return query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim
 
 #query=raw_input()
 #start1 = time.time()

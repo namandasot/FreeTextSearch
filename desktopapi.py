@@ -22,7 +22,7 @@ def get():
     starttime = time.time()
     amenity_exclusion=["park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja"]
     todo_id=request.args['searchstring']
-    [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name]=start(todo_id)
+    [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id)
     nlptime=time.time()
 
     poss=0
@@ -444,6 +444,50 @@ def get():
         if not string==str1:
             string=string+"&"
         string=string+"maxBudget="+str(maximumprice)
+
+    minarea=0
+    maxarea=0
+    if area:
+        length=len(area)
+        if length==1:
+            if area_type:
+                for item in area_type:
+                    if item in ["around","near","within","nearby"]:
+                        minarea=float(min(area))*0.7
+                        maxarea=float(max(area))*1.3
+                        break
+                    if item in ["in","of","at","more","above"]:
+                        minarea=min(area) 
+                    if item in ["less","below","under"]:
+                        maxarea=max(area)
+            else:
+                minarea=min(area)*0.7
+                maxarea=max(area)*1.3
+
+
+        else:
+            area.sort()
+            minarea=min(area)
+            maxarea=max(area)
+
+    if minarea:
+        if not string==str1:
+            string=string+"&"
+        string=string+"minArea="+str(minarea)
+
+    if maxarea:
+        if not string==str1:
+            string=string+"&"
+        string=string+"maxArea="+str(maxarea)
+
+    if dim:
+        if not string==str1:
+            string=string+"&"
+        if dim[0] in ['sqft','sft','ft']:
+            string+="areaUnit=sq. ft"
+
+        elif dim[0] in ['meter','mtrsqr','metersquare']:
+            string+="areaUnit=sq. m"
 
     if project_id:
         if not string==str1:
