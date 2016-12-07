@@ -104,7 +104,7 @@ def get():
                                 log['in'].append(geoLongitude)
                                 adverbs.append("in")
 
-                if adv in ['not']:
+                elif adv in ['not']:
                     if not location[i] in amenity_exclusion and not location[i] in project_name:
                         try:
                             locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
@@ -125,7 +125,7 @@ def get():
                                 log['notin'].append(geoLongitude)
                                 adverbs.append("notIn")
 
-                if adv in ['dist']:
+                elif adv in ['dist','distance','from']:
                     if not location[i] in amenity_exclusion and not location[i] in project_name:
                         try:
                             locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
@@ -146,7 +146,7 @@ def get():
                                 log['dist'].append(geoLongitude)
                                 adverbs.append("dist")
 
-                if adv in ['nearby','near']:
+                elif adv in ['nearby','near']:
                     if not location[i] in amenity_exclusion and not location[i] in project_name:
                         try:
                             locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
@@ -167,7 +167,7 @@ def get():
                                 log['nearby'].append(geoLongitude)
                                 adverbs.append("nearBy")
 
-                if adv in ['around']:
+                elif adv in ['around']:
                     if not location[i] in amenity_exclusion and not location[i] in project_name:
                         try:
                             locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
@@ -188,7 +188,7 @@ def get():
                                 log['around'].append(geoLongitude)
                                 adverbs.append("around")
 
-                if adv in ['north','east','west','south']:
+                elif adv in ['north','east','west','south']:
                     if not location[i] in amenity_exclusion and not location[i] in project_name:
                         try:
                             locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
