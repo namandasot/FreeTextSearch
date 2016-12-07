@@ -605,15 +605,17 @@ def AptType(word):
     plot=["land","plot"]
     result=[]    
 
-    for apt in apartment:
-            if apt in word:
-                result.append("APARTMENT")
-    for apt in villa:
-            if apt in word:
-                result.append("BUNGLOW")
     for apt in plot:
             if apt in word:
                 result.append("PLOT")
+    for apt in villa:
+            if apt in word:
+                result.append("BUNGLOW")
+    for apt in apartment:
+            if apt in word:
+                result.append("APARTMENT")
+    
+    
 
 
     return(result)                

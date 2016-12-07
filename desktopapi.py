@@ -94,7 +94,7 @@ def get():
                             log['in'].append(result_location['response']['docs'][0]['longitude'])
                             cityid.append(result_location['response']['docs'][0]['cityid'])
                             place['in'].append(location[i])
-                            adverbs.append(adv)
+                            adverbs.append("in")
 
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
@@ -102,7 +102,7 @@ def get():
                                 place['in'].append(location[i])
                                 lat['in'].append(geoLatitude)
                                 log['in'].append(geoLongitude)
-                                adverbs.append(adv)
+                                adverbs.append("in")
 
                 if adv in ['not']:
                     if not location[i] in amenity_exclusion and not location[i] in project_name:
@@ -115,7 +115,7 @@ def get():
                             log['notin'].append(result_location['response']['docs'][0]['longitude'])
                             cityid.append(result_location['response']['docs'][0]['cityid'])
                             place['notin'].append(location[i])
-                            adverbs.append(adv)
+                            adverbs.append("notIn")
 
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
@@ -123,7 +123,7 @@ def get():
                                 place['notin'].append(location[i])
                                 lat['notin'].append(geoLatitude)
                                 log['notin'].append(geoLongitude)
-                                adverbs.append(adv)
+                                adverbs.append("notIn")
 
                 if adv in ['dist']:
                     if not location[i] in amenity_exclusion and not location[i] in project_name:
@@ -136,7 +136,7 @@ def get():
                             log['dist'].append(result_location['response']['docs'][0]['longitude'])
                             place['dist'].append(location[i])
                             cityid.append(result_location['response']['docs'][0]['cityid'])
-                            adverbs.append(adv)
+                            adverbs.append("dist")
 
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
@@ -144,7 +144,7 @@ def get():
                                 place['dist'].append(location[i])
                                 lat['dist'].append(geoLatitude)
                                 log['dist'].append(geoLongitude)
-                                adverbs.append(adv)
+                                adverbs.append("dist")
 
                 if adv in ['nearby','near']:
                     if not location[i] in amenity_exclusion and not location[i] in project_name:
@@ -157,7 +157,7 @@ def get():
                             log['nearby'].append(result_location['response']['docs'][0]['longitude'])
                             place['nearby'].append(location[i])
                             cityid.append(result_location['response']['docs'][0]['cityid'])
-                            adverbs.append(adv)
+                            adverbs.append("nearBy")
 
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
@@ -165,7 +165,7 @@ def get():
                                 place['nearby'].append(location[i])
                                 lat['nearby'].append(geoLatitude)
                                 log['nearby'].append(geoLongitude)
-                                adverbs.append(adv)
+                                adverbs.append("nearBy")
 
                 if adv in ['around']:
                     if not location[i] in amenity_exclusion and not location[i] in project_name:
@@ -178,7 +178,7 @@ def get():
                             log['around'].append(result_location['response']['docs'][0]['longitude'])
                             place['around'].append(location[i])
                             cityid.append(result_location['response']['docs'][0]['cityid'])
-                            adverbs.append(adv)
+                            adverbs.append("around")
 
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
@@ -186,7 +186,7 @@ def get():
                                 place['around'].append(location[i])
                                 lat['around'].append(geoLatitude)
                                 log['around'].append(geoLongitude)
-                                adverbs.append(adv)
+                                adverbs.append("around")
 
                 if adv in ['north','east','west','south']:
                     if not location[i] in amenity_exclusion and not location[i] in project_name:
@@ -199,7 +199,7 @@ def get():
                             log['direction'].append(result_location['response']['docs'][0]['longitude'])
                             place['direction'].append(location[i])
                             cityid.append(result_location['response']['docs'][0]['cityid'])
-                            adverbs.append(adv)
+                            adverbs.append("direction")
                             dirs.append(adv)
 
 
@@ -209,8 +209,29 @@ def get():
                                 place['direction'].append(location[i])
                                 lat['direction'].append(geoLatitude)
                                 log['direction'].append(geoLongitude)
-                                adverbs.append(adv)
+                                adverbs.append("direction")
                                 dirs.append(adv)
+
+                else:
+                    if not location[i] in amenity_exclusion and not location[i] in project_name:
+                        try:
+                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
+                            req = urllib2.Request(locationstring)
+                            url = urllib2.urlopen(req).read()
+                            result_location = json.loads(url)
+                            lat['in'].append(result_location['response']['docs'][0]['latitude'])
+                            log['in'].append(result_location['response']['docs'][0]['longitude'])
+                            cityid.append(result_location['response']['docs'][0]['cityid'])
+                            place['in'].append(location[i])
+                            adverbs.append("in")
+
+                        except:
+                            [geoLatitude,geoLongitude,address]=start123(location[i])
+                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                place['in'].append(location[i])
+                                lat['in'].append(geoLatitude)
+                                log['in'].append(geoLongitude)
+                                adverbs.append("in")
         else:
             for i,item in enumerate(location):
                 if not location[i] in amenity_exclusion and not location[i] in project_name:
@@ -416,14 +437,17 @@ def get():
         if length==1:
             if budget_adj:
                 for item in budget_adj:
-                    if item in ["around","near","within","nearby"]:
+                    if item in ["around","near","within","nearby","from"]:
                         minimumprice=min(budget_modified)*0.7
                         maximumprice=max(budget_modified)*1.3
                         break
-                    if item in ["in","of","at","more","above"]:
+                    elif item in ["in","of","at","more","above"]:
                         minimumprice=min(budget_modified) 
-                    if item in ["less","below","under"]:
+                    elif item in ["less","below","under"]:
                         maximumprice=max(budget_modified)
+                    else:
+                        minimumprice=min(budget_modified)
+
             else:
                 minimumprice=min(budget_modified)*0.7
                 maximumprice=max(budget_modified)*1.3
@@ -452,14 +476,17 @@ def get():
         if length==1:
             if area_type:
                 for item in area_type:
-                    if item in ["around","near","within","nearby"]:
+                    if item in ["around","near","within","nearby","from"]:
                         minarea=float(min(area))*0.7
                         maxarea=float(max(area))*1.3
                         break
-                    if item in ["in","of","at","more","above"]:
+                    elif item in ["in","of","at","more","above"]:
                         minarea=min(area) 
-                    if item in ["less","below","under"]:
+                    elif item in ["less","below","under"]:
                         maxarea=max(area)
+                    else:
+                        minarea=min(area)
+
             else:
                 minarea=min(area)*0.7
                 maxarea=max(area)*1.3
