@@ -46,15 +46,15 @@ def get():
                     if  possession >=36:
                         poss=6
                 else:
-                    if possession <6:
+                    if possession <=6:
                         poss=2
-                    if  possession >=6 and possession <12:
+                    if  possession >6 and possession <=12:
                         poss=3
-                    if  possession >=12 and possession<24:
+                    if  possession >12 and possession <=24:
                         poss=4
-                    if  possession >=24 and possession<36:
+                    if  possession >24 and possession<=36:
                         poss=5
-                    if  possession >=36:
+                    if  possession >36:
                         poss=6
 
             except:
