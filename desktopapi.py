@@ -442,9 +442,11 @@ def get():
                         maximumprice=max(budget_modified)*1.3
                         break
                     elif item in ["in","of","at","more","above"]:
-                        minimumprice=min(budget_modified) 
+                        minimumprice=min(budget_modified)
+                        break 
                     elif item in ["less","below","under"]:
                         maximumprice=max(budget_modified)
+                        break
                     else:
                         minimumprice=min(budget_modified)
 
@@ -482,8 +484,10 @@ def get():
                         break
                     elif item in ["in","of","at","more","above"]:
                         minarea=min(area) 
+                        break
                     elif item in ["less","below","under"]:
                         maxarea=max(area)
+                        break
                     else:
                         minarea=min(area)
 
