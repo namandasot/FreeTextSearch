@@ -14,13 +14,13 @@ import time
 import datetime
 from flask_cors import CORS,cross_origin
 
-fileName = "newApiTest"  + str(datetime.date.today().month ) + str(datetime.date.today().year)
+fileName = "newApi"  + str(datetime.date.today().month ) + str(datetime.date.today().year)
 
 CORS(app)
 @app.route('/')
 def get():
     starttime = time.time()
-    amenity_exclusion=["Bhk","Flat","Villa","Bunglow","Apartment","Park","Garden","Gas","Pipeline","Gate","Sports","Manor","Park","Old","Golf","Mandir","Gurudwara","Garden","Park","Mall","Pooja","Jog","Pent","Jacuuzi","Jacuzi","Vaastu","Dargah","Puja"]
+    amenity_exclusion=["Bhk","Flat","Villa","Bunglow","Apartment","Park","Garden","Gas","Pipeline","Gate","Sports","Manor","Park","Old","Golf","Mandir","Gurudwara","Garden","Park","Mall","Pooja","Jog","Pent","Jacuuzi","Jacuzi","Vaastu","Dargah","Puja","Bhk Villa","Bhk Flat"]
     todo_id=request.args['searchstring']
     [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id)
     nlptime=time.time()
@@ -601,6 +601,6 @@ def get():
 
 if __name__ == '__main__':
 #    app.run(host='0.0.0.0',port=6020)
-    http_server = WSGIServer(('0.0.0.0', 5006), app)
+    http_server = WSGIServer(('0.0.0.0', 5000), app)
     http_server.serve_forever()
 
