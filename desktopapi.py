@@ -20,7 +20,7 @@ CORS(app)
 @app.route('/')
 def get():
     starttime = time.time()
-    amenity_exclusion=["Bhk","Flat","Villa","Bunglow","Apartment","Park","Garden","Gas","Pipeline","Gate","Sports","Manor","Park","Old","Golf","Mandir","Gurudwara","Garden","Park","Mall","Pooja","Jog","Pent","Jacuuzi","Jacuzi","Vaastu","Dargah","Puja","Bhk Villa","Bhk Flat"]
+    amenity_exclusion=["Bhk","Flat","Villa","Bunglow","Apartment","Park","Garden","Gas","Pipeline","Gate","Sports","Manor","Park","Old","Golf","Mandir","Gurudwara","Garden","Park","Mall","Pooja","Jog","Pent","Jacuuzi","Jacuzi","Vaastu","Dargah","Puja","Bhk Villa","Bhk Flat","Bhk Apartment"]
     todo_id=request.args['searchstring']
     [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id)
     nlptime=time.time()
@@ -410,6 +410,7 @@ def get():
         if not string==str1:
             string=string+"&"
         string=string+"propType="+"APARTMENT"    
+    
     if bhk_desc:
         for item in bhk_desc:
             if item in ["small","tiny"]:
@@ -419,7 +420,7 @@ def get():
     if bhk:
         if not string==str1:
             string=string+"&"
-        string=string+"maxBHK="+str(max(bhk))
+        string=string+"maxBHK="+str(min(bhk))
     
     budget_modified=[]
     minimumprice=0
@@ -537,10 +538,10 @@ def get():
         if not string==str1:
             string=string+"&"
         if dim[0] in ['sqft','sft','ft']:
-            string+="areaUnit=sq. ft"
+            string+="areaUnit=4"
 
         elif dim[0] in ['meter','mtrsqr','metersquare']:
-            string+="areaUnit=sq. m"
+            string+="areaUnit=1"
 
     if project_id:
         if not string==str1:
