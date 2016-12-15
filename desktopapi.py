@@ -457,11 +457,11 @@ def get():
                         maximumprice=max(budget_modified)*1.3
                         flag=1
                         break
-                    elif item in ["less","below","under"]:
+                    elif item in ["less","below","under","max","maximum"]:
                         maximumprice=max(budget_modified)
                         flag=1
                         break
-                    elif item in ["in","of","at","more","above"]:
+                    elif item in ["in","of","at","more","above","min","minimum"]:
                         minimumprice=min(budget_modified)
                         flag=1
                         break 
@@ -579,7 +579,8 @@ def get():
 
     try :
         url = urlopen(string).read()
-        result = json.loads(url)
+        result = [json.loads(url)]
+        print result
     except:
         result =  {
         "data": [], 
