@@ -74,12 +74,14 @@ def get():
     string = "http://52.66.44.154/apimaster/mobile_v3/nlp_listing_v1?"
     str1=string
     
-    lat={"in":[],"notin":[],"dist":[],"nearby":[],"around":[],"direction":[]}
-    log={"in":[],"notin":[],"dist":[],"nearby":[],"around":[],"direction":[]}
-    place={"in":[],"notin":[],"dist":[],"nearby":[],"around":[],"direction":[]}
+    lat={"in":"inLat=","notin":"notInLat=","dist":"distLat=","nearby":"nearByLat=","around":"aroundLat=","direction":"directionLat="}
+    log={"in":"inLong=","notin":"notInLong=","dist":"distLong=","nearby":"nearByLong=","around":"aroundLong=","direction":"directionLong="}
+    place={"in":"inLocation=","notin":"notInLocation=","dist":"distLocation=","nearby":"nearByLocation=","around":"aroundLocation=","direction":"directionLocation="}
+    
     cityid=[]
     adverbs=[]
     dirs=[]
+
     if location:
         flag=0
         if adv_location:
@@ -91,19 +93,19 @@ def get():
                             req = urllib2.Request(locationstring)
                             url = urllib2.urlopen(req).read()
                             result_location = json.loads(url)
-                            lat['in'].append(result_location['response']['docs'][0]['latitude'])
-                            log['in'].append(result_location['response']['docs'][0]['longitude'])
+                            lat['in']+=result_location['response']['docs'][0]['latitude']+","
+                            log['in']+=result_location['response']['docs'][0]['longitude']+","
                             cityid.append(result_location['response']['docs'][0]['cityid'])
-                            place['in'].append(location[i])
+                            place['in']+=location[i]+","
                             adverbs.append("in")
                             flag=1
 
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                place['in'].append(location[i])
-                                lat['in'].append(geoLatitude)
-                                log['in'].append(geoLongitude)
+                                place['in']+=location[i]+","
+                                lat['in']+=geoLatitude+","
+                                log['in']+=geoLongitude+","
                                 adverbs.append("in")
                                 flag=1
 
@@ -114,19 +116,19 @@ def get():
                             req = urllib2.Request(locationstring)
                             url = urllib2.urlopen(req).read()
                             result_location = json.loads(url)
-                            lat['notin'].append(result_location['response']['docs'][0]['latitude'])
-                            log['notin'].append(result_location['response']['docs'][0]['longitude'])
+                            lat['notin']+=result_location['response']['docs'][0]['latitude']+","
+                            log['notin']+=result_location['response']['docs'][0]['longitude']+","
                             cityid.append(result_location['response']['docs'][0]['cityid'])
-                            place['notin'].append(location[i])
+                            place['notin']+=location[i]+","
                             adverbs.append("notIn")
                             flag=1
 
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                place['notin'].append(location[i])
-                                lat['notin'].append(geoLatitude)
-                                log['notin'].append(geoLongitude)
+                                place['notin']+=location[i]+","
+                                lat['notin']+=geoLatitude+","
+                                log['notin']+=geoLongitude+","
                                 adverbs.append("notIn")
                                 flag=1
 
@@ -137,9 +139,9 @@ def get():
                             req = urllib2.Request(locationstring)
                             url = urllib2.urlopen(req).read()
                             result_location = json.loads(url)
-                            lat['dist'].append(result_location['response']['docs'][0]['latitude'])
-                            log['dist'].append(result_location['response']['docs'][0]['longitude'])
-                            place['dist'].append(location[i])
+                            lat['dist']+=result_location['response']['docs'][0]['latitude']+","
+                            log['dist']+=result_location['response']['docs'][0]['longitude']+","
+                            place['dist']+=location[i]+","
                             cityid.append(result_location['response']['docs'][0]['cityid'])
                             adverbs.append("dist")
                             flag=1
@@ -147,9 +149,9 @@ def get():
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                place['dist'].append(location[i])
-                                lat['dist'].append(geoLatitude)
-                                log['dist'].append(geoLongitude)
+                                place['dist']+=location[i]+","
+                                lat['dist']+=geoLatitude+","
+                                log['dist']+=geoLongitude+","
                                 adverbs.append("dist")
                                 flag=1
 
@@ -160,9 +162,9 @@ def get():
                             req = urllib2.Request(locationstring)
                             url = urllib2.urlopen(req).read()
                             result_location = json.loads(url)
-                            lat['nearby'].append(result_location['response']['docs'][0]['latitude'])
-                            log['nearby'].append(result_location['response']['docs'][0]['longitude'])
-                            place['nearby'].append(location[i])
+                            lat['nearby']+=result_location['response']['docs'][0]['latitude']+","
+                            log['nearby']+=result_location['response']['docs'][0]['longitude']+","
+                            place['nearby']+=location[i]+","
                             cityid.append(result_location['response']['docs'][0]['cityid'])
                             adverbs.append("nearBy")
                             flag=1
@@ -170,9 +172,9 @@ def get():
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                place['nearby'].append(location[i])
-                                lat['nearby'].append(geoLatitude)
-                                log['nearby'].append(geoLongitude)
+                                place['nearby']+=location[i]+","
+                                lat['nearby']+=geoLatitude+","
+                                log['nearby']+=geoLongitude+","
                                 adverbs.append("nearBy")
                                 flag=1
 
@@ -183,9 +185,9 @@ def get():
                             req = urllib2.Request(locationstring)
                             url = urllib2.urlopen(req).read()
                             result_location = json.loads(url)
-                            lat['around'].append(result_location['response']['docs'][0]['latitude'])
-                            log['around'].append(result_location['response']['docs'][0]['longitude'])
-                            place['around'].append(location[i])
+                            lat['around']+=result_location['response']['docs'][0]['latitude']+","
+                            log['around']+=result_location['response']['docs'][0]['longitude']+","
+                            place['around']+=location[i]+","
                             cityid.append(result_location['response']['docs'][0]['cityid'])
                             adverbs.append("around")
                             flag=1
@@ -193,9 +195,9 @@ def get():
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                place['around'].append(location[i])
-                                lat['around'].append(geoLatitude)
-                                log['around'].append(geoLongitude)
+                                place['around']+=location[i]+","
+                                lat['around']+=geoLatitude+","
+                                log['around']+=geoLongitude+","
                                 adverbs.append("around")
                                 flag=1
 
@@ -206,9 +208,9 @@ def get():
                             req = urllib2.Request(locationstring)
                             url = urllib2.urlopen(req).read()
                             result_location = json.loads(url)
-                            lat['direction'].append(result_location['response']['docs'][0]['latitude'])
-                            log['direction'].append(result_location['response']['docs'][0]['longitude'])
-                            place['direction'].append(location[i])
+                            lat['direction']+=result_location['response']['docs'][0]['latitude']+","
+                            log['direction']+=result_location['response']['docs'][0]['longitude']+","
+                            place['direction']+=location[i]+","
                             cityid.append(result_location['response']['docs'][0]['cityid'])
                             adverbs.append("direction")
                             dirs.append(adv)
@@ -218,9 +220,9 @@ def get():
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                place['direction'].append(location[i])
-                                lat['direction'].append(geoLatitude)
-                                log['direction'].append(geoLongitude)
+                                place['direction']+=location[i]+","
+                                lat['direction']+=geoLatitude+","
+                                log['direction']+=geoLongitude+","
                                 adverbs.append("direction")
                                 dirs.append(adv)
                                 flag=1
@@ -232,18 +234,18 @@ def get():
                             req = urllib2.Request(locationstring)
                             url = urllib2.urlopen(req).read()
                             result_location = json.loads(url)
-                            lat['in'].append(result_location['response']['docs'][0]['latitude'])
-                            log['in'].append(result_location['response']['docs'][0]['longitude'])
+                            lat['in']+=result_location['response']['docs'][0]['latitude']+","
+                            log['in']+=result_location['response']['docs'][0]['longitude']+","
                             cityid.append(result_location['response']['docs'][0]['cityid'])
-                            place['in'].append(location[i])
+                            place['in']+=location[i]+","
                             adverbs.append("in")
 
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                place['in'].append(location[i])
-                                lat['in'].append(geoLatitude)
-                                log['in'].append(geoLongitude)
+                                place['in']+=location[i]+","
+                                lat['in']+=geoLatitude+","
+                                log['in']+=geoLongitude+","
                                 adverbs.append("in")
         else:
             for i,item in enumerate(location):
@@ -253,20 +255,19 @@ def get():
                         req = urllib2.Request(locationstring)
                         url = urllib2.urlopen(req).read()
                         result_location = json.loads(url)
-                        lat['in'].append(result_location['response']['docs'][0]['latitude'])
-                        log['in'].append(result_location['response']['docs'][0]['longitude'])
+                        lat['in']+=result_location['response']['docs'][0]['latitude']+","
+                        log['in']+=result_location['response']['docs'][0]['longitude']+","
                         cityid.append(result_location['response']['docs'][0]['cityid'])
-                        place['in'].append(location[i])
+                        place['in']+=location[i]+","
                         adverbs.append("in")
 
                     except:
                         [geoLatitude,geoLongitude,address]=start123(location[i])
                         if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                            place['in'].append(location[i])
-                            lat['in'].append(geoLatitude)
-                            log['in'].append(geoLongitude)
+                            place['in']+=location[i]+","
+                            lat['in']+=geoLatitude+","
+                            log['in']+=geoLongitude+","
                             adverbs.append("in")
-
         if adverbs:
             if not string==str1:
                     string=string+"&"
@@ -276,119 +277,43 @@ def get():
                 string+=item+","
             string=string[:-1]
 
-        if lat["in"]:
+        if not lat["in"]== "inLat=":
                 if not string==str1:
                     string=string+"&"
-                string+="inLocation="
-                for item in place["in"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&inLat="    
-
-                for item in lat["in"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&inLong=" 
-
-                for item in log["in"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-
-        if lat["notin"]:
-                if not string==str1:
-                    string=string+"&"
-                string+="notInLocation="
-                for item in place["notin"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&notInLat="    
-
-                for item in lat["notin"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&notInLong=" 
-
-                for item in log["notin"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-
-        if lat["dist"]:
-                if not string==str1:
-                    string=string+"&"
-                string+="distLocation="
-                for item in place["dist"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&distLat="    
-
-                for item in lat["dist"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&distLong=" 
-
-                for item in log["dist"]:
-                    string=string+str(item)+","
-                string=string[:-1]
+                string+=place["in"][:-1]+"&"+lat["in"][:-1]+"&"+log["in"][:-1]
                 
+
+        if not lat["notin"]=="notInLat=":
+                if not string==str1:
+                    string=string+"&"
+                string+=place["notin"][:-1]+"&"+lat["notin"][:-1]+"&"+log["notin"][:-1]
+                
+
+        if not lat["dist"]=="distLat=":
+                if not string==str1:
+                    string=string+"&"
+                string+=place["dist"][:-1]+"&"+lat["dist"][:-1]+"&"+log["dist"][:-1]
+                    
                 if radius:
                     string=string+"&locationDist="+str(radius[0])
                 else:
                     string=string+"&locationDist="+"4"
 
-        if lat["nearby"]:
+        if not lat["nearby"]=="nearByLat=":
                 if not string==str1:
                     string=string+"&"
-                string+="nearByLocation="
-                for item in place["nearby"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&nearByLat="    
+                string+=place["nearby"][:-1]+"&"+lat["nearby"][:-1]+"&"+log["nearby"][:-1]
+                
 
-                for item in lat["nearby"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&nearByLong=" 
-
-                for item in log["nearby"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-
-        if lat["around"]:
+        if not lat["around"]=="aroundLat=":
                 if not string==str1:
                     string=string+"&"
-                string+="aroundLocation="
-                for item in place["around"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&aroundLat="    
+                string+=place["around"][:-1]+"&"+lat["around"][:-1]+"&"+log["around"][:-1]
 
-                for item in lat["around"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&aroundLong=" 
-
-                for item in log["around"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-
-        if lat["direction"]:
+        if not lat["direction"]=="directionLat=":
                 if not string==str1:
                     string=string+"&"
-                string+="directionLocation="
-                for item in place["direction"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&directionLat="    
-
-                for item in lat["direction"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&directionLong=" 
-
-                for item in log["direction"]:
-                    string=string+str(item)+","
-                string=string[:-1]
-                string+="&locationDirection="
+                string+=place["around"][:-1]+"&"+lat["around"][:-1]+"&"+log["around"][:-1]
 
                 for item in dirs:
                     string=string+str(item)+","
