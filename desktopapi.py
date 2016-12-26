@@ -19,11 +19,11 @@ fileName = "newApi"  + str(datetime.date.today().month ) + str(datetime.date.tod
 CORS(app)
 @app.route('/')
 def get():
-    starttime = time.time()
+    #starttime = time.time()
     amenity_exclusion=["Bhk","Flat","Villa","Bunglow","Apartment","Park","Garden","Gas","Pipeline","Gate","Sports","Manor","Park","Old","Golf","Mandir","Gurudwara","Garden","Park","Mall","Pooja","Jog","Pent","Jacuuzi","Jacuzi","Vaastu","Dargah","Puja","Bhk Villa","Bhk Flat","Bhk Apartment"]
     todo_id=request.args['searchstring']
     [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id)
-    nlptime=time.time()
+    #nlptime=time.time()
 
     poss=0
     if possession:
@@ -488,9 +488,9 @@ def get():
         if not string==str1:
                 string=string+"&"
         string=string+"possession="+str(poss)
-    print string
+    
 
-    stringformationtime=time.time()
+    #stringformationtime=time.time()
     
     logString= "\n"
     try:
@@ -505,7 +505,7 @@ def get():
     try :
         url = urlopen(string).read()
         result = [json.loads(url)]
-        print result
+        
     except:
         result =  {
         "data": [], 
@@ -514,11 +514,11 @@ def get():
         "total": 0
         }
 
-    jtime = time.time()
-    print "NLP time " , nlptime-starttime
-    print  "stringForm  " , stringformationtime - nlptime
-    print "jtime  " ,  jtime - stringformationtime
-    print "total Time " , jtime - starttime
+    #jtime = time.time()
+    #print "NLP time " , nlptime-starttime
+    #print  "stringForm  " , stringformationtime - nlptime
+    #print "jtime  " ,  jtime - stringformationtime
+    #print "total Time " , jtime - starttime
     return jsonify({
         "result": result,
         "url": string,
@@ -528,6 +528,6 @@ def get():
 
 if __name__ == '__main__':
 #    app.run(host='0.0.0.0',port=6020)
-    http_server = WSGIServer(('0.0.0.0', 5000), app)
+    http_server = WSGIServer(('0.0.0.0', 5006), app)
     http_server.serve_forever()
 

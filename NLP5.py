@@ -719,14 +719,14 @@ def start(query):
     query=' '.join(qr_mod) 
     [location,adv_location,radius]=Location(query,tagged_words)
 
-    print "BHK ", bhk,bhk_desc,bhk_item
-    print "BUDGET " ,budget,budget_adj,budget_item
-    print "LOCATION",location,adv_location,radius
-    print "POSSESSION",possession,possession_desc,date
-    print "TYPE",apt_type   
-    print "AMENITIES",amenities     
-    print "AREA",area,area_type,dim
-    print "PROJECT ID",project_id,project_name
+    #print "BHK ", bhk,bhk_desc,bhk_item
+    #print "BUDGET " ,budget,budget_adj,budget_item
+    #print "LOCATION",location,adv_location,radius
+    #print "POSSESSION",possession,possession_desc,date
+    #print "TYPE",apt_type   
+    #print "AMENITIES",amenities     
+    #print "AREA",area,area_type,dim
+    #print "PROJECT ID",project_id,project_name
 
     #end1 = time.time()
     #print "TIME",end1 - start1
