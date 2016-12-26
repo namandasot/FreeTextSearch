@@ -71,7 +71,7 @@ def get():
 
 
 
-    string = "http://52.66.44.154/apimaster/mobile_v3/nlp_listing_v1?"
+    string = "https://hdfcred.com/apimaster/mobile_v3/nlp_listing_v1?"
     str1=string
     
     lat={"in":"inLat=","notin":"notInLat=","dist":"distLat=","nearby":"nearByLat=","around":"aroundLat=","direction":"directionLat="}
