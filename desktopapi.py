@@ -19,6 +19,42 @@ fileName = "newApi"  + str(datetime.date.today().month ) + str(datetime.date.tod
 CORS(app)
 @app.route('/')
 def get():
+    string=request.args['searchstring']
+    user_id=request.args['userid']
+    limit=request.args['limit']
+    if limit == "0,20":
+        url=URL_formation(string)
+        session[user_id]= url
+        url+="&limit=0,20"
+    else:
+            if user_id in session.keys():
+                url = session[user_id]+"&limit="+limit
+            else:
+                url=XYZ(string,user_id)
+                session[user_id]= url
+                url+="&limit=0,20"
+    print url
+    try :
+        url = urlopen(string).read()
+        result = json.loads(url)
+        
+
+    except:
+        result =  {
+        "data": [], 
+        "msg": "zero projects", 
+        "status": 0, 
+        "total": 0
+        }
+    
+    return jsonify({
+        "result": result,
+        "url": string,
+        }) 
+
+
+
+def URL_formation(todo_id):
     #starttime = time.time()
     amenity_exclusion=["Bhk","Flat","Villa","Bunglow","Apartment","Park","Garden","Gas","Pipeline","Gate","Sports","Manor","Park","Old","Golf","Mandir","Gurudwara","Garden","Park","Mall","Pooja","Jog","Pent","Jacuuzi","Jacuzi","Vaastu","Dargah","Puja","Bhk Villa","Bhk Flat","Bhk Apartment"]
     todo_id=request.args['searchstring']
