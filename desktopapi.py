@@ -1,5 +1,5 @@
 
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,session
 from NLP5 import *
 from GooglePlaceDetailAPI import *
 from urllib import urlopen
@@ -15,7 +15,7 @@ import datetime
 from flask_cors import CORS,cross_origin
 
 fileName = "newApi"  + str(datetime.date.today().month ) + str(datetime.date.today().year)
-
+app.config['SECRET_KEY']='adasd'
 CORS(app)
 @app.route('/')
 def get():
@@ -23,21 +23,20 @@ def get():
     user_id=request.args['userid']
     limit=request.args['limit']
     if limit == "0,20":
-        url=URL_formation(string)
+        url=str(URL_formation(string))
         session[user_id]= url
         url+="&limit=0,20"
     else:
             if user_id in session.keys():
                 url = session[user_id]+"&limit="+limit
             else:
-                url=XYZ(string,user_id)
+                url=str(URL_formation(string))
                 session[user_id]= url
                 url+="&limit=0,20"
-    print url
+    url_copy=url
     try :
-        url = urlopen(string).read()
+        url = urlopen(url).read()
         result = json.loads(url)
-        
 
     except:
         result =  {
@@ -49,7 +48,7 @@ def get():
     
     return jsonify({
         "result": result,
-        "url": string,
+        "url": url_copy,
         }) 
 
 
@@ -107,7 +106,7 @@ def URL_formation(todo_id):
 
 
 
-    string = "https://hdfcred.com/apimaster/mobile_v3/nlp_listing_v1?"
+    string = "http://hdfcred.com/apimaster/mobile_v3/nlp_listing_v1?"
     str1=string
     
     lat={"in":"inLat=","notin":"notInLat=","dist":"distLat=","nearby":"nearByLat=","around":"aroundLat=","direction":"directionLat="}
@@ -525,40 +524,7 @@ def URL_formation(todo_id):
                 string=string+"&"
         string=string+"possession="+str(poss)
     
-
-    #stringformationtime=time.time()
-    
-    logString= "\n"
-    try:
-        for a in [starttime,query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name]:
-            logString =  logString + str(a) + ";"
-
-        with open(fileName,"a") as myFile:
-            myFile.write(logString)
-    except:
-        pass
-
-    try :
-        url = urlopen(string).read()
-        result = [json.loads(url)]
-        
-    except:
-        result =  {
-        "data": [], 
-        "msg": "zero projects", 
-        "status": 0, 
-        "total": 0
-        }
-
-    #jtime = time.time()
-    #print "NLP time " , nlptime-starttime
-    #print  "stringForm  " , stringformationtime - nlptime
-    #print "jtime  " ,  jtime - stringformationtime
-    #print "total Time " , jtime - starttime
-    return jsonify({
-        "result": result,
-        "url": string,
-        })
+    return string
 
 
 
