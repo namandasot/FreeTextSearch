@@ -12,68 +12,57 @@ app = Flask(__name__)
 import pdb
 import time
 import datetime
-from flask_cors import CORS,cross_origin
+import nlp_python as nlp
+#from flask_cors import CORS,cross_origin
 
-fileName = "newApi"  + str(datetime.date.today().month ) + str(datetime.date.today().year)
-app.config['SECRET_KEY']='adasd'
-CORS(app)
+
+app.config['SECRET_KEY'] = 'adasd'
+
+#CORS(app)
 @app.route('/')
 def get():
     string=request.args['searchstring']
     user_id=request.args['userid']
     limit=request.args['limit']
+    url_dict={}
     if limit == "0,20":
-<<<<<<< HEAD
-        url=str(URL_formation(string))
-=======
-        url=URL_formation(string)
->>>>>>> 15fa9cd3c45b11cac04053d789e0f6b6798f1d5e
-        session[user_id]= url
-        url+="&limit=0,20"
+        [url_dict,url]=URL_formation(string)
+        session[user_id]= url_dict
+        print type(url_dict)
+        url_dict["limit"]=str(limit)
     else:
             if user_id in session.keys():
-                url = session[user_id]+"&limit="+limit
+                url_dict = session[user_id]
+                url_dict["limit"]=str(limit)
             else:
-<<<<<<< HEAD
-                url=str(URL_formation(string))
-                session[user_id]= url
-                url+="&limit=0,20"
-    url_copy=url
+                [url_dict,url]=URL_formation(string)
+                session[user_id]= url_dict
+                url_dict["limit"]=str(limit)
+    print url_dict
+    
     try :
-        url = urlopen(url).read()
-        result = json.loads(url)
-=======
-                url=XYZ(string,user_id)
-                session[user_id]= url
-                url+="&limit=0,20"
-    print url
-    try :
-        url = urlopen(string).read()
-        result = json.loads(url)
-        
->>>>>>> 15fa9cd3c45b11cac04053d789e0f6b6798f1d5e
+        result = nlp.NLP(**url_dict).get()
+        print result
 
-    except:
+    except :
         result =  {
         "data": [], 
         "msg": "zero projects", 
         "status": 0, 
         "total": 0
         }
+
     
     return jsonify({
         "result": result,
-<<<<<<< HEAD
-        "url": url_copy,
-=======
-        "url": string,
->>>>>>> 15fa9cd3c45b11cac04053d789e0f6b6798f1d5e
+        "url": url_dict,
         }) 
 
 
 
 def URL_formation(todo_id):
     #starttime = time.time()
+    preference_dict={}
     amenity_exclusion=["Bhk","Flat","Villa","Bunglow","Apartment","Park","Garden","Gas","Pipeline","Gate","Sports","Manor","Park","Old","Golf","Mandir","Gurudwara","Garden","Park","Mall","Pooja","Jog","Pent","Jacuuzi","Jacuzi","Vaastu","Dargah","Puja","Bhk Villa","Bhk Flat","Bhk Apartment"]
     todo_id=request.args['searchstring']
     [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id)
@@ -327,47 +316,70 @@ def URL_formation(todo_id):
                     string=string+"&"
             string+="LocKeyword="
             adverbs=list(set(adverbs))
+            preference_dict["LocKeyword"]=""
             for item in adverbs:
                 string+=item+","
+                preference_dict["LocKeyword"]+=str(item)+","
             string=string[:-1]
+            preference_dict["LocKeyword"]=preference_dict["LocKeyword"][:-1]
 
         if not lat["in"]== "inLat=":
+                preference_dict["inLat"]=lat["in"][6:-1]
+                preference_dict["inLong"]=log["in"][7:-1]
+                preference_dict["inLocation"]=place["in"][11:-1]
                 if not string==str1:
                     string=string+"&"
                 string+=place["in"][:-1]+"&"+lat["in"][:-1]+"&"+log["in"][:-1]
                 
 
         if not lat["notin"]=="notInLat=":
+                preference_dict["notInLat"]=lat["notin"][9:-1]
+                preference_dict["notInLong"]=log["notin"][10:-1]
+                preference_dict["notInLocation"]=place["notin"][14:-1]
                 if not string==str1:
                     string=string+"&"
                 string+=place["notin"][:-1]+"&"+lat["notin"][:-1]+"&"+log["notin"][:-1]
                 
 
         if not lat["dist"]=="distLat=":
+                preference_dict["distLat"]=lat["dist"][8:-1]
+                preference_dict["distLong"]=log["dist"][9:-1]
+                preference_dict["distLocation"]=place["dist"][13:-1]
                 if not string==str1:
                     string=string+"&"
                 string+=place["dist"][:-1]+"&"+lat["dist"][:-1]+"&"+log["dist"][:-1]
                     
                 if radius:
+                    preference_dict["locationDist"]=str(radius[0])
                     string=string+"&locationDist="+str(radius[0])
                 else:
                     string=string+"&locationDist="+"4"
+                    preference_dict["locationDist"]="4"
 
         if not lat["nearby"]=="nearByLat=":
+                preference_dict["nearByLat"]=lat["nearby"][10:-1]
+                preference_dict["nearByLong"]=log["nearby"][11:-1]
+                preference_dict["nearByLocation"]=place["nearby"][15:-1]
                 if not string==str1:
                     string=string+"&"
                 string+=place["nearby"][:-1]+"&"+lat["nearby"][:-1]+"&"+log["nearby"][:-1]
                 
 
         if not lat["around"]=="aroundLat=":
+                preference_dict["aroundLat"]=lat["around"][10:-1]
+                preference_dict["aroundLong"]=log["around"][11:-1]
+                preference_dict["aroundLocation"]=place["around"][15:-1]
                 if not string==str1:
                     string=string+"&"
                 string+=place["around"][:-1]+"&"+lat["around"][:-1]+"&"+log["around"][:-1]
 
         if not lat["direction"]=="directionLat=":
+                preference_dict["directionLat"]=lat["direction"][13:-1]
+                preference_dict["directionLong"]=log["direction"][14:-1]
+                preference_dict["directionLocation"]=place["direction"][18:-1]
                 if not string==str1:
                     string=string+"&"
-                string+=place["around"][:-1]+"&"+lat["around"][:-1]+"&"+log["around"][:-1]
+                string+=place["direction"][:-1]+"&"+lat["direction"][:-1]+"&"+log["direction"][:-1]
 
                 for item in dirs:
                     string=string+str(item)+","
@@ -375,6 +387,7 @@ def URL_formation(todo_id):
         
 
         if cityid:
+            preference_dict["cityid"]=str(list(set(cityid))[0])
             if not string==str1:
                 string=string+"&"
             string=string+"cityid="+list(set(cityid))[0]
@@ -382,10 +395,12 @@ def URL_formation(todo_id):
 
     
     if apt_type:
+        preference_dict["propType"]=apt_type[0]
         if not string==str1:
             string=string+"&"
         string=string+"propType="+apt_type[0]
     else:
+        preference_dict["propType"]="APARTMENT"
         if not string==str1:
             string=string+"&"
         string=string+"propType="+"APARTMENT"    
@@ -397,6 +412,7 @@ def URL_formation(todo_id):
             if item in ["big","huge","large"]:
                 bhk.append(3)
     if bhk:
+        preference_dict["maxBHK"]=str(min(bhk))
         if not string==str1:
             string=string+"&"
         string=string+"maxBHK="+str(min(bhk))
@@ -425,7 +441,7 @@ def URL_formation(todo_id):
                     budget_modified.append(float(item))
 
 
-        print budget_modified
+
         length=len(budget_modified)
         flag=0
         if length==1:
@@ -460,11 +476,13 @@ def URL_formation(todo_id):
 
 
     if minimumprice:
+        preference_dict["minBudget"]=str(minimumprice)
         if not string==str1:
             string=string+"&"
         string=string+"minBudget="+str(minimumprice)
 
     if maximumprice:
+        preference_dict["maxBudget"]=str(maximumprice)
         if not string==str1:
             string=string+"&"
         string=string+"maxBudget="+str(maximumprice)
@@ -504,46 +522,59 @@ def URL_formation(todo_id):
             maxarea=max(area)
 
     if minarea:
+        preference_dict["minArea"]=str(minarea)
         if not string==str1:
             string=string+"&"
         string=string+"minArea="+str(minarea)
 
     if maxarea:
+        preference_dict["maxArea"]=str(maxarea)
         if not string==str1:
             string=string+"&"
         string=string+"maxArea="+str(maxarea)
 
     if dim:
+        preference_dict["areaUnit"]=""
         if not string==str1:
             string=string+"&"
         if dim[0] in ['sqft','sft','ft']:
             string+="areaUnit=4"
+            preference_dict["areaUnit"]="4"
 
         elif dim[0] in ['meter','mtrsqr','metersquare']:
             string+="areaUnit=1"
+            preference_dict["areaUnit"]="4"
 
     if project_id:
+        preference_dict["projectid"]=""
         if not string==str1:
             string=string+"&"
         string+="projectid="
         for item in project_id: 
             string+=str(item)+","
-        string=string[:-1]    
+            preference_dict["projectid"]+=str(item)+","
+        string=string[:-1]
+        preference_dict["projectid"]=preference_dict["projectid"][:-1]    
     
     if amenities:    
+        preference_dict["amenities"]=""
         if not string==str1:
             string=string+"&"
         string=string+"amenities="
         for item in amenities:
             string=string+str(item)+","
+            preference_dict["amenities"]+=str(item)+","
         string=string[:-1]
+        preference_dict["amenities"]=preference_dict["amenities"][:-1]
 
     if poss:
         if not string==str1:
                 string=string+"&"
         string=string+"possession="+str(poss)
+        preference_dict["possession"]=str(poss)
     
-    return string
+
+    return preference_dict,string
 
 
 
