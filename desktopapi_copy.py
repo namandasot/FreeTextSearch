@@ -13,7 +13,7 @@ import pdb
 import time
 import datetime
 import nlp_python as nlp
-#from flask_cors import CORS,cross_origin
+from flask_cors import CORS,cross_origin
 
 
 app.config['SECRET_KEY'] = 'adasd'
@@ -28,7 +28,6 @@ def get():
     if limit == "0,20":
         [url_dict,url]=URL_formation(string)
         session[user_id]= url_dict
-        print type(url_dict)
         url_dict["limit"]=str(limit)
     else:
             if user_id in session.keys():
@@ -38,10 +37,13 @@ def get():
                 [url_dict,url]=URL_formation(string)
                 session[user_id]= url_dict
                 url_dict["limit"]=str(limit)
+    str_keys = map(str, url_dict.keys())
+    url_values = url_dict.values()
+    url_dict = dict(zip(str_keys, url_values))
     print url_dict
     
     try :
-        result = nlp.NLP(**url_dict).get()
+        result = json.loads(nlp.NLP(**url_dict).get())
         print result
 
     except :
@@ -124,7 +126,7 @@ def URL_formation(todo_id):
     cityid=[]
     adverbs=[]
     dirs=[]
-
+    
     if location:
         flag=0
         if adv_location:
@@ -324,59 +326,59 @@ def URL_formation(todo_id):
             preference_dict["LocKeyword"]=preference_dict["LocKeyword"][:-1]
 
         if not lat["in"]== "inLat=":
-                preference_dict["inLat"]=lat["in"][6:-1]
-                preference_dict["inLong"]=log["in"][7:-1]
-                preference_dict["inLocation"]=place["in"][11:-1]
+                preference_dict["inLat"]=str(lat["in"][6:-1])
+                preference_dict["inLong"]=str(log["in"][7:-1])
+                preference_dict["inLocation"]=str(place["in"][11:-1])
                 if not string==str1:
                     string=string+"&"
                 string+=place["in"][:-1]+"&"+lat["in"][:-1]+"&"+log["in"][:-1]
                 
 
         if not lat["notin"]=="notInLat=":
-                preference_dict["notInLat"]=lat["notin"][9:-1]
-                preference_dict["notInLong"]=log["notin"][10:-1]
-                preference_dict["notInLocation"]=place["notin"][14:-1]
+                preference_dict["notInLat"]=str(lat["notin"][9:-1])
+                preference_dict["notInLong"]=str(log["notin"][10:-1])
+                preference_dict["notInLocation"]=str(place["notin"][14:-1])
                 if not string==str1:
                     string=string+"&"
                 string+=place["notin"][:-1]+"&"+lat["notin"][:-1]+"&"+log["notin"][:-1]
                 
 
         if not lat["dist"]=="distLat=":
-                preference_dict["distLat"]=lat["dist"][8:-1]
-                preference_dict["distLong"]=log["dist"][9:-1]
-                preference_dict["distLocation"]=place["dist"][13:-1]
+                preference_dict["distLat"]=str(lat["dist"][8:-1])
+                preference_dict["distLong"]=str(log["dist"][9:-1])
+                preference_dict["distLocation"]=str(place["dist"][13:-1])
                 if not string==str1:
                     string=string+"&"
                 string+=place["dist"][:-1]+"&"+lat["dist"][:-1]+"&"+log["dist"][:-1]
                     
                 if radius:
-                    preference_dict["locationDist"]=str(radius[0])
+                    preference_dict["locationDist"]=int(radius[0])
                     string=string+"&locationDist="+str(radius[0])
                 else:
                     string=string+"&locationDist="+"4"
                     preference_dict["locationDist"]="4"
 
         if not lat["nearby"]=="nearByLat=":
-                preference_dict["nearByLat"]=lat["nearby"][10:-1]
-                preference_dict["nearByLong"]=log["nearby"][11:-1]
-                preference_dict["nearByLocation"]=place["nearby"][15:-1]
+                preference_dict["nearByLat"]=str(lat["nearby"][10:-1])
+                preference_dict["nearByLong"]=str(log["nearby"][11:-1])
+                preference_dict["nearByLocation"]=str(place["nearby"][15:-1])
                 if not string==str1:
                     string=string+"&"
                 string+=place["nearby"][:-1]+"&"+lat["nearby"][:-1]+"&"+log["nearby"][:-1]
                 
 
         if not lat["around"]=="aroundLat=":
-                preference_dict["aroundLat"]=lat["around"][10:-1]
-                preference_dict["aroundLong"]=log["around"][11:-1]
-                preference_dict["aroundLocation"]=place["around"][15:-1]
+                preference_dict["aroundLat"]=str(lat["around"][10:-1])
+                preference_dict["aroundLong"]=str(log["around"][11:-1])
+                preference_dict["aroundLocation"]=str(place["around"][15:-1])
                 if not string==str1:
                     string=string+"&"
                 string+=place["around"][:-1]+"&"+lat["around"][:-1]+"&"+log["around"][:-1]
 
         if not lat["direction"]=="directionLat=":
-                preference_dict["directionLat"]=lat["direction"][13:-1]
-                preference_dict["directionLong"]=log["direction"][14:-1]
-                preference_dict["directionLocation"]=place["direction"][18:-1]
+                preference_dict["directionLat"]=str(lat["direction"][13:-1])
+                preference_dict["directionLong"]=str(log["direction"][14:-1])
+                preference_dict["directionLocation"]=str(place["direction"][18:-1])
                 if not string==str1:
                     string=string+"&"
                 string+=place["direction"][:-1]+"&"+lat["direction"][:-1]+"&"+log["direction"][:-1]
@@ -387,10 +389,10 @@ def URL_formation(todo_id):
         
 
         if cityid:
-            preference_dict["cityid"]=str(list(set(cityid))[0])
+            preference_dict["city_id"]=int(list(set(cityid))[0])
             if not string==str1:
                 string=string+"&"
-            string=string+"cityid="+list(set(cityid))[0]
+            string=string+"city_id="+list(set(cityid))[0]
 
 
     
@@ -412,7 +414,7 @@ def URL_formation(todo_id):
             if item in ["big","huge","large"]:
                 bhk.append(3)
     if bhk:
-        preference_dict["maxBHK"]=str(min(bhk))
+        preference_dict["maxBHK"]=int(min(bhk))
         if not string==str1:
             string=string+"&"
         string=string+"maxBHK="+str(min(bhk))
@@ -476,13 +478,13 @@ def URL_formation(todo_id):
 
 
     if minimumprice:
-        preference_dict["minBudget"]=str(minimumprice)
+        preference_dict["minBudget"]=float(minimumprice)
         if not string==str1:
             string=string+"&"
         string=string+"minBudget="+str(minimumprice)
 
     if maximumprice:
-        preference_dict["maxBudget"]=str(maximumprice)
+        preference_dict["maxBudget"]=float(maximumprice)
         if not string==str1:
             string=string+"&"
         string=string+"maxBudget="+str(maximumprice)
@@ -522,13 +524,13 @@ def URL_formation(todo_id):
             maxarea=max(area)
 
     if minarea:
-        preference_dict["minArea"]=str(minarea)
+        preference_dict["minArea"]=float(minarea)
         if not string==str1:
             string=string+"&"
         string=string+"minArea="+str(minarea)
 
     if maxarea:
-        preference_dict["maxArea"]=str(maxarea)
+        preference_dict["maxArea"]=float(maxarea)
         if not string==str1:
             string=string+"&"
         string=string+"maxArea="+str(maxarea)
@@ -539,11 +541,11 @@ def URL_formation(todo_id):
             string=string+"&"
         if dim[0] in ['sqft','sft','ft']:
             string+="areaUnit=4"
-            preference_dict["areaUnit"]="4"
+            preference_dict["areaUnit"]=4
 
         elif dim[0] in ['meter','mtrsqr','metersquare']:
             string+="areaUnit=1"
-            preference_dict["areaUnit"]="4"
+            preference_dict["areaUnit"]=1
 
     if project_id:
         preference_dict["projectid"]=""
@@ -571,8 +573,8 @@ def URL_formation(todo_id):
         if not string==str1:
                 string=string+"&"
         string=string+"possession="+str(poss)
-        preference_dict["possession"]=str(poss)
-    
+        preference_dict["possession"]=int(poss)
+    preference_dict["api_type"]="NLP"
 
     return preference_dict,string
 

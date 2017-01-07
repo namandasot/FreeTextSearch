@@ -94,12 +94,12 @@ class NLP(object):
 		self.get_max_bhks()
 		if PROJECTID in self.input_data[DATA].keys():
 			if not self.input_data[DATA][PROJECTID]:
-				print json.dumps({'message': 'failure', 'status': 2, 'data': []})
+				return json.dumps({'message': 'failure', 'status': 2, 'data': []})
 			else:
 				project_info = self.project_info(self.input_data[DATA][PROJECTID])
-				print json.dumps({'message': 'success', 'status': 1, 'total': self.total_project_count, 'data': project_info})
+				return json.dumps({'message': 'success', 'status': 1, 'total': self.total_project_count, 'data': project_info})
 			return
-		self.get_location_keyword()
+		return self.get_location_keyword()
 
 	def get_location_keyword(self):
 		query = ""
@@ -192,9 +192,9 @@ class NLP(object):
 		project_id_string = ','.join(set(project_ids))
 		if project_id_string:
 			project_info = self.project_info(project_id_string)
-			print json.dumps({'message': 'success', 'status': 1, 'total': self.total_project_count, 'data': project_info}) # give success response
+			return json.dumps({'message': 'success', 'status': 1, 'total': self.total_project_count, 'data': project_info}) # give success response
 		else:
-			print json.dumps({'message': 'failure', 'status': 2, 'data': []}) # give failure response
+			return json.dumps({'message': 'failure', 'status': 2, 'data': []}) # give failure response
 
 	def get_location(self, location_key, identify_key, locKey, query):
 		cond_location = ""
@@ -306,7 +306,7 @@ class NLP(object):
 							 on a.Developer_id = b.Developer_Code where Project_No IN (%s) group by Project_No""" % (TOTAL_PROPTYPE, ",".join(BEDROOMS), allConfigMinSize, allConfigMaxSize, allConfigMinBudget, allConfigMaxBudget, allConfigMinEMI, allConfigMaxEMI, project_ids)
 		self.total_project_count = NLP.cursor.execute(project_info_sql)
 		if self.input_data[DATA].get('limit') != None:
-			offset, limit = map(int, self.input_data[DATA]['limit'].strip().split(','))
+			offset, limit = map(int, self.input_data[DATA]['limit'])
 			project_info_results = NLP.cursor.fetchall()[offset:(offset+limit)]
 		elif self.input_data[DATA].get('api_type') != None and self.input_data[DATA]['api_type'].upper() == 'NLP':
 			offset, limit = 0, 20
@@ -598,8 +598,8 @@ class NLP(object):
 
 
 def main():
-	nlp = NLP(LocKeyword = 'in', inLocation = 'Andheri', inLat =  '19.1148921698148370000', inLong = '72.8738831180171600000', propType = 'APARTMENT', maxBHK = 2, city_id = 1, api_type = 'nlp')
-	nlp.get()
+	nlp = NLP(LocKeyword = 'in', inLocation = 'Andheri', inLat =  '19.1148921698148370000', inLong = '72.8738831180171600000', propType = 'APARTMENT', maxBHK = 2, city_id = 1, api_type = 'nlp', limit = '0,20')
+	print nlp.get()
 
 if __name__ == '__main__':
 	main()
