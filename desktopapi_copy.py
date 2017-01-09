@@ -26,7 +26,9 @@ def get():
     limit=request.args['limit']
     url_dict={}
     if limit == "0,20":
+        string_time=time.time()
         [url_dict,url]=URL_formation(string)
+        string_end_time=time.time()
         session[user_id]= url_dict
         url_dict["limit"]=str(limit)
     else:
@@ -44,7 +46,7 @@ def get():
     
     try :
         result = json.loads(nlp.NLP(**url_dict).get())
-        print result
+        db_time=time.time()
 
     except :
         result =  {
@@ -53,7 +55,8 @@ def get():
         "status": 0, 
         "total": 0
         }
-
+    print "STRING+ NLP time",string_end_time-string_time
+    print "DATABASE time",db_time-string_end_time
     
     return jsonify({
         "result": result,

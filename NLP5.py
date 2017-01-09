@@ -375,7 +375,7 @@ def Location(words,tagged_words): ##
     })
 
   response = service_request.execute()
-  print response
+
   try:
     words=words.lower().split()
     length=len(tagged_words)-1
@@ -637,6 +637,7 @@ def Amenities(word):
 
 
 def start(query):
+    start1=time.time()
     num_dict={"zero":0,"one":1,"two":2,"three":3,"four":4,"five":5,"six":6,"seven":7,"eight":8,"nine":9,"ten":10,"eleven":11,"twelve":12,"thirteen":13,"fourteen":14,"fifteen":15,"sixteen":16,"seventeen":17,"eighteen":18,"nineteen":19,"twenty":20,"thirty":30,"fourty":40,"fifty":50,"sixty":60,"seventy":70,"eighty":80,"ninety":90,"hundred":100}
 
     m_s=[]
@@ -729,8 +730,8 @@ def start(query):
     #print "AREA",area,area_type,dim
     #print "PROJECT ID",project_id,project_name
 
-    #end1 = time.time()
-    #print "TIME",end1 - start1
+    end1 = time.time()
+    print "NLP TIME", end1 - start1
     return query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim
 
 #query=raw_input()
