@@ -138,9 +138,9 @@ def URL_formation(todo_id):
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                lat['in']+=str(geoLatitude)+","
+                                log['in']+=str(geoLongitude)+","
                                 place['in']+=location[i]+","
-                                lat['in']+=geoLatitude+","
-                                log['in']+=geoLongitude+","
                                 adverbs.append("in")
                                 flag=1
 
@@ -161,9 +161,9 @@ def URL_formation(todo_id):
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                lat['notin']+=str(geoLatitude)+","
+                                log['notin']+=str(geoLongitude)+","
                                 place['notin']+=location[i]+","
-                                lat['notin']+=geoLatitude+","
-                                log['notin']+=geoLongitude+","
                                 adverbs.append("notIn")
                                 flag=1
 
@@ -184,9 +184,9 @@ def URL_formation(todo_id):
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                lat['dist']+=str(geoLatitude)+","
+                                log['dist']+=str(geoLongitude)+","
                                 place['dist']+=location[i]+","
-                                lat['dist']+=geoLatitude+","
-                                log['dist']+=geoLongitude+","
                                 adverbs.append("dist")
                                 flag=1
 
@@ -207,9 +207,9 @@ def URL_formation(todo_id):
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                lat['nearby']+=str(geoLatitude)+","
+                                log['nearby']+=str(geoLongitude)+","
                                 place['nearby']+=location[i]+","
-                                lat['nearby']+=geoLatitude+","
-                                log['nearby']+=geoLongitude+","
                                 adverbs.append("nearBy")
                                 flag=1
 
@@ -230,9 +230,9 @@ def URL_formation(todo_id):
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                lat['around']+=str(geoLatitude)+","
+                                log['around']+=str(geoLongitude)+","
                                 place['around']+=location[i]+","
-                                lat['around']+=geoLatitude+","
-                                log['around']+=geoLongitude+","
                                 adverbs.append("around")
                                 flag=1
 
@@ -255,9 +255,9 @@ def URL_formation(todo_id):
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                lat['direction']+=str(geoLatitude)+","
+                                log['direction']+=str(geoLongitude)+","
                                 place['direction']+=location[i]+","
-                                lat['direction']+=geoLatitude+","
-                                log['direction']+=geoLongitude+","
                                 adverbs.append("direction")
                                 dirs.append(adv)
                                 flag=1
@@ -278,9 +278,9 @@ def URL_formation(todo_id):
                         except:
                             [geoLatitude,geoLongitude,address]=start123(location[i])
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                lat['in']+=str(geoLatitude)+","
+                                log['in']+=str(geoLongitude)+","
                                 place['in']+=location[i]+","
-                                lat['in']+=geoLatitude+","
-                                log['in']+=geoLongitude+","
                                 adverbs.append("in")
         else:
             for i,item in enumerate(location):
@@ -299,10 +299,11 @@ def URL_formation(todo_id):
                     except:
                         [geoLatitude,geoLongitude,address]=start123(location[i])
                         if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                            lat['in']+=str(geoLatitude)+","
+                            log['in']+=str(geoLongitude)+","
                             place['in']+=location[i]+","
-                            lat['in']+=geoLatitude+","
-                            log['in']+=geoLongitude+","
                             adverbs.append("in")
+
         if adverbs:
             if not string==str1:
                     string=string+"&"
