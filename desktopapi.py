@@ -20,21 +20,16 @@ CORS(app)
 @app.route('/')
 def get():
     string=request.args['searchstring']
-    user_id=request.args['userid']
-    limit=request.args['limit']
+   
+    user_id='1234'
+    limit="0,20"
     if limit == "0,20":
-<<<<<<< HEAD
         url=str(URL_formation(string))
-=======
-        url=URL_formation(string)
->>>>>>> 15fa9cd3c45b11cac04053d789e0f6b6798f1d5e
         session[user_id]= url
-        url+="&limit=0,20"
     else:
             if user_id in session.keys():
                 url = session[user_id]+"&limit="+limit
             else:
-<<<<<<< HEAD
                 url=str(URL_formation(string))
                 session[user_id]= url
                 url+="&limit=0,20"
@@ -42,16 +37,6 @@ def get():
     try :
         url = urlopen(url).read()
         result = json.loads(url)
-=======
-                url=XYZ(string,user_id)
-                session[user_id]= url
-                url+="&limit=0,20"
-    print url
-    try :
-        url = urlopen(string).read()
-        result = json.loads(url)
-        
->>>>>>> 15fa9cd3c45b11cac04053d789e0f6b6798f1d5e
 
     except:
         result =  {
@@ -63,11 +48,7 @@ def get():
     
     return jsonify({
         "result": result,
-<<<<<<< HEAD
         "url": url_copy,
-=======
-        "url": string,
->>>>>>> 15fa9cd3c45b11cac04053d789e0f6b6798f1d5e
         }) 
 
 
@@ -125,7 +106,7 @@ def URL_formation(todo_id):
 
 
 
-    string = "http://hdfcred.com/apimaster/mobile_v3/nlp_listing_v1?"
+    string = "https://hdfcred.com/apimaster/mobile_v3/nlp_listing_v1?"
     str1=string
     
     lat={"in":"inLat=","notin":"notInLat=","dist":"distLat=","nearby":"nearByLat=","around":"aroundLat=","direction":"directionLat="}
@@ -431,16 +412,16 @@ def URL_formation(todo_id):
         if length==1:
             if budget_adj:
                 for item in budget_adj:
-                    if item in ["around","near","within","nearby","from"]:
+                    if item in ["in","of","at","around","near","nearby","from"]:
                         minimumprice=min(budget_modified)*0.7
                         maximumprice=max(budget_modified)*1.3
                         flag=1
                         break
-                    elif item in ["less","below","under","max","maximum"]:
+                    elif item in ["within","less","below","under","max","maximum"]:
                         maximumprice=max(budget_modified)
                         flag=1
                         break
-                    elif item in ["in","of","at","more","above","min","minimum"]:
+                    elif item in ["more","above","min","minimum"]:
                         minimumprice=min(budget_modified)
                         flag=1
                         break 
@@ -549,6 +530,6 @@ def URL_formation(todo_id):
 
 if __name__ == '__main__':
 #    app.run(host='0.0.0.0',port=6020)
-    http_server = WSGIServer(('0.0.0.0', 5006), app)
+    http_server = WSGIServer(('0.0.0.0', 5000), app)
     http_server.serve_forever()
 
