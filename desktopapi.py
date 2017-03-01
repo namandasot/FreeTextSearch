@@ -56,7 +56,7 @@ def URL_formation(todo_id):
     starttime = str(datetime.datetime.today())
     fileName = "nlpNew"  + str(datetime.date.today().month )+ "_" + str(datetime.date.today().year)
 
-    amenity_exclusion=["Bhk","Flat","Villa","Bunglow","Apartment","Park","Garden","Gas","Pipeline","Gate","Sports","Manor","Park","Old","Golf","Mandir","Gurudwara","Garden","Park","Mall","Pooja","Jog","Pent","Jacuuzi","Jacuzi","Vaastu","Dargah","Puja","Bhk Villa","Bhk Flat","Bhk Apartment"]
+    amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment"]
     todo_id=request.args['searchstring']
     [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id)
     #nlptime=time.time()
@@ -285,7 +285,7 @@ def URL_formation(todo_id):
                                 adverbs.append("in")
         else:
             for i,item in enumerate(location):
-                if not location[i] in amenity_exclusion and not location[i] in project_name:
+                if not location[i].lower() in amenity_exclusion and not location[i] in project_name:
                     try:
                         locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
                         req = urllib2.Request(locationstring)
@@ -368,10 +368,10 @@ def URL_formation(todo_id):
         if not string==str1:
             string=string+"&"
         string=string+"propType="+apt_type[0]
-    else:
-        if not string==str1:
-            string=string+"&"
-        string=string+"propType="+"APARTMENT"    
+    # else:
+    #     if not string==str1:
+    #         string=string+"&"
+    #     string=string+"propType="+"APARTMENT"    
     
     if bhk_desc:
         for item in bhk_desc:
