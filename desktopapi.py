@@ -14,13 +14,12 @@ import time
 import datetime
 from flask_cors import CORS,cross_origin
 
-fileName = "newApi"  + str(datetime.date.today().month ) + str(datetime.date.today().year)
+
 app.config['SECRET_KEY']='adasd'
 CORS(app)
 @app.route('/')
 def get():
     string=request.args['searchstring']
-   
     user_id='1234'
     limit="0,20"
     if limit == "0,20":
@@ -54,7 +53,9 @@ def get():
 
 
 def URL_formation(todo_id):
-    #starttime = time.time()
+    starttime = str(datetime.datetime.today())
+    fileName = "nlpNew"  + str(datetime.date.today().month )+ "_" + str(datetime.date.today().year)
+
     amenity_exclusion=["Bhk","Flat","Villa","Bunglow","Apartment","Park","Garden","Gas","Pipeline","Gate","Sports","Manor","Park","Old","Golf","Mandir","Gurudwara","Garden","Park","Mall","Pooja","Jog","Pent","Jacuuzi","Jacuzi","Vaastu","Dargah","Puja","Bhk Villa","Bhk Flat","Bhk Apartment"]
     todo_id=request.args['searchstring']
     [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id)
@@ -524,13 +525,22 @@ def URL_formation(todo_id):
         if not string==str1:
                 string=string+"&"
         string=string+"possession="+str(poss)
-    
+    logString = "\n"
+    try:
+        logString = logString + starttime + " ; " + str(todo_id) + " ; " + string + " ; "
+
+        with open(fileName,"a") as myFile:
+            myFile.write(logString)
+            myFile.close()
+    except:
+        pass
+
     return string
 
 
 
 if __name__ == '__main__':
 #    app.run(host='0.0.0.0',port=6020)
-    http_server = WSGIServer(('0.0.0.0', 5000), app)
+    http_server = WSGIServer(('0.0.0.0', 5111), app)
     http_server.serve_forever()
 
