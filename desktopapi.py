@@ -23,13 +23,15 @@ def get():
     user_id='1234'
     limit="0,20"
     if limit == "0,20":
-        url=str(URL_formation(string))
+        url,feedback=URL_formation(string)
+        url = str(url)
         session[user_id]= url
     else:
             if user_id in session.keys():
                 url = session[user_id]+"&limit="+limit
             else:
-                url=str(URL_formation(string))
+                url,feedback=URL_formation(string)
+                url = str(url)
                 session[user_id]= url
                 url+="&limit=0,20"
     url_copy=url
@@ -44,11 +46,12 @@ def get():
         "status": 0, 
         "total": 0
         }
-    
+    feedback = "Showing "+str(result["total"])+" properties,"+feedback
     return jsonify({
         "result": result,
         "url": url_copy,
-        }) 
+        "feedback" : feedback
+        })
 
 
 
@@ -430,12 +433,12 @@ def URL_formation(todo_id):
         if length==1:
             if budget_adj:
                 for item in budget_adj:
-                    if item in ["in","of","at","around","near","nearby","from"]:
+                    if item in ["of","at","around","near","nearby","from"]:
                         minimumprice=min(budget_modified)*0.7
                         maximumprice=max(budget_modified)*1.3
                         flag=1
                         break
-                    elif item in ["within","less","below","under","max","maximum"]:
+                    elif item in ["within","less","below","under","max","maximum","in"]:
                         maximumprice=max(budget_modified)
                         flag=1
                         break
@@ -583,10 +586,7 @@ def URL_formation(todo_id):
         feedback_string+=location_string
     print feedback_string
 
-    if feedback_string:
-        if not string==str1:
-            string=string+"&"
-        string+="feedback="+feedback_string
+
 
     try:
         logString = logString + starttime + " ; " + str(todo_id) + " ; " + string + " ; "
@@ -597,12 +597,12 @@ def URL_formation(todo_id):
     except:
         pass
 
-    return string
+    return string,feedback_string
 
 
 
 if __name__ == '__main__':
     #app.run(host='0.0.0.0',port=6020)
-    http_server = WSGIServer(('0.0.0.0', 6020), app)
+    http_server = WSGIServer(('0.0.0.0', 5000), app)
     http_server.serve_forever()
 
