@@ -122,6 +122,7 @@ def URL_formation(todo_id):
         flag=0
         if adv_location:
             for i,adv in enumerate(adv_location):
+                location[i]=location[i].lower().strip("bhk")
                 if adv in ['in','at']:
                     if not location[i] in amenity_exclusion and not location[i] in project_name:
                         try:
@@ -314,22 +315,30 @@ def URL_formation(todo_id):
                 string+=item+","
             string=string[:-1]
 
+        location_string=""
         if not lat["in"]== "inLat=":
                 if not string==str1:
                     string=string+"&"
                 string+=place["in"][:-1]+"&"+lat["in"][:-1]+"&"+log["in"][:-1]
+                location_string+="in "+place["in"][11:-1]
                 
 
         if not lat["notin"]=="notInLat=":
                 if not string==str1:
                     string=string+"&"
                 string+=place["notin"][:-1]+"&"+lat["notin"][:-1]+"&"+log["notin"][:-1]
+                if location_string:
+                    location_string+=" and "
+                location_string+="not in "+place["notin"][14:-1]
                 
 
         if not lat["dist"]=="distLat=":
                 if not string==str1:
                     string=string+"&"
                 string+=place["dist"][:-1]+"&"+lat["dist"][:-1]+"&"+log["dist"][:-1]
+                if location_string:
+                    location_string+=" and "
+                location_string+="near "+place["dist"][13:-1]
                     
                 if radius:
                     string=string+"&locationDist="+str(radius[0])
@@ -340,17 +349,26 @@ def URL_formation(todo_id):
                 if not string==str1:
                     string=string+"&"
                 string+=place["nearby"][:-1]+"&"+lat["nearby"][:-1]+"&"+log["nearby"][:-1]
+                if location_string:
+                    location_string+=" and "
+                location_string+="nearby "+place["nearby"][15:-1]
                 
 
         if not lat["around"]=="aroundLat=":
                 if not string==str1:
                     string=string+"&"
                 string+=place["around"][:-1]+"&"+lat["around"][:-1]+"&"+log["around"][:-1]
+                if location_string:
+                    location_string+=" and "
+                location_string+="around "+place["around"][15:-1]
 
         if not lat["direction"]=="directionLat=":
                 if not string==str1:
                     string=string+"&"
-                string+=place["around"][:-1]+"&"+lat["around"][:-1]+"&"+log["around"][:-1]
+                string+=place["direction"][:-1]+"&"+lat["direction"][:-1]+"&"+log["direction"][:-1]
+                if location_string:
+                    location_string+=" and "
+                location_string+=str(dirs[0])+place["direction"][18:-1]
 
                 for item in dirs:
                     string=string+str(item)+","
@@ -361,9 +379,7 @@ def URL_formation(todo_id):
             if not string==str1:
                 string=string+"&"
             string=string+"cityid="+list(set(cityid))[0]
-
-
-    
+ 
     if apt_type:
         if not string==str1:
             string=string+"&"
@@ -526,6 +542,52 @@ def URL_formation(todo_id):
                 string=string+"&"
         string=string+"possession="+str(poss)
     logString = "\n"
+    ###################### Feedback Formation ################################
+    feedback_string=""
+    if project_name:
+        feedback_string+="for"+str(project_name[0])
+
+    if bhk:
+        feedback_string+=" of size "
+        for b in bhk:
+            feedback_string+=b+","
+        feedback_string=feedback_string[:-1]+" bhk "
+
+    if budget:
+        if feedback_string:
+            feedback_string+=","
+        if minimumprice:
+            feedback_string+="within "
+            if minimumprice/10000000 > 1:
+                feedback_string+=str(minimumprice/10000000)+"Cr"
+            else:
+                feedback_string+=str(minimumprice/100000)+"Lac"
+
+            if maximumprice:
+                feedback_string+=" to "
+                if maximumprice/10000000 > 1:
+                    feedback_string+=str(maximumprice/10000000)+"Cr"
+                else:
+                    feedback_string+=str(maximumprice/100000)+"Lac"
+
+        if maximumprice and not minimumprice:
+            feedback_string+="within "
+            if maximumprice/10000000 > 1:
+                    feedback_string+=str(maximumprice/10000000)+"Cr"
+            else:
+                    feedback_string+=str(maximumprice/100000)+"Lac"
+
+    if location_string:
+        if feedback_string:
+            feedback_string+=","
+        feedback_string+=location_string
+    print feedback_string
+
+    if feedback_string:
+        if not string==str1:
+            string=string+"&"
+        string+="feedback="+feedback_string
+
     try:
         logString = logString + starttime + " ; " + str(todo_id) + " ; " + string + " ; "
 
@@ -540,7 +602,7 @@ def URL_formation(todo_id):
 
 
 if __name__ == '__main__':
-#    app.run(host='0.0.0.0',port=6020)
-    http_server = WSGIServer(('0.0.0.0', 5000), app)
+    #app.run(host='0.0.0.0',port=6020)
+    http_server = WSGIServer(('0.0.0.0', 6020), app)
     http_server.serve_forever()
 
