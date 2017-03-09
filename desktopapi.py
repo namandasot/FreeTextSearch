@@ -121,6 +121,7 @@ def URL_formation(todo_id):
     adverbs=[]
     dirs=[]
 
+    location_string=""
     if location:
         flag=0
         if adv_location:
@@ -318,7 +319,7 @@ def URL_formation(todo_id):
                 string+=item+","
             string=string[:-1]
 
-        location_string=""
+
         if not lat["in"]== "inLat=":
                 if not string==str1:
                     string=string+"&"
@@ -548,41 +549,37 @@ def URL_formation(todo_id):
     ###################### Feedback Formation ################################
     feedback_string=""
     if project_name:
-        feedback_string+="for"+str(project_name[0])
+        feedback_string+="for "+str(project_name)+" "
 
     if bhk:
-        feedback_string+=" of size "
+        feedback_string+="of size "
         for b in bhk:
             feedback_string+=b+","
         feedback_string=feedback_string[:-1]+" bhk "
 
     if budget:
-        if feedback_string:
-            feedback_string+=","
         if minimumprice:
             feedback_string+="within "
-            if minimumprice/10000000 > 1:
-                feedback_string+=str(minimumprice/10000000)+"Cr"
+            if minimumprice/10000000 >= 1:
+                feedback_string+=str(minimumprice/10000000)+"Cr "
             else:
-                feedback_string+=str(minimumprice/100000)+"Lac"
+                feedback_string+=str(minimumprice/100000)+"Lac "
 
             if maximumprice:
-                feedback_string+=" to "
-                if maximumprice/10000000 > 1:
-                    feedback_string+=str(maximumprice/10000000)+"Cr"
+                feedback_string+="to "
+                if maximumprice/10000000 >= 1:
+                    feedback_string+=str(maximumprice/10000000)+"Cr "
                 else:
-                    feedback_string+=str(maximumprice/100000)+"Lac"
+                    feedback_string+=str(maximumprice/100000)+"Lac "
 
         if maximumprice and not minimumprice:
             feedback_string+="within "
-            if maximumprice/10000000 > 1:
-                    feedback_string+=str(maximumprice/10000000)+"Cr"
+            if maximumprice/10000000 >= 1:
+                    feedback_string+=str(maximumprice/10000000)+"Cr "
             else:
-                    feedback_string+=str(maximumprice/100000)+"Lac"
+                    feedback_string+=str(maximumprice/100000)+"Lac "
 
     if location_string:
-        if feedback_string:
-            feedback_string+=","
         feedback_string+=location_string
     print feedback_string
 
