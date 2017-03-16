@@ -65,7 +65,7 @@ def URL_formation(todo_id,cityid):
     starttime = str(datetime.datetime.today())
     fileName = "nlpNew"  + str(datetime.date.today().month )+ "_" + str(datetime.date.today().year)
 
-    amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment"]
+    amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment","east","west","north","south","central"]
     todo_id=request.args['searchstring']
     [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id)
     #nlptime=time.time()
@@ -128,7 +128,8 @@ def URL_formation(todo_id,cityid):
     dirs=[]
 
     def lat_long_tagging(word,keyword,city,flag):
-        if not word in amenity_exclusion and not word in project_name:
+        print "lat long taggiong word " , word
+        if not word.lower() in amenity_exclusion and not word in project_name:
                         word_actual=word
                         word=word+" ,"+city
                         # try:
@@ -466,7 +467,7 @@ def URL_formation(todo_id,cityid):
 
     if location_string:
         feedback_string+=location_string
-    print feedback_string
+    print feedback_string,string
 
 
 
@@ -485,6 +486,6 @@ def URL_formation(todo_id,cityid):
 
 if __name__ == '__main__':
     #app.run(host='0.0.0.0',port=6020)
-    http_server = WSGIServer(('0.0.0.0', 5006), app)
+    http_server = WSGIServer(('0.0.0.0', 5000), app)
     http_server.serve_forever()
 

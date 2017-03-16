@@ -435,10 +435,11 @@ def Location(words,tagged_words): ##
   except:
     print "Error"
   amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment"]
-
+  print "found by google places " , item1
   if not item1:
      for i,word in enumerate(tagged_words):
-        if word[1] in ['NNP','NN','NNS'] and not word[0].lower() in ["east","west","north","south","central"] and not word[0] in amenity_exclusion:
+         if word[1] in ['NNP','NN','NNS'] and not word[0].lower() in ["east","west","north","south","central"] and not word[0] in amenity_exclusion:
+                print word[0]
                 word_to_search=word[0]
                 if i+1<len(tagged_words):
                     if tagged_words[i+1][0].lower() in ["east","west","north","south","central"]:
@@ -743,14 +744,14 @@ def start(query):
     query=' '.join(qr_mod) 
     [location,adv_location,radius]=Location(query,tagged_words)
 
-    #print "BHK ", bhk,bhk_desc,bhk_item
-    #print "BUDGET " ,budget,budget_adj,budget_item
-    #print "LOCATION",location,adv_location,radius
-    #print "POSSESSION",possession,possession_desc,date
-    #print "TYPE",apt_type   
-    #print "AMENITIES",amenities     
-    #print "AREA",area,area_type,dim
-    #print "PROJECT ID",project_id,project_name
+    print "BHK ", bhk,bhk_desc,bhk_item
+    print "BUDGET " ,budget,budget_adj,budget_item
+    print "LOCATION",location,adv_location,radius
+    print "POSSESSION",possession,possession_desc,date
+    print "TYPE",apt_type   
+    print "AMENITIES",amenities     
+    print "AREA",area,area_type,dim
+    print "PROJECT ID",project_id,project_name
 
     end1 = time.time()
     print "NLP TIME", end1 - start1
