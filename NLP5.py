@@ -355,6 +355,7 @@ def Budget(word,tagged_words):
     return ([leafs,adj,item1])
     
 def Location(words,tagged_words): ##
+  amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment","east","west","north","south","central"]  
   adv=[]
   item1=[]
   radius=[]
@@ -382,7 +383,7 @@ def Location(words,tagged_words): ##
     length=len(tagged_words)-1
     for i in range (0,len(response['entities'])):
       flag=0
-      if response['entities'][i]['type']=='LOCATION':
+      if response['entities'][i]['type']=='LOCATION' and not response['entities'][i]['name'].lower() in amenity_exclusion:
                  item1.append(response['entities'][i]['name'])
                  pos=words.index(response['entities'][i]['name'].split()[0].lower())
                  if not pos-1<0:                            
@@ -434,7 +435,6 @@ def Location(words,tagged_words): ##
   
   except:
     print "Error"
-  amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment"]
   print "found by google places " , item1
   if not item1:
      for i,word in enumerate(tagged_words):
