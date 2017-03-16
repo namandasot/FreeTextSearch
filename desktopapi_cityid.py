@@ -20,17 +20,18 @@ CORS(app)
 @app.route('/')
 def get():
     string=request.args['searchstring']
+    cityid=request.args['cityid']
     user_id='1234'
     limit="0,20"
     if limit == "0,20":
-        url,feedback=URL_formation(string)
+        url,feedback=URL_formation(string,cityid)
         url = str(url)
         session[user_id]= url
     else:
             if user_id in session.keys():
                 url = session[user_id]+"&limit="+limit
             else:
-                url,feedback=URL_formation(string)
+                url,feedback=URL_formation(string,cityid)
                 url = str(url)
                 session[user_id]= url
                 url+="&limit=0,20"
@@ -46,7 +47,11 @@ def get():
         "status": 0, 
         "total": 0
         }
-    feedback = "Showing "+str(result["total"])+" properties,"+feedback
+    try:
+        totalVal = result["total"]
+    except:
+        totalVal = 0
+    feedback = "Showing "+str(totalVal)+" properties "+feedback
     return jsonify({
         "result": result,
         "url": url_copy,
@@ -55,7 +60,8 @@ def get():
 
 
 
-def URL_formation(todo_id):
+def URL_formation(todo_id,cityid):
+    solr_ip="10.2.101.209:8983"
     starttime = str(datetime.datetime.today())
     fileName = "nlpNew"  + str(datetime.date.today().month )+ "_" + str(datetime.date.today().year)
 
@@ -117,198 +123,77 @@ def URL_formation(todo_id):
     log={"in":"inLong=","notin":"notInLong=","dist":"distLong=","nearby":"nearByLong=","around":"aroundLong=","direction":"directionLong="}
     place={"in":"inLocation=","notin":"notInLocation=","dist":"distLocation=","nearby":"nearByLocation=","around":"aroundLocation=","direction":"directionLocation="}
     
-    cityid=[]
+    #cityid=[]
     adverbs=[]
     dirs=[]
+
+    def lat_long_tagging(word,keyword,city,flag):
+        if not word in amenity_exclusion and not word in project_name:
+                        word_actual=word
+                        word=word+" ,"+city
+                        # try:
+                        #     locationstring="http://"+solr_ip+"/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+word+"&wt=json&indent=true"
+                        #     req = urllib2.Request(locationstring)
+                        #     url = urllib2.urlopen(req).read()
+                        #     result_location = json.loads(url)
+                        #     lat[keyword]+=result_location['response']['docs'][0]['latitude']+","
+                        #     log[keyword]+=result_location['response']['docs'][0]['longitude']+","
+                        #     #cityid.append(result_location['response']['docs'][0]['cityid'])
+                        #     place[keyword]+=location[i]+","
+                        #     adverbs.append(keyword)
+                        #     flag=1
+
+                        # except:
+                        try:
+                            if word_actual=="kalyan":
+                                [geoLatitude,geoLongitude,address] = [19.2403,73.1305,"Kalyan"]
+
+                            else:
+                                [geoLatitude,geoLongitude,address]=start123(word)
+
+                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                lat[keyword]+=str(geoLatitude)+","
+                                log[keyword]+=str(geoLongitude)+","
+                                place[keyword]+=word_actual+","
+                                adverbs.append(keyword)
+                                flag=1
+                        except:
+                            pass
+        return flag 
 
     location_string=""
     if location:
         flag=0
+        city_data=pd.read_csv('CityWithId.csv',header=0)
+        city=city_data['Project_City_Name'][city_data['Project_City'] == int(cityid)].values[0]
         if adv_location:
             for i,adv in enumerate(adv_location):
-                location[i]=location[i].lower().strip("bhk")
+                location[i]=location[i].lower().replace("bhk","")
                 if adv in ['in','at']:
-                    if not location[i] in amenity_exclusion and not location[i] in project_name:
-                        try:
-                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                            req = urllib2.Request(locationstring)
-                            url = urllib2.urlopen(req).read()
-                            result_location = json.loads(url)
-                            lat['in']+=result_location['response']['docs'][0]['latitude']+","
-                            log['in']+=result_location['response']['docs'][0]['longitude']+","
-                            cityid.append(result_location['response']['docs'][0]['cityid'])
-                            place['in']+=location[i]+","
-                            adverbs.append("in")
-                            flag=1
-
-                        except:
-                            [geoLatitude,geoLongitude,address]=start123(location[i])
-                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                lat['in']+=str(geoLatitude)+","
-                                log['in']+=str(geoLongitude)+","
-                                place['in']+=location[i]+","
-                                adverbs.append("in")
-                                flag=1
+                    flag=lat_long_tagging(location[i],'in',city,flag)
 
                 elif adv in ['not']:
-                    if not location[i] in amenity_exclusion and not location[i] in project_name:
-                        try:
-                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                            req = urllib2.Request(locationstring)
-                            url = urllib2.urlopen(req).read()
-                            result_location = json.loads(url)
-                            lat['notin']+=result_location['response']['docs'][0]['latitude']+","
-                            log['notin']+=result_location['response']['docs'][0]['longitude']+","
-                            cityid.append(result_location['response']['docs'][0]['cityid'])
-                            place['notin']+=location[i]+","
-                            adverbs.append("notIn")
-                            flag=1
-
-                        except:
-                            [geoLatitude,geoLongitude,address]=start123(location[i])
-                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                lat['notin']+=str(geoLatitude)+","
-                                log['notin']+=str(geoLongitude)+","
-                                place['notin']+=location[i]+","
-                                adverbs.append("notIn")
-                                flag=1
+                    flag=lat_long_tagging(location[i],'notin',city,flag)
 
                 elif adv in ['dist','distance','from']:
-                    if not location[i] in amenity_exclusion and not location[i] in project_name:
-                        try:
-                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                            req = urllib2.Request(locationstring)
-                            url = urllib2.urlopen(req).read()
-                            result_location = json.loads(url)
-                            lat['dist']+=result_location['response']['docs'][0]['latitude']+","
-                            log['dist']+=result_location['response']['docs'][0]['longitude']+","
-                            place['dist']+=location[i]+","
-                            cityid.append(result_location['response']['docs'][0]['cityid'])
-                            adverbs.append("dist")
-                            flag=1
-
-                        except:
-                            [geoLatitude,geoLongitude,address]=start123(location[i])
-                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                lat['dist']+=str(geoLatitude)+","
-                                log['dist']+=str(geoLongitude)+","
-                                place['dist']+=location[i]+","
-                                adverbs.append("dist")
-                                flag=1
+                    flag=lat_long_tagging(location[i],'dist',city,flag)
 
                 elif adv in ['nearby','near']:
-                    if not location[i] in amenity_exclusion and not location[i] in project_name:
-                        try:
-                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                            req = urllib2.Request(locationstring)
-                            url = urllib2.urlopen(req).read()
-                            result_location = json.loads(url)
-                            lat['nearby']+=result_location['response']['docs'][0]['latitude']+","
-                            log['nearby']+=result_location['response']['docs'][0]['longitude']+","
-                            place['nearby']+=location[i]+","
-                            cityid.append(result_location['response']['docs'][0]['cityid'])
-                            adverbs.append("nearBy")
-                            flag=1
-
-                        except:
-                            [geoLatitude,geoLongitude,address]=start123(location[i])
-                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                lat['nearby']+=str(geoLatitude)+","
-                                log['nearby']+=str(geoLongitude)+","
-                                place['nearby']+=location[i]+","
-                                adverbs.append("nearBy")
-                                flag=1
+                    flag=lat_long_tagging(location[i],'nearby',city,flag)
 
                 elif adv in ['around']:
-                    if not location[i] in amenity_exclusion and not location[i] in project_name:
-                        try:
-                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                            req = urllib2.Request(locationstring)
-                            url = urllib2.urlopen(req).read()
-                            result_location = json.loads(url)
-                            lat['around']+=result_location['response']['docs'][0]['latitude']+","
-                            log['around']+=result_location['response']['docs'][0]['longitude']+","
-                            place['around']+=location[i]+","
-                            cityid.append(result_location['response']['docs'][0]['cityid'])
-                            adverbs.append("around")
-                            flag=1
-
-                        except:
-                            [geoLatitude,geoLongitude,address]=start123(location[i])
-                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                lat['around']+=str(geoLatitude)+","
-                                log['around']+=str(geoLongitude)+","
-                                place['around']+=location[i]+","
-                                adverbs.append("around")
-                                flag=1
+                    flag=lat_long_tagging(location[i],'around',city,flag)
 
                 elif adv in ['north','east','west','south']:
-                    if not location[i] in amenity_exclusion and not location[i] in project_name:
-                        try:
-                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                            req = urllib2.Request(locationstring)
-                            url = urllib2.urlopen(req).read()
-                            result_location = json.loads(url)
-                            lat['direction']+=result_location['response']['docs'][0]['latitude']+","
-                            log['direction']+=result_location['response']['docs'][0]['longitude']+","
-                            place['direction']+=location[i]+","
-                            cityid.append(result_location['response']['docs'][0]['cityid'])
-                            adverbs.append("direction")
-                            dirs.append(adv)
-                            flag=1
-
-
-                        except:
-                            [geoLatitude,geoLongitude,address]=start123(location[i])
-                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                lat['direction']+=str(geoLatitude)+","
-                                log['direction']+=str(geoLongitude)+","
-                                place['direction']+=location[i]+","
-                                adverbs.append("direction")
-                                dirs.append(adv)
-                                flag=1
+                    flag=lat_long_tagging(location[i],'direction',city,flag)
+                    if flag==1:
+                        dirs.append(adv)
 
             if flag==0:
-                    if not location[i] in amenity_exclusion and not location[i] in project_name:
-                        try:
-                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                            req = urllib2.Request(locationstring)
-                            url = urllib2.urlopen(req).read()
-                            result_location = json.loads(url)
-                            lat['in']+=result_location['response']['docs'][0]['latitude']+","
-                            log['in']+=result_location['response']['docs'][0]['longitude']+","
-                            cityid.append(result_location['response']['docs'][0]['cityid'])
-                            place['in']+=location[i]+","
-                            adverbs.append("in")
-
-                        except:
-                            [geoLatitude,geoLongitude,address]=start123(location[i])
-                            if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                lat['in']+=str(geoLatitude)+","
-                                log['in']+=str(geoLongitude)+","
-                                place['in']+=location[i]+","
-                                adverbs.append("in")
+                    flag=lat_long_tagging(location[i],'in',city,flag)
         else:
             for i,item in enumerate(location):
-                if not location[i].lower() in amenity_exclusion and not location[i] in project_name:
-                    try:
-                        locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+location[i]+"&wt=json&indent=true"
-                        req = urllib2.Request(locationstring)
-                        url = urllib2.urlopen(req).read()
-                        result_location = json.loads(url)
-                        lat['in']+=result_location['response']['docs'][0]['latitude']+","
-                        log['in']+=result_location['response']['docs'][0]['longitude']+","
-                        cityid.append(result_location['response']['docs'][0]['cityid'])
-                        place['in']+=location[i]+","
-                        adverbs.append("in")
-
-                    except:
-                        [geoLatitude,geoLongitude,address]=start123(location[i])
-                        if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                            lat['in']+=str(geoLatitude)+","
-                            log['in']+=str(geoLongitude)+","
-                            place['in']+=location[i]+","
-                            adverbs.append("in")
+                flag=lat_long_tagging(location[i],'in',city,flag)
 
         if adverbs:
             if not string==str1:
@@ -600,6 +485,6 @@ def URL_formation(todo_id):
 
 if __name__ == '__main__':
     #app.run(host='0.0.0.0',port=6020)
-    http_server = WSGIServer(('0.0.0.0', 5000), app)
+    http_server = WSGIServer(('0.0.0.0', 5006), app)
     http_server.serve_forever()
 
