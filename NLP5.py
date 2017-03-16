@@ -37,7 +37,7 @@ DISCOVERY_URL = ('https://{api}.googleapis.com/'
                  '$discovery/rest?version={apiVersion}')
 
 # GOOGLE_APPLICATION_CREDENTIALS='/home/kiran/Desktop/test_api.json'
-
+solr_ip="52.66.44.154"
 
 def Cleaning(words):
     words.append([word.lower() for word in phrases])
@@ -446,7 +446,7 @@ def Location(words,tagged_words): ##
 
                 try:
                     word_to_search1 = urllib.quote(word_to_search)
-                    locationstring="http://10.2.101.209:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+word_to_search1+"&wt=json&indent=true"
+                    locationstring="http://"+solr_ip+":8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+word_to_search1+"&wt=json&indent=true"
                     req = urllib2.Request(locationstring)
                     url = urllib2.urlopen(req).read()
                     result_location = json.loads(url)
