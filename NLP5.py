@@ -433,19 +433,23 @@ def Location(words,tagged_words): ##
   
   except:
     print "Error"
+  print item1
   if not item1:
-    for word in tagged_words:
-        try:
+     for word in tagged_words:
+       if word[1] in ['NN','NNP','NNS']: 
+            try:
                             locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+word[0]+"&wt=json&indent=true"
-                            res = urllib2.Request(locationstring)
+                            req = urllib2.Request(locationstring)
                             url = urllib2.urlopen(req).read()
                             result_location = json.loads(url)
-                            found_flag=result_location['responseHeader']['response']['numFound']
+                            print result_location['response']['numFound'], word[0]
+                            found_flag=int(result_location['response']['numFound'])
                             if not found_flag==0:
                                 item1.append(word[0])
                                 adv.append("in")
-        except:
-            pass 
+            except:
+                print "In Except"
+                pass 
   
   if not adv:
         adv+=''    
