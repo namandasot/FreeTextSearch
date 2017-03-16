@@ -17,6 +17,7 @@ from nltk.tokenize import word_tokenize
 from googleapiclient import discovery
 import httplib2
 import urllib2
+import urllib
 import json
 from oauth2client.client import GoogleCredentials
 import time
@@ -433,23 +434,28 @@ def Location(words,tagged_words): ##
   
   except:
     print "Error"
-  print item1
+  amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment"]
+
   if not item1:
-     for word in tagged_words:
-       if word[1] in ['NN','NNP','NNS']: 
-            try:
-                            locationstring="http://52.66.44.154:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+word[0]+"&wt=json&indent=true"
-                            req = urllib2.Request(locationstring)
-                            url = urllib2.urlopen(req).read()
-                            result_location = json.loads(url)
-                            print result_location['response']['numFound'], word[0]
-                            found_flag=int(result_location['response']['numFound'])
-                            if not found_flag==0:
-                                item1.append(word[0])
-                                adv.append("in")
-            except:
-                print "In Except"
-                pass 
+     for i,word in enumerate(tagged_words):
+        if word[1] in ['NNP','NN','NNS'] and not word[0].lower() in ["east","west","north","south","central"] and not word[0] in amenity_exclusion:
+                word_to_search=word[0]
+                if i+1<len(tagged_words):
+                    if tagged_words[i+1][0].lower() in ["east","west","north","south","central"]:
+                        word_to_search=word[0]+" "+tagged_words[i+1][0]
+
+                try:
+                    word_to_search1 = urllib.quote(word_to_search)
+                    locationstring="http://10.2.101.209:8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+word_to_search1+"&wt=json&indent=true"
+                    req = urllib2.Request(locationstring)
+                    url = urllib2.urlopen(req).read()
+                    result_location = json.loads(url)
+                    found_flag=result_location['response']['numFound']
+                    if not found_flag==0:
+                        item1.append(word_to_search)
+                        adv.append("in")
+                except:             
+                    pass
   
   if not adv:
         adv+=''    
