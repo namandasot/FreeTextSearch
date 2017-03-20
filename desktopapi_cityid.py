@@ -65,9 +65,9 @@ def URL_formation(todo_id,cityid):
     starttime = str(datetime.datetime.today())
     fileName = "nlpNew"  + str(datetime.date.today().month )+ "_" + str(datetime.date.today().year)
 
-    amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment","east","west","north","south","central"]
+    amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gym","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment","east","west","north","south","central"]
     todo_id=request.args['searchstring']
-    [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id)
+    [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id,cityid)
     #nlptime=time.time()
 
     poss=0
@@ -132,20 +132,19 @@ def URL_formation(todo_id,cityid):
         if not word.lower() in amenity_exclusion and not word in project_name:
                         word_actual=word
                         word=word+" ,"+city
-                        # try:
-                        #     locationstring="http://"+solr_ip+"/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+word+"&wt=json&indent=true"
-                        #     req = urllib2.Request(locationstring)
-                        #     url = urllib2.urlopen(req).read()
-                        #     result_location = json.loads(url)
-                        #     lat[keyword]+=result_location['response']['docs'][0]['latitude']+","
-                        #     log[keyword]+=result_location['response']['docs'][0]['longitude']+","
-                        #     #cityid.append(result_location['response']['docs'][0]['cityid'])
-                        #     place[keyword]+=location[i]+","
-                        #     adverbs.append(keyword)
-                        #     flag=1
-
-                        # except:
                         try:
+                            locationstring="http://"+solr_ip+"/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+word+"&wt=json&indent=true"
+                            req = urllib2.Request(locationstring)
+                            url = urllib2.urlopen(req).read()
+                            result_location = json.loads(url)
+                            lat[keyword]+=result_location['response']['docs'][0]['latitude']+","
+                            log[keyword]+=result_location['response']['docs'][0]['longitude']+","
+                            #cityid.append(result_location['response']['docs'][0]['cityid'])
+                            place[keyword]+=word_actual+","
+                            adverbs.append(keyword)
+                            flag=1
+
+                        except:
                             if word_actual=="kalyan":
                                 [geoLatitude,geoLongitude,address] = [19.2403,73.1305,"Kalyan"]
 
@@ -158,8 +157,7 @@ def URL_formation(todo_id,cityid):
                                 place[keyword]+=word_actual+","
                                 adverbs.append(keyword)
                                 flag=1
-                        except:
-                            pass
+
         return flag 
 
     location_string=""
@@ -439,6 +437,7 @@ def URL_formation(todo_id,cityid):
 
     if bhk:
         feedback_string+="of size "
+        bhk=list(set(bhk))
         for b in bhk:
             feedback_string+=b+","
         feedback_string=feedback_string[:-1]+" bhk "

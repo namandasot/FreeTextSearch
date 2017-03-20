@@ -42,12 +42,12 @@ solr_ip="52.66.44.154"
 def Cleaning(words):
     words.append([word.lower() for word in phrases])
 
-def Developer(words):
+def Developer(words,cityid):
     project_id=[]
     project_name=""
     try:
         string="%20".join( words.split() )
-        locationstring="http://approvals.hdfcred.net/POC/free_text/developer_project_search.php?input="+string
+        locationstring="http://approvals.hdfcred.net/POC/free_text/developer_project_search.php?input="+string+"&cityid="+cityid
         req = urllib2.Request(locationstring)
         url = urllib2.urlopen(req).read()
         result_location = json.loads(url)
@@ -56,7 +56,7 @@ def Developer(words):
             project_name=result_location["Developer_Name"]
 
         if "Project_Name" in result_location:
-            project_name=result_locatio
+            project_name=result_location
 
         for item in result_location["Project_list"]: 
             project_id.append(item)
@@ -355,7 +355,7 @@ def Budget(word,tagged_words):
     return ([leafs,adj,item1])
     
 def Location(words,tagged_words): ##
-  amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment","east","west","north","south","central"]  
+  amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","gym","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment","east","west","north","south","central"]  
   adv=[]
   item1=[]
   radius=[]
@@ -435,7 +435,7 @@ def Location(words,tagged_words): ##
   
   except:
     print "Error"
-  print "found by google places " , item1
+
   if not item1:
      for i,word in enumerate(tagged_words):
          if word[1] in ['NNP','NN','NNS'] and not word[0].lower() in ["east","west","north","south","central"] and not word[0] in amenity_exclusion:
@@ -659,7 +659,7 @@ def Amenities(word):
     
 
 
-def start(query):
+def start(query,cityid):
     start1=time.time()
     num_dict={"zero":0,"one":1,"two":2,"three":3,"four":4,"five":5,"six":6,"seven":7,"eight":8,"nine":9,"ten":10,"eleven":11,"twelve":12,"thirteen":13,"fourteen":14,"fifteen":15,"sixteen":16,"seventeen":17,"eighteen":18,"nineteen":19,"twenty":20,"thirty":30,"fourty":40,"fifty":50,"sixty":60,"seventy":70,"eighty":80,"ninety":90,"hundred":100}
 
@@ -716,7 +716,7 @@ def start(query):
 
     #Converting to Lower Case
     query = str(query.lower())
-    [project_id,project_name]=Developer(query)
+    [project_id,project_name]=Developer(query,cityid)
 
     words=word_tokenize(query)
     tagged_words=pos_tag(words)
