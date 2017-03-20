@@ -132,19 +132,20 @@ def URL_formation(todo_id,cityid):
         if not word.lower() in amenity_exclusion and not word in project_name:
                         word_actual=word
                         word=word+" ,"+city
-                        try:
-                            locationstring="http://"+solr_ip+"/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+word+"&wt=json&indent=true"
-                            req = urllib2.Request(locationstring)
-                            url = urllib2.urlopen(req).read()
-                            result_location = json.loads(url)
-                            lat[keyword]+=result_location['response']['docs'][0]['latitude']+","
-                            log[keyword]+=result_location['response']['docs'][0]['longitude']+","
-                            #cityid.append(result_location['response']['docs'][0]['cityid'])
-                            place[keyword]+=word_actual+","
-                            adverbs.append(keyword)
-                            flag=1
+                        # try:
+                        #     locationstring="http://"+solr_ip+"/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+word+"&wt=json&indent=true"
+                        #     req = urllib2.Request(locationstring)
+                        #     url = urllib2.urlopen(req).read()
+                        #     result_location = json.loads(url)
+                        #     lat[keyword]+=result_location['response']['docs'][0]['latitude']+","
+                        #     log[keyword]+=result_location['response']['docs'][0]['longitude']+","
+                        #     #cityid.append(result_location['response']['docs'][0]['cityid'])
+                        #     place[keyword]+=word_actual+","
+                        #     adverbs.append(keyword)
+                        #     flag=1
 
-                        except:
+                        # except:
+                        try:
                             if word_actual=="kalyan":
                                 [geoLatitude,geoLongitude,address] = [19.2403,73.1305,"Kalyan"]
 
@@ -157,6 +158,8 @@ def URL_formation(todo_id,cityid):
                                 place[keyword]+=word_actual+","
                                 adverbs.append(keyword)
                                 flag=1
+                        except:
+                            pass
 
         return flag 
 
