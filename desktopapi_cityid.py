@@ -146,7 +146,7 @@ def URL_formation(todo_id,cityid):
 
                         # except:
                         try:
-                            if word_actual=="kalyan":
+                            if "kalyan"in word_actual:
                                 [geoLatitude,geoLongitude,address] = [19.2403,73.1305,"Kalyan"]
 
                             else:
