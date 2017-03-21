@@ -215,7 +215,7 @@ def URL_formation(todo_id,cityid):
                 if not string==str1:
                     string=string+"&"
                 string+=place["in"][:-1]+"&"+lat["in"][:-1]+"&"+log["in"][:-1]
-                location_string+="in "+place["in"][11:-1].replace(',',' & ').title()
+                location_string+="in "+place["in"][11:-1].replace(',',' & ').title()+" "
                 
 
         if not lat["notin"]=="notInLat=":
@@ -224,7 +224,7 @@ def URL_formation(todo_id,cityid):
                 string+=place["notin"][:-1]+"&"+lat["notin"][:-1]+"&"+log["notin"][:-1]
                 if location_string:
                     location_string+=" & "
-                location_string+="not in "+place["notin"][14:-1].replace(',',' & ').title()
+                location_string+="not in "+place["notin"][14:-1].replace(',',' & ').title()+" "
                 
 
         if not lat["dist"]=="distLat=":
@@ -233,7 +233,7 @@ def URL_formation(todo_id,cityid):
                 string+=place["dist"][:-1]+"&"+lat["dist"][:-1]+"&"+log["dist"][:-1]
                 if location_string:
                     location_string+=" & "
-                location_string+="near "+place["dist"][13:-1].replace(',',' & ').title()
+                location_string+="near "+place["dist"][13:-1].replace(',',' & ').title()+" "
                     
                 if radius:
                     string=string+"&locationDist="+str(radius[0])
@@ -246,7 +246,7 @@ def URL_formation(todo_id,cityid):
                 string+=place["nearBy"][:-1]+"&"+lat["nearBy"][:-1]+"&"+log["nearBy"][:-1]
                 if location_string:
                     location_string+=" & "
-                location_string+="nearby "+place["nearBy"][15:-1].replace(',',' & ').title()
+                location_string+="nearby "+place["nearBy"][15:-1].replace(',',' & ').title()+" "
                 
 
         if not lat["around"]=="aroundLat=":
@@ -255,7 +255,7 @@ def URL_formation(todo_id,cityid):
                 string+=place["around"][:-1]+"&"+lat["around"][:-1]+"&"+log["around"][:-1]
                 if location_string:
                     location_string+=" & "
-                location_string+="around "+place["around"][15:-1].replace(',',' & ').title()
+                location_string+="around "+place["around"][15:-1].replace(',',' & ').title()+" "
 
         if not lat["direction"]=="directionLat=":
                 if not string==str1:
@@ -263,7 +263,7 @@ def URL_formation(todo_id,cityid):
                 string+=place["direction"][:-1]+"&"+lat["direction"][:-1]+"&"+log["direction"][:-1]
                 if location_string:
                     location_string+=" & "
-                location_string+=str(dirs[0])+place["direction"][18:-1].replace(',',' & ').title()
+                location_string+=str(dirs[0])+place["direction"][18:-1].replace(',',' & ').title()+" "
 
                 for item in dirs:
                     string=string+str(item)+","
