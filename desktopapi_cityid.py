@@ -452,6 +452,13 @@ def URL_formation(todo_id,cityid):
         if location_string:
             feedback_string+=location_string
 
+        if bhk:
+            feedback_string+="having "
+            bhk=list(set(bhk))
+            for b in bhk:
+                feedback_string+=b+","
+            feedback_string=feedback_string[:-1]+" BHK "
+
         if budget:
             if minimumprice and maximumprice:
                 feedback_string+="between "
@@ -479,12 +486,7 @@ def URL_formation(todo_id,cityid):
                         feedback_string+=str(minimumprice/10000000)+" Cr "
                 else:
                         feedback_string+=str(minimumprice/100000)+" Lac "
-        if bhk:
-            feedback_string+="having "
-            bhk=list(set(bhk))
-            for b in bhk:
-                feedback_string+=b+","
-            feedback_string=feedback_string[:-1]+" BHK "
+        
 
         
     print feedback_string,string
