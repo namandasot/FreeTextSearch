@@ -336,7 +336,7 @@ def URL_formation(todo_id,cityid):
                         break 
                     
                 if flag==0:
-                    minimumprice=min(budget_modified)
+                    maximumprice=max(budget_modified)
 
             else:
                 minimumprice=min(budget_modified)*0.7
