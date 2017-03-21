@@ -266,10 +266,10 @@ def URL_formation(todo_id,cityid):
                 string=string[:-1]
         
 
-        if cityid:
-            if not string==str1:
-                string=string+"&"
-            string=string+"cityid="+list(set(cityid))[0]
+    if cityid:
+        if not string==str1:
+            string=string+"&"
+        string=string+"cityid="+list(set(cityid))[0]
  
     if apt_type:
         if not string==str1:
