@@ -13,6 +13,7 @@ import pdb
 import time
 import datetime
 from flask_cors import CORS,cross_origin
+from decimal import Decimal
 
 
 app.config['SECRET_KEY']='adasd'
@@ -68,7 +69,7 @@ def URL_formation(todo_id,cityid):
     starttime = str(datetime.datetime.today())
     fileName = "nlpNew"  + str(datetime.date.today().month )+ "_" + str(datetime.date.today().year)
 
-    amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gym","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment","east","west","north","south","central"]
+    amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","properties","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gym","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment","east","west","north","south","central"]
     todo_id=request.args['searchstring']
     [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id,cityid)
     #nlptime=time.time()
@@ -122,9 +123,9 @@ def URL_formation(todo_id,cityid):
     string = "https://hdfcred.com/apimaster/mobile_v3/nlp_listing_v1?"
     str1=string
     
-    lat={"in":"inLat=","notin":"notInLat=","dist":"distLat=","nearby":"nearByLat=","around":"aroundLat=","direction":"directionLat="}
-    log={"in":"inLong=","notin":"notInLong=","dist":"distLong=","nearby":"nearByLong=","around":"aroundLong=","direction":"directionLong="}
-    place={"in":"inLocation=","notin":"notInLocation=","dist":"distLocation=","nearby":"nearByLocation=","around":"aroundLocation=","direction":"directionLocation="}
+    lat={"in":"inLat=","notin":"notInLat=","dist":"distLat=","nearBy":"nearByLat=","around":"aroundLat=","direction":"directionLat="}
+    log={"in":"inLong=","notin":"notInLong=","dist":"distLong=","nearBy":"nearByLong=","around":"aroundLong=","direction":"directionLong="}
+    place={"in":"inLocation=","notin":"notInLocation=","dist":"distLocation=","nearBy":"nearByLocation=","around":"aroundLocation=","direction":"directionLocation="}
     
     #cityid=[]
     adverbs=[]
@@ -184,7 +185,7 @@ def URL_formation(todo_id,cityid):
                     flag=lat_long_tagging(location[i],'dist',city,flag)
 
                 elif adv in ['nearby','near']:
-                    flag=lat_long_tagging(location[i],'nearby',city,flag)
+                    flag=lat_long_tagging(location[i],'nearBy',city,flag)
 
                 elif adv in ['around']:
                     flag=lat_long_tagging(location[i],'around',city,flag)
@@ -214,7 +215,7 @@ def URL_formation(todo_id,cityid):
                 if not string==str1:
                     string=string+"&"
                 string+=place["in"][:-1]+"&"+lat["in"][:-1]+"&"+log["in"][:-1]
-                location_string+="in "+place["in"][11:-1].title()
+                location_string+="in "+place["in"][11:-1].replace(',',' & ').title()
                 
 
         if not lat["notin"]=="notInLat=":
@@ -223,7 +224,7 @@ def URL_formation(todo_id,cityid):
                 string+=place["notin"][:-1]+"&"+lat["notin"][:-1]+"&"+log["notin"][:-1]
                 if location_string:
                     location_string+=" & "
-                location_string+="not in "+place["notin"][14:-1].title()
+                location_string+="not in "+place["notin"][14:-1].replace(',',' & ').title()
                 
 
         if not lat["dist"]=="distLat=":
@@ -232,20 +233,20 @@ def URL_formation(todo_id,cityid):
                 string+=place["dist"][:-1]+"&"+lat["dist"][:-1]+"&"+log["dist"][:-1]
                 if location_string:
                     location_string+=" & "
-                location_string+="near "+place["dist"][13:-1].title()
+                location_string+="near "+place["dist"][13:-1].replace(',',' & ').title()
                     
                 if radius:
                     string=string+"&locationDist="+str(radius[0])
                 else:
                     string=string+"&locationDist="+"4"
 
-        if not lat["nearby"]=="nearByLat=":
+        if not lat["nearBy"]=="nearByLat=":
                 if not string==str1:
                     string=string+"&"
-                string+=place["nearby"][:-1]+"&"+lat["nearby"][:-1]+"&"+log["nearby"][:-1]
+                string+=place["nearBy"][:-1]+"&"+lat["nearBy"][:-1]+"&"+log["nearBy"][:-1]
                 if location_string:
                     location_string+=" & "
-                location_string+="nearby "+place["nearby"][15:-1].title()
+                location_string+="nearby "+place["nearBy"][15:-1].replace(',',' & ').title()
                 
 
         if not lat["around"]=="aroundLat=":
@@ -254,7 +255,7 @@ def URL_formation(todo_id,cityid):
                 string+=place["around"][:-1]+"&"+lat["around"][:-1]+"&"+log["around"][:-1]
                 if location_string:
                     location_string+=" & "
-                location_string+="around "+place["around"][15:-1].title()
+                location_string+="around "+place["around"][15:-1].replace(',',' & ').title()
 
         if not lat["direction"]=="directionLat=":
                 if not string==str1:
@@ -262,7 +263,7 @@ def URL_formation(todo_id,cityid):
                 string+=place["direction"][:-1]+"&"+lat["direction"][:-1]+"&"+log["direction"][:-1]
                 if location_string:
                     location_string+=" & "
-                location_string+=str(dirs[0])+place["direction"][18:-1].title()
+                location_string+=str(dirs[0])+place["direction"][18:-1].replace(',',' & ').title()
 
                 for item in dirs:
                     string=string+str(item)+","
@@ -463,29 +464,29 @@ def URL_formation(todo_id,cityid):
             if minimumprice and maximumprice:
                 feedback_string+="between "
                 if minimumprice/10000000 >= 1:
-                    feedback_string+=str(minimumprice/10000000)+" Cr "
+                    feedback_string+=str(Decimal(str(minimumprice/10000000)).normalize())+" Cr "
                 else:
-                    feedback_string+=str(minimumprice/100000)+" Lac "
+                    feedback_string+=str(Decimal(str(minimumprice/100000)).normalize())+" Lac "
                 feedback_string+="and "
 
                 if maximumprice/10000000 >= 1:
-                    feedback_string+=str(maximumprice/10000000)+" Cr "
+                    feedback_string+=str(Decimal(str(maximumprice/10000000)).normalize())+" Cr "
                 else:
-                    feedback_string+=str(maximumprice/100000)+" Lac "
+                    feedback_string+=str(Decimal(str(maximumprice/100000)).normalize())+" Lac "
 
             if maximumprice and not minimumprice:
                 feedback_string+="within "
                 if maximumprice/10000000 >= 1:
-                        feedback_string+=str(maximumprice/10000000)+" Cr "
+                        feedback_string+=str(Decimal(str(maximumprice/10000000)).normalize())+" Cr "
                 else:
-                        feedback_string+=str(maximumprice/100000)+" Lac "
+                        feedback_string+=str(Decimal(str(maximumprice/100000)).normalize())+" Lac "
 
             if minimumprice and not maximumprice:
                 feedback_string+="above "
                 if minimumprice/10000000 >= 1:
-                        feedback_string+=str(minimumprice/10000000)+" Cr "
+                        feedback_string+=str(Decimal(str(minimumprice/10000000)).normalize())+" Cr "
                 else:
-                        feedback_string+=str(minimumprice/100000)+" Lac "
+                        feedback_string+=str(Decimal(str(minimumprice/100000)).normalize())+" Lac "
         
 
         

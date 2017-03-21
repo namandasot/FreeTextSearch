@@ -27,8 +27,8 @@ import os
 
 print os.environ.get('CLASSPATH')
 
-os.environ['STANFORD_PARSER'] = '/home/ubuntu/nltk_data/models/stanford-parser-full-2015-04-20/stanford-parser.jar'
-os.environ['STANFORD_MODELS'] = '/home/ubuntu/nltk_data/models/stanford-parser-full-2015-04-20/stanford-parser-3.5.2-models.jar'
+os.environ['STANFORD_PARSER'] = '/home/kiran/nltk_data/models/stanford-parser-full-2015-04-20/stanford-parser.jar'
+os.environ['STANFORD_MODELS'] = '/home/kiran/nltk_data/models/stanford-parser-full-2015-04-20/stanford-parser-3.5.2-models.jar'
 #parser = stanford.StanfordParser("/home/kiran/nltk_data/stanford-parser-python-r22186/3rdParty/stanford-parser/englishPCFG.July-2010.ser", java_options='-mx1000m')
 parser=stanford.StanfordParser()
 #stanford_dir = parser._classpath[0].rpartition('/')[0]
@@ -355,7 +355,7 @@ def Budget(word,tagged_words):
     return ([leafs,adj,item1])
     
 def Location(words,tagged_words): ##
-  amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","gym","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment","east","west","north","south","central"]  
+  amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","gym","apartment","properties","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment","east","west","north","south","central"]  
   adv=[]
   item1=[]
   radius=[]
