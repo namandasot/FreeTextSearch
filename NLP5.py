@@ -27,8 +27,8 @@ import os
 
 print os.environ.get('CLASSPATH')
 
-os.environ['STANFORD_PARSER'] = '/home/kiran/nltk_data/models/stanford-parser-full-2015-04-20/stanford-parser.jar'
-os.environ['STANFORD_MODELS'] = '/home/kiran/nltk_data/models/stanford-parser-full-2015-04-20/stanford-parser-3.5.2-models.jar'
+os.environ['STANFORD_PARSER'] = '/home/ubuntu/nltk_data/models/stanford-parser-full-2015-04-20/stanford-parser.jar'
+os.environ['STANFORD_MODELS'] = '/home/ubuntu/nltk_data/models/stanford-parser-full-2015-04-20/stanford-parser-3.5.2-models.jar'
 #parser = stanford.StanfordParser("/home/kiran/nltk_data/stanford-parser-python-r22186/3rdParty/stanford-parser/englishPCFG.July-2010.ser", java_options='-mx1000m')
 parser=stanford.StanfordParser()
 #stanford_dir = parser._classpath[0].rpartition('/')[0]
