@@ -269,7 +269,7 @@ def URL_formation(todo_id,cityid):
     if cityid:
         if not string==str1:
             string=string+"&"
-        string=string+"cityid="+list(set(cityid))[0]
+        string=string+"cityid="+str(cityid)
  
     if apt_type:
         if not string==str1:
