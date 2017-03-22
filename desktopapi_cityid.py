@@ -52,10 +52,14 @@ def get():
         totalVal = result["total"]
     except:
         totalVal = 0
-    if totalVal>0:
-        feedback = "Here are "+str(totalVal)+" properties "+feedback
-    else:
+    
+    if totalVal==0:
         feedback=""
+    elif totalVal==1:
+        feedback = "Here is "+str(totalVal)+" property "+feedback
+    elif totalVal>0:
+        feedback = "Here are "+str(totalVal)+" properties "+feedback
+    
     return jsonify({
         "result": result,
         "url": url_copy,
@@ -440,6 +444,9 @@ def URL_formation(todo_id,cityid):
     ###################### Feedback Formation ################################
     feedback_string=""
     
+    def remove_exponent(num):
+        return num.to_integral() if num == num.to_integral() else round(num.normalize(),1)
+    
     if project_name:
         try:
             if "Project_Name" in project_name.keys():
@@ -464,29 +471,29 @@ def URL_formation(todo_id,cityid):
             if minimumprice and maximumprice:
                 feedback_string+="between "
                 if minimumprice/10000000 >= 1:
-                    feedback_string+=str(Decimal(str(minimumprice/10000000)).normalize())+" Cr "
+                    feedback_string+=str(remove_exponent(Decimal(str(minimumprice/10000000))))+" Cr "
                 else:
-                    feedback_string+=str(Decimal(str(minimumprice/100000)).normalize())+" Lac "
+                    feedback_string+=str(remove_exponent(Decimal(str(minimumprice/100000))))+" Lac "
                 feedback_string+="and "
 
                 if maximumprice/10000000 >= 1:
-                    feedback_string+=str(Decimal(str(maximumprice/10000000)).normalize())+" Cr "
+                    feedback_string+=str(remove_exponent(Decimal(str(maximumprice/10000000))))+" Cr "
                 else:
-                    feedback_string+=str(Decimal(str(maximumprice/100000)).normalize())+" Lac "
+                    feedback_string+=str(remove_exponent(Decimal(str(maximumprice/100000))))+" Lac "
 
             if maximumprice and not minimumprice:
                 feedback_string+="within "
                 if maximumprice/10000000 >= 1:
-                        feedback_string+=str(Decimal(str(maximumprice/10000000)).normalize())+" Cr "
+                        feedback_string+=str(remove_exponent(Decimal(str(maximumprice/10000000))))+" Cr "
                 else:
-                        feedback_string+=str(Decimal(str(maximumprice/100000)).normalize())+" Lac "
+                        feedback_string+=str(remove_exponent(Decimal(str(maximumprice/100000))))+" Lac "
 
             if minimumprice and not maximumprice:
                 feedback_string+="above "
                 if minimumprice/10000000 >= 1:
-                        feedback_string+=str(Decimal(str(minimumprice/10000000)).normalize())+" Cr "
+                        feedback_string+=str(remove_exponent(Decimal(str(minimumprice/10000000))))+" Cr "
                 else:
-                        feedback_string+=str(Decimal(str(minimumprice/100000)).normalize())+" Lac "
+                        feedback_string+=str(remove_exponent(Decimal(str(minimumprice/100000))))+" Lac "
         
 
         
