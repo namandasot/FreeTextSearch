@@ -21,6 +21,7 @@ import urllib
 import json
 from oauth2client.client import GoogleCredentials
 import time
+import itertools
 import os
 # import MySQLdb
 
@@ -64,12 +65,13 @@ def Developer(words,cityid):
         pass
     return (project_id,project_name)
 
-def BHK(word,tagged_words):
+def BHK(word,tagged_words,query):
     BHK=['bedroom','rk','kitchen','bathroom','bhk','room','rooms','hall','bedrooms','house',"flat"]
     leafs=[]
     adj=[]
     item1=[]      
 
+    
     for item in BHK:
          if item in word:
              length=len(tagged_words)-1
@@ -248,6 +250,7 @@ def Budget(word,tagged_words):
                              continue
 
     for pos,item in enumerate(word) :
+         print tagged_words
          if item in budget:
              length=len(tagged_words)-1
              flag=0          
@@ -355,7 +358,10 @@ def Budget(word,tagged_words):
     return ([leafs,adj,item1])
     
 def Location(words,tagged_words): ##
-  amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","gym","apartment","properties","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment","east","west","north","south","central"]  
+  amenity_exclusion_csv=pd.read_csv("amenities_exclusion.csv",delimiter=",")
+  amenity_exclusion1=[words.split(',') for words in list(amenity_exclusion_csv["Keyword"])]
+  amenity_exclusion=list(itertools.chain(*amenity_exclusion1))
+
   adv=[]
   item1=[]
   radius=[]
@@ -438,8 +444,8 @@ def Location(words,tagged_words): ##
 
   if not item1:
      for i,word in enumerate(tagged_words):
-         if word[1] in ['NNP','NN','NNS'] and not word[0].lower() in ["east","west","north","south","central"] and not word[0] in amenity_exclusion and len(word[0])>2:
-                print word[0]
+         if word[1] in ['NNP','NN','NNS']  and not word[0].lower() in amenity_exclusion and len(word[0])>2:
+                print "Location not found via Google nlp reached Solr"
                 word_to_search=word[0]
                 if i+1<len(tagged_words):
                     if tagged_words[i+1][0].lower() in ["east","west","north","south","central"]:
@@ -723,7 +729,7 @@ def start(query,cityid):
 
 
     
-    [bhk,bhk_desc,bhk_item]=BHK(words,tagged_words)      
+    [bhk,bhk_desc,bhk_item]=BHK(words,tagged_words,query)      
     [budget,budget_adj,budget_item]=Budget(words,tagged_words)
     [possession,possession_desc,date]=Possession(words,tagged_words)
     [area,area_type,dim]=Area(words,tagged_words)
@@ -755,7 +761,7 @@ def start(query,cityid):
 
     end1 = time.time()
     print "NLP TIME", end1 - start1
-    return query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim
+    return query,bhk,bhk_desc,bhk_item,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim
 
 #query=raw_input()
 #start1 = time.time()

@@ -12,6 +12,7 @@ app = Flask(__name__)
 import pdb
 import time
 import datetime
+import itertools
 from flask_cors import CORS,cross_origin
 from decimal import Decimal
 
@@ -73,9 +74,12 @@ def URL_formation(todo_id,cityid):
     starttime = str(datetime.datetime.today())
     fileName = "nlpNew"  + str(datetime.date.today().month )+ "_" + str(datetime.date.today().year)
 
-    amenity_exclusion=["bhk flat","bhk flats","bhk","flat","flats","villa","bunglow","properties","apartment","park","garden","gas","pipeline","gate","sports","manor","park","old","golf","mandir","gym","gurudwara","garden","park","mall","pooja","jog","pent","jacuuzi","jacuzi","vaastu","dargah","puja","bhk villa","bhk apartments","bhk apartment","east","west","north","south","central"]
+    amenity_exclusion_csv=pd.read_csv("amenities_exclusion.csv",delimiter=",")
+    amenity_exclusion1=[words.split(',') for words in list(amenity_exclusion_csv["Keyword"])]
+    amenity_exclusion=list(itertools.chain(*amenity_exclusion1))
+    print amenity_exclusion
     todo_id=request.args['searchstring']
-    [query,bhk,bhk_desc,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id,cityid)
+    [query,bhk,bhk_desc,bhk_type,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id,cityid)
     #nlptime=time.time()
 
     poss=0
@@ -136,7 +140,6 @@ def URL_formation(todo_id,cityid):
     dirs=[]
 
     def lat_long_tagging(word,keyword,city,flag):
-        print "lat long taggiong word " , word
         if not word.lower() in amenity_exclusion and not word in project_name:
                         word_actual=word
                         word=word+" ,"+city
@@ -160,12 +163,16 @@ def URL_formation(todo_id,cityid):
                             else:
                                 [geoLatitude,geoLongitude,address]=start123(word)
 
+                            print"3"
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
+                                print"3.1"
                                 lat[keyword]+=str(geoLatitude)+","
                                 log[keyword]+=str(geoLongitude)+","
+                                print "4"
                                 place[keyword]+=word_actual+","
                                 adverbs.append(keyword)
                                 flag=1
+                                print "Actual word",word_actual,keyword
                         except:
                             pass
 
@@ -179,7 +186,9 @@ def URL_formation(todo_id,cityid):
         if adv_location:
             for i,adv in enumerate(adv_location):
                 location[i]=location[i].lower().replace("bhk","")
+                print "1"
                 if adv in ['in','at']:
+                    print "2"
                     flag=lat_long_tagging(location[i],'in',city,flag)
 
                 elif adv in ['not']:
@@ -219,6 +228,7 @@ def URL_formation(todo_id,cityid):
                 if not string==str1:
                     string=string+"&"
                 string+=place["in"][:-1]+"&"+lat["in"][:-1]+"&"+log["in"][:-1]
+                print "PLACE IS",place["in"][11:-1].replace(',',' & ').title()
                 location_string+="in "+place["in"][11:-1].replace(',',' & ').title()+" "
                 
 
@@ -297,7 +307,18 @@ def URL_formation(todo_id,cityid):
     if bhk:
         if not string==str1:
             string=string+"&"
-        string=string+"maxBHK="+str(min(bhk))
+        if bhk_type:
+            flag=0
+            for b_type in bhk_type:
+                if b_type in ["room","rk"]:
+                    string=string+"minBHK=0.5&maxBHK="+str(max(bhk))
+                    flag=1
+                    break
+
+            if flag==0:
+                string=string+"minBHK="+str(min(bhk))+"&maxBHK="+str(max(bhk))
+        else:
+            string=string+"minBHK="+str(min(bhk))+"&maxBHK="+str(max(bhk))
     
     budget_modified=[]
     minimumprice=0
@@ -320,10 +341,12 @@ def URL_formation(todo_id,cityid):
                             if budget_item[0] in ['lac','l','lakh','lacs','lakhs']:
                                 budget_modified.append(float(float(item)*100000))
                 except:
-                    budget_modified.append(float(item))
+                    try:
+                        budget_modified.append(float(item))
+                    except:
+                        pass
 
 
-        print budget_modified
         length=len(budget_modified)
         flag=0
         if length==1:
@@ -351,7 +374,7 @@ def URL_formation(todo_id,cityid):
                 maximumprice=max(budget_modified)*1.3
 
 
-        else:
+        if length==2:
             budget_modified.sort()
             minimumprice=min(budget_modified)
             maximumprice=max(budget_modified)
@@ -463,9 +486,43 @@ def URL_formation(todo_id,cityid):
         if bhk:
             feedback_string+="having "
             bhk=list(set(bhk))
-            for b in bhk:
-                feedback_string+=b+","
-            feedback_string=feedback_string[:-1]+" BHK "
+            
+            if bhk_type:
+                for b_type in bhk_type:
+                    if b_type in ["room","rk"]:
+                        if feedback_string[-4:]=="BHK ":
+                            feedback_string+=" & "
+                        feedback_string+="1 RK "
+                        
+                        if float(max(bhk))>1:
+                            feedback_string+=" & "
+                            for b in bhk:
+                                if b !="1":    
+                                    feedback_string+=b+","
+                            feedback_string=feedback_string[:-1]+" BHK "
+                        break
+                    elif "0.5" in bhk:
+                        feedback_string+="1 RK "
+                        if float(max(bhk))>0.5:
+                            feedback_string+=" & "
+                            for b in bhk:
+                                if b !="0.5":    
+                                    feedback_string+=b+","
+                            feedback_string=feedback_string[:-1]+" BHK "
+                        break
+                    else:
+                        if feedback_string[-3:]=="RK ":
+                            feedback_string+=" & "
+                        for b in bhk:    
+                            feedback_string+=b+","
+                        feedback_string=feedback_string[:-1]+" BHK "
+
+
+
+            else:
+                for b in bhk:    
+                        feedback_string+=b+","
+                feedback_string=feedback_string[:-1]+" BHK "
 
         if budget:
             if minimumprice and maximumprice:
