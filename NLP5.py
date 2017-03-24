@@ -65,7 +65,7 @@ def Developer(words,cityid):
         pass
     return (project_id,project_name)
 
-def BHK(word,tagged_words,query):
+def BHK(word,tagged_words):
     BHK=['bedroom','rk','kitchen','bathroom','bhk','room','rooms','hall','bedrooms','house',"flat"]
     leafs=[]
     adj=[]
@@ -250,7 +250,6 @@ def Budget(word,tagged_words):
                              continue
 
     for pos,item in enumerate(word) :
-         print tagged_words
          if item in budget:
              length=len(tagged_words)-1
              flag=0          
@@ -729,7 +728,7 @@ def start(query,cityid):
 
 
     
-    [bhk,bhk_desc,bhk_item]=BHK(words,tagged_words,query)      
+    [bhk,bhk_desc,bhk_item]=BHK(words,tagged_words)      
     [budget,budget_adj,budget_item]=Budget(words,tagged_words)
     [possession,possession_desc,date]=Possession(words,tagged_words)
     [area,area_type,dim]=Area(words,tagged_words)

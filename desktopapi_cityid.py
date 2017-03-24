@@ -308,14 +308,9 @@ def URL_formation(todo_id,cityid):
         if not string==str1:
             string=string+"&"
         if bhk_type:
-            flag=0
-            for b_type in bhk_type:
-                if b_type in ["room","rk"]:
+            if "room" in bhk_type or "rk" in bhk_type: 
                     string=string+"minBHK=0.5&maxBHK="+str(max(bhk))
-                    flag=1
-                    break
-
-            if flag==0:
+            else:
                 string=string+"minBHK="+str(min(bhk))+"&maxBHK="+str(max(bhk))
         else:
             string=string+"minBHK="+str(min(bhk))+"&maxBHK="+str(max(bhk))
