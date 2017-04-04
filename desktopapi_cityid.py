@@ -170,16 +170,12 @@ def URL_formation(todo_id,cityid):
                             else:
                                 [geoLatitude,geoLongitude,address]=start123(word)
 
-                            print"3"
                             if float(geoLatitude)<37 and float(geoLatitude)>6 and float(geoLongitude)>68 and float(geoLongitude)<97: 
-                                print"3.1"
                                 lat[keyword]+=str(geoLatitude)+","
                                 log[keyword]+=str(geoLongitude)+","
-                                print "4"
                                 place[keyword]+=word_actual+","
                                 adverbs.append(keyword)
                                 flag=1
-                                print "Actual word",word_actual,keyword
                         except:
                             pass
 
@@ -193,9 +189,7 @@ def URL_formation(todo_id,cityid):
         if adv_location:
             for i,adv in enumerate(adv_location):
                 location[i]=location[i].lower().replace("bhk","")
-                print "1"
                 if adv in ['in','at']:
-                    print "2"
                     flag=lat_long_tagging(location[i],'in',city,flag)
 
                 elif adv in ['not']:
@@ -235,7 +229,6 @@ def URL_formation(todo_id,cityid):
                 if not string==str1:
                     string=string+"&"
                 string+=place["in"][:-1]+"&"+lat["in"][:-1]+"&"+log["in"][:-1]
-                print "PLACE IS",place["in"][11:-1].replace(',',' & ').title()
                 location_string+="in "+place["in"][11:-1].replace(',',' & ').title()+" "
                 
 

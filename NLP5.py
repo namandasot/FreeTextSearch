@@ -360,7 +360,6 @@ def Location(words,tagged_words): ##
   amenity_exclusion_csv=pd.read_csv("amenities_exclusion.csv",delimiter=",")
   amenity_exclusion1=[amenity_from_csv.split(',') for amenity_from_csv in list(amenity_exclusion_csv["Keyword"])]
   amenity_exclusion=list(itertools.chain(*amenity_exclusion1))
-
   adv=[]
   item1=[]
   radius=[]
@@ -709,7 +708,7 @@ def start(query,cityid):
     ls = []
     for x in query:
 
-         if x in string.punctuation and not x=='.' and not x=='>' and not x=='<':
+         if x in string.punctuation and not x=='.' and not x=='>' and not x=='<' and not x==',':
                 ls.append(' ')
          else:
             ls.append(x)
