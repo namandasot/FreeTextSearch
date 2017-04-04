@@ -68,10 +68,18 @@ def get():
             "feedback" : feedback
             })
     except:
+        
+        result =  {
+            "data": [], 
+            "msg": "zero projects", 
+            "status": 0, 
+            "total": 0
+            }
+
         return jsonify({
             "result": result,
-            "url": url_copy,
-            "feedback" : feedback
+            "url": "",
+            "feedback" : ""
             })
 
 
