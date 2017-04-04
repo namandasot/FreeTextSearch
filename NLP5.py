@@ -358,7 +358,7 @@ def Budget(word,tagged_words):
     
 def Location(words,tagged_words): ##
   amenity_exclusion_csv=pd.read_csv("amenities_exclusion.csv",delimiter=",")
-  amenity_exclusion1=[words.split(',') for words in list(amenity_exclusion_csv["Keyword"])]
+  amenity_exclusion1=[amenity_from_csv.split(',') for amenity_from_csv in list(amenity_exclusion_csv["Keyword"])]
   amenity_exclusion=list(itertools.chain(*amenity_exclusion1))
 
   adv=[]
@@ -382,6 +382,7 @@ def Location(words,tagged_words): ##
     })
 
   response = service_request.execute()
+
 
   try:
     words=words.lower().split()
@@ -765,4 +766,4 @@ def start(query,cityid):
 #query=raw_input()
 #start1 = time.time()
 
-#start(query)
+

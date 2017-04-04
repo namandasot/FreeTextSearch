@@ -21,51 +21,58 @@ app.config['SECRET_KEY']='adasd'
 CORS(app)
 @app.route('/')
 def get():
-    string=request.args['searchstring']
-    cityid=request.args['cityid']
-    user_id='1234'
-    limit="0,20"
-    if limit == "0,20":
-        url,feedback=URL_formation(string,cityid)
-        url = str(url)
-        session[user_id]= url
-    else:
-            if user_id in session.keys():
-                url = session[user_id]+"&limit="+limit
-            else:
-                url,feedback=URL_formation(string,cityid)
-                url = str(url)
-                session[user_id]= url
-                url+="&limit=0,20"
-    url_copy=url
-    try :
-        url = urlopen(url).read()
-        result = json.loads(url)
-
-    except:
-        result =  {
-        "data": [], 
-        "msg": "zero projects", 
-        "status": 0, 
-        "total": 0
-        }
     try:
-        totalVal = result["total"]
+        string=request.args['searchstring']
+        cityid=request.args['cityid']
+        user_id='1234'
+        limit="0,20"
+        if limit == "0,20":
+            url,feedback=URL_formation(string,cityid)
+            url = str(url)
+            session[user_id]= url
+        else:
+                if user_id in session.keys():
+                    url = session[user_id]+"&limit="+limit
+                else:
+                    url,feedback=URL_formation(string,cityid)
+                    url = str(url)
+                    session[user_id]= url
+                    url+="&limit=0,20"
+        url_copy=url
+        try :
+            url = urlopen(url).read()
+            result = json.loads(url)
+
+        except:
+            result =  {
+            "data": [], 
+            "msg": "zero projects", 
+            "status": 0, 
+            "total": 0
+            }
+        try:
+            totalVal = result["total"]
+        except:
+            totalVal = 0
+        
+        if totalVal==0:
+            feedback=""
+        elif totalVal==1:
+            feedback = "Here is "+str(totalVal)+" property "+feedback
+        elif totalVal>0:
+            feedback = "Here are "+str(totalVal)+" properties "+feedback
+        
+        return jsonify({
+            "result": result,
+            "url": url_copy,
+            "feedback" : feedback
+            })
     except:
-        totalVal = 0
-    
-    if totalVal==0:
-        feedback=""
-    elif totalVal==1:
-        feedback = "Here is "+str(totalVal)+" property "+feedback
-    elif totalVal>0:
-        feedback = "Here are "+str(totalVal)+" properties "+feedback
-    
-    return jsonify({
-        "result": result,
-        "url": url_copy,
-        "feedback" : feedback
-        })
+        return jsonify({
+            "result": result,
+            "url": url_copy,
+            "feedback" : feedback
+            })
 
 
 
@@ -75,9 +82,9 @@ def URL_formation(todo_id,cityid):
     fileName = "nlpNew"  + str(datetime.date.today().month )+ "_" + str(datetime.date.today().year)
 
     amenity_exclusion_csv=pd.read_csv("amenities_exclusion.csv",delimiter=",")
-    amenity_exclusion1=[words.split(',') for words in list(amenity_exclusion_csv["Keyword"])]
+    amenity_exclusion1=[amenity_from_csv.split(',') for amenity_from_csv in list(amenity_exclusion_csv["Keyword"])]
     amenity_exclusion=list(itertools.chain(*amenity_exclusion1))
-    print amenity_exclusion
+
     todo_id=request.args['searchstring']
     [query,bhk,bhk_desc,bhk_type,apt_type,budget,budget_item,budget_adj,amenities,location,adv_location,radius,possession,possession_desc,date,project_id,project_name,area,area_type,dim]=start(todo_id,cityid)
     #nlptime=time.time()
@@ -128,7 +135,7 @@ def URL_formation(todo_id,cityid):
 
 
 
-    string = "https://hdfcred.com/apimaster/mobile_v3/nlp_listing_v1?"
+    string = "https://hdfcred.com/apimaster/mobile_v3/nlp_listing_v2?"
     str1=string
     
     lat={"in":"inLat=","notin":"notInLat=","dist":"distLat=","nearBy":"nearByLat=","around":"aroundLat=","direction":"directionLat="}
