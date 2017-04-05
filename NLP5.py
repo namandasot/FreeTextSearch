@@ -630,18 +630,18 @@ def Area(word,tagged_words):
 
 def AptType(word):
     apartment=["apartment","apartments","flat","flats","bhk"]
-    villa=["bunglow","bungalow","bungalows","bunglows","villas","villa","row house"]
+    villa=["bunglow","bungalow","bungalows","bunglows","villas","villa","row house","rowhouse","row houses","rowhouses"]
     plot=["land","lands","plot","plots"]
     result=[]    
 
     for apt in plot:
-            if apt in word:
+            if apt in word.lower():
                 result.append("plot")
     for apt in villa:
-            if apt in word:
+            if apt in word.lower():
                 result.append("ROW HOUSE,VILLA,VILLAMENT,BUNGALOW")
     for apt in apartment:
-            if apt in word:
+            if apt in word.lower():
                 result.append("APARTMENT")
     
     
@@ -735,7 +735,7 @@ def start(query,cityid):
 
     st=PorterStemmer()
     stemmed_words=[words for words in query.split()] 
-    apt_type=AptType(stemmed_words)
+    apt_type=AptType(query)
 
     amenities=Amenities(stemmed_words)
 
