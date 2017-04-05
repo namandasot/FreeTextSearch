@@ -67,8 +67,7 @@ def get():
             "url": url_copy,
             "feedback" : feedback
             })
-    except:
-        
+    except:    
         result =  {
             "data": [], 
             "msg": "zero projects", 
@@ -317,7 +316,11 @@ def URL_formation(todo_id,cityid):
             string=string+"&"
         if bhk_type:
             if "room" in bhk_type or "rk" in bhk_type: 
-                    string=string+"minBHK=0.5&maxBHK="+str(max(bhk))
+                    string=string+"minBHK=0.5"
+                    if "bhk" in bhk_type:
+                        string=string+"&maxBHK="+str(max(bhk))
+                    else:
+                        string=string+"&maxBHK=0.5"
             else:
                 string=string+"minBHK="+str(min(bhk))+"&maxBHK="+str(max(bhk))
         else:
@@ -491,36 +494,23 @@ def URL_formation(todo_id,cityid):
             bhk=list(set(bhk))
             
             if bhk_type:
-                for b_type in bhk_type:
-                    if b_type in ["room","rk"]:
-                        if feedback_string[-4:]=="BHK ":
-                            feedback_string+=" & "
-                        feedback_string+="1 RK "
-                        
-                        if float(max(bhk))>1:
+                if "rk" in bhk_type or "room" in bhk_type:
+                    feedback_string+="1 RK"
+                    if "bhk" in bhk_type:
                             feedback_string+=" & "
                             for b in bhk:
-                                if b !="1":    
-                                    feedback_string+=b+","
+                                feedback_string+=b+","
                             feedback_string=feedback_string[:-1]+" BHK "
-                        break
-                    elif "0.5" in bhk:
-                        feedback_string+="1 RK "
-                        if float(max(bhk))>0.5:
-                            feedback_string+=" & "
-                            for b in bhk:
-                                if b !="0.5":    
-                                    feedback_string+=b+","
-                            feedback_string=feedback_string[:-1]+" BHK "
-                        break
-                    else:
-                        if feedback_string[-3:]=="RK ":
-                            feedback_string+=" & "
-                        for b in bhk:    
-                            feedback_string+=b+","
-                        feedback_string=feedback_string[:-1]+" BHK "
 
+                elif "bhk" in bhk_type:
+                    for b in bhk:    
+                        feedback_string+=b+","
+                    feedback_string=feedback_string[:-1]+" BHK "
 
+                else:
+                    for b in bhk:    
+                        feedback_string+=b+","
+                    feedback_string=feedback_string[:-1]+" BHK "
 
             else:
                 for b in bhk:    
