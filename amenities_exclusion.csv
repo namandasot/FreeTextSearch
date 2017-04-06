@@ -1,5 +1,5 @@
 Keyword
-"swimming,swim,float,pool,pond "
+"swimming,swim,float,pool,pond,swimming pool,swimmingpool"
 "gymnasium,gym"
 "club,clubhouse,cabaret  "
 "park,lawn,garden "
@@ -71,9 +71,9 @@ health
 school 
 bicycle
 "servant,handmaid,worker "
-"bhk flat,bhk flats,bhk,flat,flats,villa,bunglow,apartment,properties,bhk apartments,bhk apartment,bhk properties,bhk property,bungalow,bhk bunglow,bhk bungalow"
+"bhk flat,bhk flats,bhk,flat,flats,villa,bunglow,apartment,properties,property,bhk apartments,bhk apartment,bhk properties,bhk property,bungalow,bhk bunglow,bhk bungalow"
 "east,west,north,south,central"
-"city,"
+city
 "row house,row houses,villas,villas bungalow,villas bungalows,villa bungalow,villa bungalows"
 property
 "bedroom kitchen,kitchen"
