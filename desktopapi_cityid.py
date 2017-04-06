@@ -495,7 +495,7 @@ def URL_formation(todo_id,cityid):
             
             if bhk_type:
                 if "rk" in bhk_type or "room" in bhk_type:
-                    feedback_string+="1 RK"
+                    feedback_string+="1 RK "
                     if "bhk" in bhk_type:
                             feedback_string+=" & "
                             for b in bhk:

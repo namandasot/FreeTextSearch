@@ -388,8 +388,9 @@ def Location(words,tagged_words): ##
     length=len(tagged_words)-1
     for i in range (0,len(response['entities'])):
       flag=0
-      if response['entities'][i]['type']=='LOCATION' and not response['entities'][i]['name'].lower() in amenity_exclusion and len(response['entities'][i]['name'])>2:
+      if response['entities'][i]['type']=='LOCATION' and not response['entities'][i]['name'].lower().strip() in amenity_exclusion and len(response['entities'][i]['name'])>2:
                  item1.append(response['entities'][i]['name'])
+                 print "GOOGLE LOCATION FOUND",response['entities'][i]['name']
                  pos=words.index(response['entities'][i]['name'].split()[0].lower())
                  if not pos-1<0:                            
                      if (tagged_words[pos-1][1]=="RB") or (tagged_words[pos-1][1]=="RBR") or (tagged_words[pos-1][1]=="RBS") or (tagged_words[pos-1][1]=="IN")  or (tagged_words[pos-1][1]=="JJR") or (tagged_words[pos-1][1]=="JJS"):
@@ -425,7 +426,7 @@ def Location(words,tagged_words): ##
                     adv.append("in")
 
     for i in range (0,len(response['entities'])):
-          if response['entities'][i]['type']=='LOCATION' and not response['entities'][i]['name'].lower() in amenity_exclusion and len(response['entities'][i]['name'])>2:
+          if response['entities'][i]['type']=='LOCATION' and not response['entities'][i]['name'].lower().strip() in amenity_exclusion and len(response['entities'][i]['name'])>2:
                      pos=words.index(response['entities'][i]['name'].split()[0].lower())
                      if not pos-3<0:
                          if (tagged_words[pos-2][0] in ['km','kms','kilometer','kilometers','m','meter','meters']) and (tagged_words[pos-3][1]=='CD'):
@@ -443,7 +444,7 @@ def Location(words,tagged_words): ##
 
   if not item1:
      for i,word in enumerate(tagged_words):
-         if word[1] in ['NNP','NN','NNS']  and not word[0].lower() in amenity_exclusion and len(word[0])>2:
+         if word[1] in ['NNP','NN','NNS']  and not word[0].lower().strip() in amenity_exclusion and len(word[0])>2:
                 print "Location not found via Google nlp reached Solr"
                 word_to_search=word[0]
                 if i+1<len(tagged_words):
@@ -742,7 +743,7 @@ def start(query,cityid):
     #query = str(query.title())
     qr_mod=[]
     for word in tagged_words:
-        if word[1] in ["NN","NNP","NNS","RB","RBR","RBS","JJ","JJR","JJS"]:
+        if word[1] in ["NN","NNP","NNS","RB","RBR","RBS","JJ","JJR","JJS"] and word[0].lower() not in ["cr","lac","l","lacs","crores","crore"]:
             qr_mod.append(word[0].title())
         else:
             qr_mod.append(word[0].lower())
