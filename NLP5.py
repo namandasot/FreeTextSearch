@@ -356,7 +356,7 @@ def Budget(word,tagged_words):
         item1+=''                     
     return ([leafs,adj,item1])
     
-def Location(words,tagged_words): ##
+def Location(words,tagged_words,cityid): ##
   amenity_exclusion_csv=pd.read_csv("amenities_exclusion.csv",delimiter=",")
   amenity_exclusion1=[amenity_from_csv.split(',') for amenity_from_csv in list(amenity_exclusion_csv["Keyword"])]
   amenity_exclusion=list(itertools.chain(*amenity_exclusion1))
@@ -441,11 +441,10 @@ def Location(words,tagged_words): ##
   
   except:
     print "Error"
-
   if not item1:
+     print "Location not found via Google nlp reached Solr"
      for i,word in enumerate(tagged_words):
          if word[1] in ['NNP','NN','NNS']  and not word[0].lower().strip() in amenity_exclusion and len(word[0])>2:
-                print "Location not found via Google nlp reached Solr"
                 word_to_search=word[0]
                 if i+1<len(tagged_words):
                     if tagged_words[i+1][0].lower() in ["east","west","north","south","central"]:
@@ -453,11 +452,12 @@ def Location(words,tagged_words): ##
 
                 try:
                     word_to_search1 = urllib.quote(word_to_search)
-                    locationstring="http://"+solr_ip+":8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+word_to_search1+"&wt=json&indent=true"
+                    #locationstring="http://"+solr_ip+":8983/solr/hdfcmarketing_shard1_replica1/select?q=name%3A"+word_to_search1+"&wt=json&indent=true"
+                    locationstring="https://www.hdfcred.com/POC/free_text/search_area.php?input="+word_to_search1+"&cityid="+cityid
                     req = urllib2.Request(locationstring)
                     url = urllib2.urlopen(req).read()
                     result_location = json.loads(url)
-                    found_flag=result_location['response']['numFound']
+                    found_flag=result_location['matched_val']['projectCount']
                     if not found_flag==0:
                         item1.append(word_to_search)
                         adv.append("in")
@@ -748,7 +748,7 @@ def start(query,cityid):
         else:
             qr_mod.append(word[0].lower())
     query=' '.join(qr_mod) 
-    [location,adv_location,radius]=Location(query,tagged_words)
+    [location,adv_location,radius]=Location(query,tagged_words,cityid)
 
     print "BHK ", bhk,bhk_desc,bhk_item
     print "BUDGET " ,budget,budget_adj,budget_item
