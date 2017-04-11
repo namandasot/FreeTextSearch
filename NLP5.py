@@ -343,7 +343,7 @@ def Budget(word,tagged_words):
                          adj.append(tagged_words[pos+2][0])
                          flag=1
 
-             elif flag==1:
+             if flag==0:
                 adj.append("in")
 
 
@@ -422,7 +422,7 @@ def Location(words,tagged_words,cityid): ##
                              flag=1
                              continue
 
-                 elif flag==0:
+                 if flag==0:
                     adv.append("in")
 
     for i in range (0,len(response['entities'])):
