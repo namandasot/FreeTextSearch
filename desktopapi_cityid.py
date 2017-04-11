@@ -208,14 +208,18 @@ def URL_formation(todo_id,cityid):
                 elif adv in ['nearby','near']:
                     flag=lat_long_tagging(location[i],'nearBy',city,flag)
 
-                elif adv in ['around']:
+                elif adv in ['around','within']:
                     flag=lat_long_tagging(location[i],'around',city,flag)
 
                 elif adv in ['north','east','west','south']:
-                    flag=lat_long_tagging(location[i],'direction',city,flag)
+                    flag=lat_long_tagging(location[i],'direction',city,flag)                
                     if flag==1:
                         dirs.append(adv)
-
+                else:    
+                    if location[i]:
+                        flag=lat_long_tagging(location[i],'in',city,flag)                
+                
+            
             if flag==0:
                     flag=lat_long_tagging(location[i],'in',city,flag)
         else:
